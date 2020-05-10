@@ -7,23 +7,28 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fdf6e3',
+    backgroundColor: '#eae7ba',
   },
   title: {
     paddingHorizontal: 16,
     paddingBottom: 8,
-    color: '#657b83',
+    color: '#353232',
     fontSize: 20,
     fontWeight: 'bold',
   },
+  itemContainer: {
+    display: 'flex',
+    flexDirection: 'row'
+  }, 
   item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
+    backgroundColor: 'rgb(187, 192, 247)',
+    borderRadius: 8,
+    padding: 8,
     marginVertical: 8,
     marginHorizontal: 16,
   },
   accent: {
-    color: '#C53F37',
+    color: 'rgb(187, 192, 247)',
     fontWeight: 'bold',
   }
 });
