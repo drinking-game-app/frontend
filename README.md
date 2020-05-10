@@ -1,7 +1,7 @@
 # React Native Expo Frontend for Drinking Game Application
 
 ### Description
-The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native JavaScript, and compiled using Expo.
+The React Native frontend, which will be the face of the drinking game application. Written in React Native JavaScript, and compiled using Expo.
 
 ### Demo
 A live preview of this application can be accessed <a href="https://expo.io/@eoan/drinking-game-frontend">here</a>
@@ -19,10 +19,10 @@ A live preview of this application can be accessed <a href="https://expo.io/@eoa
 5. A browser window should pop up with the expo dev tools
 
 ### Installing React Native Debugger
-* A specific version of the React Native Debugger is needed to be compatably with the version of React Native that Expo uses. 
+* A specific version of the React Native Debugger is needed to be compatible with the version of React Native that Expo uses. 
 * To download this version, run `npm run download-debug:windows`, and install it on your computer. 
 * If that command doesn't work, you can install it <a href="https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.3/rn-debugger-macos-x64.zip" target="_blank">here</a>.
-* Once installed, run `npm run debug` to start the debugger. (The debugger only works on a iOS simulator / Android emulator, and you must have Remote Debugging Enabled).
+* Once installed, run `npm run debug` to start the debugger. (The debugger only works on an iOS simulator / Android emulator, and you must have Remote Debugging Enabled).
 * The React Dev Tools Chrome Extension can be used to debug while running on the web.
 
 
