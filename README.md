@@ -3,6 +3,9 @@
 ### Description
 The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native JavaScript, and compiled using Expo.
 
+### Demo
+A live preview of this application can be accessed <a href="https://expo.io/@eoan/drinking-game-frontend">here</a>
+
 ### What you need to run this code
 1. Node >= 12.14.1
 2. NPM >= 6.14.4

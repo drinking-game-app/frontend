@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "drinking-game-frontend",
+    "slug": "drinking-game-frontend",
     "platforms": [
       "ios",
       "android",
@@ -23,6 +23,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native JavaScript, and compiled using Expo.",
+    "githubUrl": "https://github.com/drinking-game-app/frontend"
   }
 }
