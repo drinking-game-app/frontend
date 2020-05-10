@@ -17,10 +17,12 @@ The react native frontend built in expo, which will be the face of the drinking 
 
 #### What you can run this code on
 This application can be compiled and launched on the following platforms
-1. Web
-2. Android Emulator / Physical Device
-3. iPhone / Physical Device
-Instructions for each device are given below
+1. <a href="#running-on-the-web">Web</a>
+2. <a href="#running-on-an-android-emulator">Android Emulator</a>
+3. <a href="running-on-an-android-physical-device">Android Physical Device</a>
+4. <a href="#running-on-an-ios-simulator-mac-osx-only">iPhone Simulator</a>
+5. <a href="#running-on-an-ios-physical-device">iPhone Physical Device</a>
+<br/> Instructions for each device are given below
 
 #### Running on the web
 1. After starting the development server, select `Run in web browser` or without starting the development server, run `npm run web`
