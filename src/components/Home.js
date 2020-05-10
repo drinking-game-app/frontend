@@ -40,7 +40,7 @@ export default class Home extends Component {
             <FlatList
               data={this.state.reasonsArr}
               renderItem={({ item, index }) => <Row item={item.text} index={index} />}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.id.toString()}
             />
           </View>
         </View>
