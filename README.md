@@ -6,7 +6,7 @@ The react native frontend built in expo, which will be the face of the drinking 
 ### What you need to run this code
 1. Node >= 12.14.1
 2. NPM >= 6.14.4
-3. Expo >= 3.20.1
+3. Expo >= 3.20.3
 
 ### How to run this code
 1. If you haven't already, install expo using `npm install -g expo-cli`
@@ -14,6 +14,14 @@ The react native frontend built in expo, which will be the face of the drinking 
 3. Run `npm install` to install the node dependencies
 4. Run `npm run start` to start the development server
 5. A browser window should pop up with the expo dev tools
+
+### Installing React Native Debugger
+* A specific version of the React Native Debugger is needed to be compatably with the version of React Native that Expo uses. 
+* To download this version, run `npm run download-debug:windows`, and install it on your computer. 
+* If that command doesn't work, you can install it <a href="https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.3/rn-debugger-macos-x64.zip" target="_blank">here</a>.
+* Once installed, run `npm run debug` to start the debugger. (The debugger only works on a iOS simulator / Android emulator, and you must have Remote Debugging Enabled).
+* The React Dev Tools Chrome Extension can be used to debug while running on the web.
+
 
 #### What you can run this code on
 This application can be compiled and launched on the following platforms
