@@ -24,7 +24,7 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native JavaScript, and compiled using Expo.",
+    "description": "The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native TypeScript, and compiled using Expo.",
     "githubUrl": "https://github.com/drinking-game-app/frontend"
   }
 }
