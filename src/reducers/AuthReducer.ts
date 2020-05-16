@@ -76,6 +76,7 @@ export default (state = initialState, action: IAction) => {
         toRegister: false,
         name: "",
         password: "",
+        confirm_password: "",
         actionSuccess: true,
         error: ""
       };
@@ -90,18 +91,17 @@ export default (state = initialState, action: IAction) => {
         token: action.payload.token,
         name: action.payload.user!.name,
         email: action.payload.user!.email,
-        _id: action.payload.user!._id
+        _id: action.payload.user!._id,
+        password: "",
+        error: ""
       };
     case "USER_LOGGED_OUT":
       return {
         ...state,
         token: "",
-        user: {
-          _id: "",
-          name: "",
-          email: "",
-          password: "",
-        },
+        _id: "",
+        name: "",
+        email: "",
       };
     default:
       return state;

@@ -30,7 +30,7 @@ const tabs = () => {
                     }} 
                 />
                 <Tab.Screen
-                    name="Example page"
+                    name="Authed Page"
                     component={About}
                     options={{
                         tabBarIcon: ({color}) => (
@@ -39,7 +39,7 @@ const tabs = () => {
                     }} 
                 />
                 <Tab.Screen
-                     name="Auth"
+                     name="Login"
                      component={Login}
                      options={{
                          tabBarIcon: ({color}) => (

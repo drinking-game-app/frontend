@@ -66,6 +66,7 @@ export const create  = (body: ICreate) => {
         })
         .catch((err) => {
             console.log(err)
+            return dispatch({ type: 'REQUEST_ERROR', payload: {error: 'Error: Could not connect to the server'} })
         })
     }
 }
@@ -98,11 +99,11 @@ export const login  = (body: ILogin) => {
             if(data.error) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
-            console.log(data, 'data!')
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
         })
         .catch((err) => {
             console.log(err)
+            return dispatch({ type: 'REQUEST_ERROR', payload: {error: 'Error: Could not connect to the server'} })
         })
     }
 }
@@ -111,7 +112,7 @@ export const login  = (body: ILogin) => {
  * Type for an authentication token
  */
 interface IToken {
-    t: string
+    token: string
 }
 
 /**
@@ -120,12 +121,12 @@ interface IToken {
  */
 export const logout  = (credentials: IToken) => {
     return (dispatch: any) => {
-        fetch(`${baseUrl}${prefix}`, {
+        fetch(`${baseUrl}/api/auth/signout`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + credentials.t
+                'Authorization': 'Bearer ' + credentials.token
             },
         })
         .then(() => {

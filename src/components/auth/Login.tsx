@@ -5,6 +5,7 @@ import { login, isRegistering } from "../../actions";
 import Register from "./Register";
 import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";
+import Signout from "./Signout";
 
 /**
  * Importing styles
@@ -22,6 +23,7 @@ type IProps = {
   password: string;
   error: string;
   toRegister: boolean;
+  token: string;
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
@@ -40,6 +42,7 @@ class Login extends Component<IProps> {
     if (this.canSubmit()) {
       const { email, password } = this.props;
       this.props.login({ email, password });
+
     }
   };
 
@@ -69,12 +72,13 @@ class Login extends Component<IProps> {
   };
 
   render() {
-    const { email, password, toRegister } = this.props;
+    const { email, password, toRegister, token } = this.props;
 
-    if (toRegister) return <Register />;
+    if(token !== "") return <Signout />
+    if (toRegister) return <Register />
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}></Text>
+        <Text style={styles.title}>Login</Text>
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -127,13 +131,14 @@ class Login extends Component<IProps> {
  * @param {*} state
  */
 const mapStateToProps = (state: any) => {
-  const { email, password, error, toRegister } = state;
+  const { email, password, error, toRegister, token } = state;
 
   return {
     email,
     password,
     error,
-    toRegister
+    toRegister,
+    token
   };
 };
 
