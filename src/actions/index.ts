@@ -1,6 +1,15 @@
+import { ICreate, IForm, ILogin, IToken } from "./interfaces"
 
+/**
+ * Prefixes for api endpoints
+ */
+const userPrefix = "/api/user"
+const authPrefix = "/api/auth"
 
-const prefix = "/api/user"
+/**
+ * Get the baseURL for the server either from the .env file
+ * or use a static IP
+ */
 const baseUrl = process.env.SERVER_URL || 'http://192.168.0.164:3000'
 
 /**
@@ -14,16 +23,9 @@ export const isRegistering = () => {
 }
 
 /**
- * Type for form update prop
- */
-interface IForm {
-    [prop: string]: string
-}
-
-/**
  * Updates an item in the redux store
  * 
- * @param {prop, value} param
+ * @param {IForm} {prop, value}
  */
 export const formUpdate = ({prop, value}: IForm) => {
     return {
@@ -33,22 +35,13 @@ export const formUpdate = ({prop, value}: IForm) => {
 }
 
 /**
- * Type for registering user body
- */
-interface ICreate {
-    name: string
-    email: string
-    password: string
-}
-
-/**
  * Register a user
  * 
- * @param {name: string, email: string, password: string} body
+ * @param {ICreate} body
  */
 export const create  = (body: ICreate) => {
     return (dispatch: any) => {
-        fetch(`${baseUrl}${prefix}`, {
+        fetch(`${baseUrl}${userPrefix}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -72,21 +65,13 @@ export const create  = (body: ICreate) => {
 }
 
 /**
- * Type for login user body
- */
-interface ILogin {
-    email: string
-    password: string
-}
-
-/**
  * Login
  * 
- * @param {email: string, password: string} body 
+ * @param {ILogin} body 
  */
 export const login  = (body: ILogin) => {
     return (dispatch: any) => {
-        fetch(`${baseUrl}/api/auth/signin`, {
+        fetch(`${baseUrl}${authPrefix}/signin`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -108,20 +93,15 @@ export const login  = (body: ILogin) => {
     }
 }
 
-/**
- * Type for an authentication token
- */
-interface IToken {
-    token: string
-}
 
 /**
  * Logout a user
  * 
+ * @param {IToken} credentials
  */
 export const logout  = (credentials: IToken) => {
     return (dispatch: any) => {
-        fetch(`${baseUrl}/api/auth/signout`, {
+        fetch(`${baseUrl}${authPrefix}/signout`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

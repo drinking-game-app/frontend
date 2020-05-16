@@ -22,11 +22,12 @@ type IProps = {
   logout: (body: object) => void;
 };
 
-class Signout extends Component<IProps> {
-  state = {
-    errors: [],
-  };
+type IState = {
 
+}
+
+class Signout extends Component<IProps> {
+  
   /**
    * Logs out the user from their current
    * session
