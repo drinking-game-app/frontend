@@ -20,6 +20,7 @@ import Register from "./Register";
 import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import Signout from "./Signout";
+import { IInitialState } from "../../reducers/interfaces";
 
 /**
  * Importing styles
@@ -32,18 +33,25 @@ const styles = require("../../themes")("Form");
  * Interface Props
  * for the component
  */
-type IProps = {
+interface ILoginProps {
   email: string;
   password: string;
   error: string;
   toRegister: boolean;
   token: string;
+}
+
+interface ILoginActions {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
-};
+}
 
-class Login extends Component<IProps> {
+interface ILoginState {
+  errors: any[]
+}
+
+class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
   state = {
     errors: [],
   };
@@ -93,6 +101,7 @@ class Login extends Component<IProps> {
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Login</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -144,7 +153,7 @@ class Login extends Component<IProps> {
  *
  * @param {*} state
  */
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IInitialState): ILoginProps => {
   const { email, password, error, toRegister, token } = state;
 
   return {
@@ -156,4 +165,4 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-export default connect(mapStateToProps, actions)(Login);
+export default connect<ILoginProps, ILoginActions, {}>(mapStateToProps, actions)(Login);

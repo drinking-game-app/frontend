@@ -30,10 +30,10 @@ export interface IAction {
   type: string;
   payload: {
     prop: string;
-    value?: string;
-    user?: IUser;
-    token?: string;
-    error?: string;
+    value: string;
+    user: IUser;
+    token: string;
+    error: string;
   };
 }
 
