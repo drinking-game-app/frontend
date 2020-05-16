@@ -49,7 +49,7 @@ This application can be compiled and launched on the following platforms
 3. After starting the development server, select `Run on Android device/emulator` or without starting the development server, run `npm run android`
 
 #### Running on an iOS physical device
-You can run this code on your own iOS device while running the development server, and preview life updates and you change the code.
+You can run this code on your own iOS device while running the development server, and preview live updates as you change the code.
 
 ###### Requirements
 * iOS >= 10.0
@@ -60,7 +60,7 @@ You can run this code on your own iOS device while running the development serve
 2. After starting the development server, scan the QR code with your device, and Expo will generate a live preview of your app
 
 #### Running on an Android physical device
-You can run this code on your own Android device while running the development server, and preview life updates and you change the code.
+You can run this code on your own Android device while running the development server, and preview live updates as you change the code.
 
 ###### Requirements
 * Android >= 5 - Lollipop
