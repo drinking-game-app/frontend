@@ -4,11 +4,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Home from './Home'
 import About from './About';
+import Vivs from './Vivs'
+import Login from './auth/Login';
 
 /**
  * Declaring Tab to be a Bottom Tab Navigator
  */
 const Tab = createBottomTabNavigator()
+
 
 /**
  * Wrapper element for all tabs
@@ -34,6 +37,15 @@ const tabs = () => {
                             <Icon name={'local-hotel'} size={32} color={color} />
                         )
                     }} 
+                />
+                <Tab.Screen
+                     name="Auth"
+                     component={Login}
+                     options={{
+                         tabBarIcon: ({color}) => (
+                             <Icon name={'local-hotel'} size={32} color={color} />
+                         )
+                     }} 
                 />
             </Tab.Navigator>
         </NavigationContainer>
