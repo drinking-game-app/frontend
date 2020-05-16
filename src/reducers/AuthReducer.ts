@@ -88,9 +88,9 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         token: action.payload.token,
-        name: action.payload.user.name,
-        email: action.payload.user.email,
-        _id: action.payload.user._id
+        name: action.payload.user!.name,
+        email: action.payload.user!.email,
+        _id: action.payload.user!._id
       };
     case "USER_LOGGED_OUT":
       return {

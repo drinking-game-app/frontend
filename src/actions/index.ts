@@ -98,8 +98,8 @@ export const login  = (body: ILogin) => {
             if(data.error) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
-
-            dispatch({ type: 'USER_LOGGED_IN', payload: data })
+            console.log(data, 'data!')
+            dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
         })
         .catch((err) => {
             console.log(err)
