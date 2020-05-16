@@ -1,7 +1,21 @@
+/*
+ * File: Login.tsx
+ * Project: frontend
+ * Version: 1.0.0
+ * File Created: Thursday, 14th May 2020 4:22:47 pm
+ * Author: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * File Description: Handles user login input & validation
+ * Last Modified: Saturday, 16th May 2020 8:55:33 pm
+ * Modified By: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * Copyright 2020 - WebSpace
+ */
+
+
 import React, { Component } from "react";
 import { Text, SafeAreaView, TextInput, View } from "react-native";
 import { connect } from "react-redux";
-import { login, isRegistering } from "../../actions";
 import Register from "./Register";
 import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";

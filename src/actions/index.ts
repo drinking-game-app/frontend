@@ -1,3 +1,17 @@
+/*
+ * File: index.ts
+ * Project: frontend
+ * Version: 1.0.0
+ * File Created: Thursday, 14th May 2020 3:16:19 pm
+ * Author: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * File Description: Authentication related actions in the redux state
+ * Last Modified: Saturday, 16th May 2020 8:55:16 pm
+ * Modified By: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * Copyright 2020 - WebSpace
+ */
+
 import { ICreate, IForm, ILogin, IToken } from "./interfaces"
 
 /**

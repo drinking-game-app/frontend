@@ -1,3 +1,17 @@
+/*
+ * File: App.tsx
+ * Project: frontend
+ * Version: 1.0.0
+ * File Created: Saturday, 26th October 1985 9:15:00 am
+ * Author: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * File Description: Primary entrypoint for the application
+ * Last Modified: Saturday, 16th May 2020 9:00:50 pm
+ * Modified By: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * Copyright 2020 - WebSpace
+ */
+
 import React from 'react';
 import Navigation from './src/components/Navigation'
 import thunk from 'redux-thunk'

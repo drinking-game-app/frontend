@@ -1,3 +1,19 @@
+/*
+ * File: Register.tsx
+ * Project: frontend
+ * Version: 1.0.0
+ * File Created: Thursday, 14th May 2020 3:08:31 pm
+ * Author: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * File Description: Handles user registration input & validation
+ * Last Modified: Saturday, 16th May 2020 8:56:06 pm
+ * Modified By: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * Copyright 2020 - WebSpace
+ */
+
+
+
 import React, { Component } from "react";
 import { Text, SafeAreaView, View } from "react-native";
 import { connect } from "react-redux";

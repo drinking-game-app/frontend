@@ -1,9 +1,23 @@
+/*
+ * File: Signout.tsx
+ * Project: frontend
+ * Version: 1.0.0
+ * File Created: Saturday, 16th May 2020 8:19:18 pm
+ * Author: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * File Description: Handles user signout
+ * Last Modified: Saturday, 16th May 2020 8:56:18 pm
+ * Modified By: Eoan O'Dea - eoan@wspace.ie
+ * ---------------
+ * Copyright 2020 - WebSpace
+ */
+
+
 import React, { Component } from "react";
-import { Text, SafeAreaView, TextInput, View } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
-import Register from "./Register";
-import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
+import { RectButton } from "react-native-gesture-handler";
 
 /**
  * Importing styles
