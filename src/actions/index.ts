@@ -15,6 +15,7 @@
 import { ICreate, IForm, ILogin, IToken } from "./interfaces"
 import getEnvVars from '../../environment'
 
+
 const { SERVER_URL } = getEnvVars()
 
 /**
@@ -109,6 +110,36 @@ export const login  = (body: ILogin) => {
         })
     }
 }
+
+/**
+ * Login with Google
+ * 
+ * @param {IToken} token 
+ */
+export const loginWithGoogle  = (token: IToken) => {
+    return (dispatch: any) => {
+        fetch(`${baseUrl}${authPrefix}/signin/google`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(token)
+        })
+        .then(response => response.json())
+        .then((data) => {
+            if(data.error) {
+                return dispatch({ type: 'REQUEST_ERROR', payload: data })
+            }
+            dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
+        })
+        .catch((err) => {
+            console.log(err)
+            return dispatch({ type: 'REQUEST_ERROR', payload: {error: 'Error: Could not connect to the server'} })
+        })
+    }
+}
+
 
 
 /**

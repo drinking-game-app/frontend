@@ -21,6 +21,13 @@ import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
+import GoogleLogin from 'react-google-login';
+import getEnvVars from '../../../environment';
+
+/**
+ * Get Google Client ID from environment variables
+ */
+const { GOOGLE_CLIENT_ID } = getEnvVars()
 
 /**
  * Importing styles
@@ -93,6 +100,14 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
     return errors.length > 0 ? false : true;
   };
 
+  /**
+   * Handles a response from Google
+   */
+  responseGoogle = (res: any) => {
+    console.log('google response!', res)
+    this.props.loginWithGoogle({ token: res.tokenId });    
+  }
+
   render() {
     const { email, password, toRegister, token } = this.props;
 
@@ -124,6 +139,14 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
           }
         />
 
+        <GoogleLogin
+          clientId={GOOGLE_CLIENT_ID}
+          buttonText="Login"
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseGoogle}
+          cookiePolicy={'single_host_origin'}
+        />
+
         <RectButton onPress={this.submit} style={styles.formButton}>
           <Text>Login</Text>
         </RectButton>
@@ -148,6 +171,8 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
   }
 }
 
+
+
 /**
  * Return a list of people from our redux state
  *
@@ -165,4 +190,4 @@ const mapStateToProps = (state: IInitialState): ILoginProps => {
   };
 };
 
-export default connect<ILoginProps, ILoginActions, {}>(mapStateToProps, actions)(Login);
+export default connect<ILoginProps, ILoginActions, {} > (mapStateToProps, actions)(Login);

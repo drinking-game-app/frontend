@@ -50,4 +50,5 @@ export interface IInitialState {
   token: string;
   actionSuccess: boolean;
   error: string;
+  authedWithGoogle: boolean;
 }

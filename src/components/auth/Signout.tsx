@@ -18,6 +18,13 @@ import { Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 import { RectButton } from "react-native-gesture-handler";
+import GoogleLogout from 'react-google-login';
+import getEnvVars from '../../../environment';
+
+/**
+ * Get Google Client ID from environment variables
+ */
+const { GOOGLE_CLIENT_ID } = getEnvVars()
 
 /**
  * Importing styles
@@ -53,16 +60,30 @@ class Signout extends Component<IProps> {
   };
 
   render() {
-    const { name } = this.props;
+    const { name, authedWithGoogle } = this.props;
 
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Welcome, {name}</Text>
        
+        {
+          authedWithGoogle
+          ? (
+            <GoogleLogout
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Logout"
+              onSuccess={this.submit}
+              onFailure={this.submit}
+            >
+            </GoogleLogout>
+          )
+          : (
+            <RectButton onPress={this.submit} style={styles.formButton}>
+              <Text>Signout</Text>
+            </RectButton>
+          )
+        }
 
-        <RectButton onPress={this.submit} style={styles.formButton}>
-          <Text>Signout</Text>
-        </RectButton>
       </SafeAreaView>
     );
   }
@@ -74,11 +95,12 @@ class Signout extends Component<IProps> {
  * @param {*} state
  */
 const mapStateToProps = (state: any) => {
-  const { name, token } = state;
+  const { name, token, authedWithGoogle } = state;
 
   return {
     name,
-    token
+    token,
+    authedWithGoogle
   };
 };
 

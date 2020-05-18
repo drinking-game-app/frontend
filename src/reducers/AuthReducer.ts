@@ -28,20 +28,20 @@ const initialState: IInitialState = {
   canSubmit: false,
   token: "",
   actionSuccess: false,
-  error: ""
+  error: "",
+  authedWithGoogle: false,
 };
 
 /**
  * Reducers for authentication
- * 
+ *
  * @param {InitialState, IAction} initialState, action
  */
 export default (state = initialState, action: IAction) => {
   switch (action.type) {
-
     /**
      * Toggles the toRegister boolean
-     * Determinds whether to display the 
+     * Determinds whether to display the
      * login or register component
      */
     case "IS_REGISTERING":
@@ -51,7 +51,7 @@ export default (state = initialState, action: IAction) => {
       };
 
     /**
-     * Handles form on change events for 
+     * Handles form on change events for
      * login & register forms
      */
     case "FORM_UPDATE":
@@ -61,7 +61,7 @@ export default (state = initialState, action: IAction) => {
       };
 
     /**
-     * When a user has 
+     * When a user has
      * successfully registered
      */
     case "USER_REGISTERED":
@@ -72,18 +72,18 @@ export default (state = initialState, action: IAction) => {
         password: "",
         confirm_password: "",
         actionSuccess: true,
-        error: ""
+        error: "",
       };
 
     /**
-     * When a API request responds with 
+     * When a API request responds with
      * an error, store it in the state
      */
     case "REQUEST_ERROR":
       return {
         ...state,
-        error: action.payload.error
-      }
+        error: action.payload.error,
+      };
 
     /**
      * When a user has successfully
@@ -97,9 +97,24 @@ export default (state = initialState, action: IAction) => {
         email: action.payload.user!.email,
         _id: action.payload.user!._id,
         password: "",
-        error: ""
+        error: "",
       };
 
+    /**
+     * When a user has successfully
+     * logged in with Google
+     */
+    case "USER_LOGGED_IN_GOOGLE":
+      return {
+        ...state,
+        token: action.payload.token,
+        name: action.payload.user!.name,
+        email: action.payload.user!.email,
+        _id: action.payload.user!._id,
+        password: "",
+        error: "",
+        authedWithGoogle: true,
+      };
     /**
      * When a user has logged out
      */
