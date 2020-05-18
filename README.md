@@ -15,8 +15,9 @@ A live preview of this application can be accessed <a href="https://expo.io/@eoa
 1. If you haven't already, install expo using `npm install -g expo-cli`
 2. Clone this repository, and `cd` into it
 3. Run `npm install` to install the node dependencies
-4. Run `npm run start` to start the development server
-5. A browser window should pop up with the expo dev tools
+4. Run `cp example.environment.ts environment.ts` and fill in your environment variables.
+5. Run `npm run start` to start the development server
+6. A browser window should pop up with the expo dev tools
 
 ### Installing React Native Debugger
 * A specific version of the React Native Debugger is needed to be compatible with the version of React Native that Expo uses. 
