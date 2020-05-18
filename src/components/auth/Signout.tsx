@@ -24,7 +24,7 @@ import getEnvVars from '../../../environment';
 /**
  * Get Google Client ID from environment variables
  */
-const { GOOGLE_CLIENT_ID } = getEnvVars()
+const { WEB_GOOGLE_CLIENT_ID } = getEnvVars()
 
 /**
  * Importing styles
@@ -42,10 +42,6 @@ type IProps = {
   token: string;
   logout: (body: object) => void;
 };
-
-type IState = {
-
-}
 
 class Signout extends Component<IProps> {
   
@@ -70,7 +66,7 @@ class Signout extends Component<IProps> {
           authedWithGoogle
           ? (
             <GoogleLogout
-              clientId={GOOGLE_CLIENT_ID}
+              clientId={WEB_GOOGLE_CLIENT_ID}
               buttonText="Logout"
               onSuccess={this.submit}
               onFailure={this.submit}

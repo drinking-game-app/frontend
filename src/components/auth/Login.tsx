@@ -14,7 +14,7 @@
 
 
 import React, { Component } from "react";
-import { Text, SafeAreaView, TextInput, View } from "react-native";
+import { Text, SafeAreaView, TextInput, View, Platform } from "react-native";
 import { connect } from "react-redux";
 import Register from "./Register";
 import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
@@ -23,11 +23,14 @@ import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
 import GoogleLogin from 'react-google-login';
 import getEnvVars from '../../../environment';
+import Expo from "expo"
 
 /**
  * Get Google Client ID from environment variables
  */
-const { GOOGLE_CLIENT_ID } = getEnvVars()
+const { IOS_GOOGLE_CLIENT_ID, WEB_GOOGLE_CLIENT_ID } = getEnvVars()
+
+console.log('platform!!!', Platform.OS)
 
 /**
  * Importing styles
@@ -52,6 +55,7 @@ interface ILoginActions {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
+  loginWithGoogle: (token: object) => void;
 }
 
 interface ILoginState {
@@ -71,7 +75,6 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
     if (this.canSubmit()) {
       const { email, password } = this.props;
       this.props.login({ email, password });
-
     }
   };
 
@@ -104,8 +107,34 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
    * Handles a response from Google
    */
   responseGoogle = (res: any) => {
-    console.log('google response!', res)
-    this.props.loginWithGoogle({ token: res.tokenId });    
+    if(res.error) {
+      let errors: any = []
+      errors.push(res.error)
+
+      this.setState({ errors: errors });
+    } else {
+      this.props.loginWithGoogle({ token: res.tokenId });    
+    }
+  }
+
+  signInWithGoogleMobile = async() => {
+    try {
+      const result = await Expo.Google.logInAsync({
+        // androidClientId: "YOUR_CLIENT_ID_HERE",
+        iosClientId: IOS_GOOGLE_CLIENT_ID,
+        scopes: ["profile", "email"]
+      })
+      console.log('result!', result)
+      if(result.type === "success") {
+        console.log('success!')
+      }
+    } catch(err) {
+      console.log('error!', err)
+      let errors: any = []
+      errors.push(err)
+
+      this.setState({ errors: errors });
+    }
   }
 
   render() {
@@ -138,14 +167,22 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
             this.props.formUpdate({ prop: "password", value })
           }
         />
-
-        <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          buttonText="Login"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-          cookiePolicy={'single_host_origin'}
-        />
+        {
+          Platform.OS === "web"
+          ? (
+            <GoogleLogin
+              clientId={WEB_GOOGLE_CLIENT_ID}
+              onSuccess={this.responseGoogle}
+              onFailure={this.responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+          )
+          :(
+            <RectButton onPress={this.signInWithGoogleMobile} style={styles.formButton}>
+              <Text>Login with Google</Text>
+            </RectButton>
+          )
+        }
 
         <RectButton onPress={this.submit} style={styles.formButton}>
           <Text>Login</Text>
