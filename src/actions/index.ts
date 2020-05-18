@@ -13,6 +13,9 @@
  */
 
 import { ICreate, IForm, ILogin, IToken } from "./interfaces"
+import getEnvVars from '../../environment'
+
+const { SERVER_URL } = getEnvVars()
 
 /**
  * Prefixes for api endpoints
@@ -24,7 +27,7 @@ const authPrefix = "/api/auth"
  * Get the baseURL for the server either from the .env file
  * or use a static IP
  */
-const baseUrl = process.env.SERVER_URL || 'http://192.168.0.164:3000'
+const baseUrl = SERVER_URL || 'http://192.168.0.164:3000'
 
 /**
  * Determinds whether to display the login
