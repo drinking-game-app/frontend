@@ -7,8 +7,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'",
-    "download-debug:windows": "start https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.3/rn-debugger-macos-x64.zip"
+    "debug:mac": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'",
+    "debug:windows": "start 'rndebugger://set-debugger-loc?host=localhost&port=19001'",
+    "download-debug:windows": "start https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.3/rn-debugger-windows-x64.zip"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.6",
