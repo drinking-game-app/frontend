@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native';
 import { I18nManager } from 'react-native';
 
-
 /**
  * App Stylesheet for the light theme
  */

@@ -12,3 +12,8 @@ web-report/
 
 # macOS
 .DS_Store
+
+environment.ts
+.env
+package-lock.json
+debug.log
