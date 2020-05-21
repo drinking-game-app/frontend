@@ -117,7 +117,6 @@ export const login  = (body: ILogin) => {
  * @param {IToken} token 
  */
 export const loginWithGoogle  = (token: IGoogleToken) => {
-    console.log('attemping sign in with', token)
     return (dispatch: any) => {
         fetch(`${baseUrl}${authPrefix}/signin/google/${token.type}`, {
             method: 'POST',
@@ -132,7 +131,7 @@ export const loginWithGoogle  = (token: IGoogleToken) => {
             if(data.error) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
-            console.log('response!', data)
+            
             if(data.data.user.accessToken) dispatch({ type: 'USER_LOGGED_IN_GOOGLE_MOBILE', payload: data.data })
             else dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
         })
@@ -157,7 +156,7 @@ export const logout  = (credentials: IGoogleToken) => {
     const signOutUrl = credentials.accessToken
     ? `signout/${credentials.accessToken}`
     : 'signout'
-    console.log('signoutURL!!!', signOutUrl)
+
     return (dispatch: any) => {
         fetch(`${baseUrl}${authPrefix}/${signOutUrl}`, {
             method: 'GET',

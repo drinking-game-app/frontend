@@ -87,7 +87,6 @@ class LogoutWithGoogle extends Component <IProps & ILogoutWithGoogleActions, ILo
 
           try {
             const result = await Google.logOutAsync(payload)
-            console.log('result!', result)
 
             const {token} = this.props
 
