@@ -8,13 +8,22 @@ const localhost = 'http://localhost:3000'
 
 const ENV = {
  dev: {
-    SERVER_URL: localhost
+    SERVER_URL: localhost,
+    WEB_GOOGLE_CLIENT_ID: '',
+    IOS_GOOGLE_CLIENT_ID: '',
+    ANDROID_GOOGLE_CLIENT_ID: ''
  },
  staging: {
-    SERVER_URL: localhost
+    SERVER_URL: localhost,
+    WEB_GOOGLE_CLIENT_ID: '',
+    IOS_GOOGLE_CLIENT_ID: '',
+    ANDROID_GOOGLE_CLIENT_ID: ''
  },
  prod: {
-    SERVER_URL: localhost
+    SERVER_URL: localhost,
+    WEB_GOOGLE_CLIENT_ID: '',
+    IOS_GOOGLE_CLIENT_ID: '',
+    ANDROID_GOOGLE_CLIENT_ID: ''
  }
 };
 

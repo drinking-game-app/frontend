@@ -30,6 +30,7 @@ const initialState: IInitialState = {
   actionSuccess: false,
   error: "",
   authedWithGoogle: false,
+  accessToken: ""
 };
 
 /**
@@ -113,8 +114,27 @@ export default (state = initialState, action: IAction) => {
         _id: action.payload.user!._id,
         password: "",
         error: "",
-        authedWithGoogle: true,
+        authedWithGoogle: true
       };
+
+    /**
+     * When a user has successfully
+     * logged in with Google on either iOS
+     * or android
+     */
+    case "USER_LOGGED_IN_GOOGLE_MOBILE":
+      return {
+        ...state,
+        token: action.payload.token,
+        name: action.payload.user!.name,
+        email: action.payload.user!.email,
+        _id: action.payload.user!._id,
+        accessToken: action.payload.user!.accessToken,
+        password: "",
+        error: "",
+        authedWithGoogle: true
+      };
+
     /**
      * When a user has logged out
      */
@@ -125,6 +145,7 @@ export default (state = initialState, action: IAction) => {
         _id: "",
         name: "",
         email: "",
+        accessToken: ""
       };
 
     /**

@@ -10,6 +10,10 @@ npm-debug.*
 web-build/
 web-report/
 
+# Repeating for intelliji
+node_modules/
+.expo/
+
 # macOS
 .DS_Store
 

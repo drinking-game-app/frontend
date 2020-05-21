@@ -14,20 +14,15 @@
 
 
 import React, { Component } from "react";
-import { Text, SafeAreaView, TextInput, View } from "react-native";
+import { Text, SafeAreaView, TextInput, View, Platform } from "react-native";
 import { connect } from "react-redux";
 import Register from "./Register";
 import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
-import GoogleLogin from 'react-google-login';
-import getEnvVars from '../../../environment';
+import LoginWithGoogle from "../platformSpecific/LoginWithGoogle";
 
-/**
- * Get Google Client ID from environment variables
- */
-const { GOOGLE_CLIENT_ID } = getEnvVars()
 
 /**
  * Importing styles
@@ -52,6 +47,7 @@ interface ILoginActions {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
+  loginWithGoogle: (token: object) => void;
 }
 
 interface ILoginState {
@@ -71,7 +67,6 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
     if (this.canSubmit()) {
       const { email, password } = this.props;
       this.props.login({ email, password });
-
     }
   };
 
@@ -100,13 +95,8 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
     return errors.length > 0 ? false : true;
   };
 
-  /**
-   * Handles a response from Google
-   */
-  responseGoogle = (res: any) => {
-    console.log('google response!', res)
-    this.props.loginWithGoogle({ token: res.tokenId });    
-  }
+
+
 
   render() {
     const { email, password, toRegister, token } = this.props;
@@ -138,14 +128,16 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
             this.props.formUpdate({ prop: "password", value })
           }
         />
+        {/* {
+          Platform.OS === "web"
+          ? ( */}
+            <LoginWithGoogle />
+          {/* )
+          :(
+            <LoginWithGoogleIOS />
 
-        <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          buttonText="Login"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-          cookiePolicy={'single_host_origin'}
-        />
+          )
+        } */}
 
         <RectButton onPress={this.submit} style={styles.formButton}>
           <Text>Login</Text>
