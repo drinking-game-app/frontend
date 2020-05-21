@@ -21,16 +21,8 @@ import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
-import GoogleLogin from 'react-google-login';
-import getEnvVars from '../../../environment';
-import Expo from "expo"
+import LoginWithGoogle from "../platformSpecific/LoginWithGoogle";
 
-/**
- * Get Google Client ID from environment variables
- */
-const { IOS_GOOGLE_CLIENT_ID, WEB_GOOGLE_CLIENT_ID } = getEnvVars()
-
-console.log('platform!!!', Platform.OS)
 
 /**
  * Importing styles
@@ -103,39 +95,8 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
     return errors.length > 0 ? false : true;
   };
 
-  /**
-   * Handles a response from Google
-   */
-  responseGoogle = (res: any) => {
-    if(res.error) {
-      let errors: any = []
-      errors.push(res.error)
 
-      this.setState({ errors: errors });
-    } else {
-      this.props.loginWithGoogle({ token: res.tokenId });    
-    }
-  }
 
-  signInWithGoogleMobile = async() => {
-    try {
-      const result = await Expo.Google.logInAsync({
-        // androidClientId: "YOUR_CLIENT_ID_HERE",
-        iosClientId: IOS_GOOGLE_CLIENT_ID,
-        scopes: ["profile", "email"]
-      })
-      console.log('result!', result)
-      if(result.type === "success") {
-        console.log('success!')
-      }
-    } catch(err) {
-      console.log('error!', err)
-      let errors: any = []
-      errors.push(err)
-
-      this.setState({ errors: errors });
-    }
-  }
 
   render() {
     const { email, password, toRegister, token } = this.props;
@@ -167,22 +128,16 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
             this.props.formUpdate({ prop: "password", value })
           }
         />
-        {
+        {/* {
           Platform.OS === "web"
-          ? (
-            <GoogleLogin
-              clientId={WEB_GOOGLE_CLIENT_ID}
-              onSuccess={this.responseGoogle}
-              onFailure={this.responseGoogle}
-              cookiePolicy={'single_host_origin'}
-            />
-          )
+          ? ( */}
+            <LoginWithGoogle />
+          {/* )
           :(
-            <RectButton onPress={this.signInWithGoogleMobile} style={styles.formButton}>
-              <Text>Login with Google</Text>
-            </RectButton>
+            <LoginWithGoogleIOS />
+
           )
-        }
+        } */}
 
         <RectButton onPress={this.submit} style={styles.formButton}>
           <Text>Login</Text>

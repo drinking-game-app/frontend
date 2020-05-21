@@ -18,13 +18,7 @@ import { Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 import { RectButton } from "react-native-gesture-handler";
-import GoogleLogout from 'react-google-login';
-import getEnvVars from '../../../environment';
-
-/**
- * Get Google Client ID from environment variables
- */
-const { WEB_GOOGLE_CLIENT_ID } = getEnvVars()
+import LogoutWithGoogle from '../platformSpecific/LogoutWithGoogle'
 
 /**
  * Importing styles
@@ -40,6 +34,7 @@ const styles = require("../../themes")("Form");
 type IProps = {
   name: string;
   token: string;
+  authedWithGoogle: boolean;
   logout: (body: object) => void;
 };
 
@@ -65,13 +60,7 @@ class Signout extends Component<IProps> {
         {
           authedWithGoogle
           ? (
-            <GoogleLogout
-              clientId={WEB_GOOGLE_CLIENT_ID}
-              buttonText="Logout"
-              onSuccess={this.submit}
-              onFailure={this.submit}
-            >
-            </GoogleLogout>
+            <LogoutWithGoogle />
           )
           : (
             <RectButton onPress={this.submit} style={styles.formButton}>

@@ -21,6 +21,7 @@ export interface IUser {
   email: string;
   password: string;
   confirm_password: string;
+  accessToken?: string;
 }
 
 /**
@@ -51,4 +52,5 @@ export interface IInitialState {
   actionSuccess: boolean;
   error: string;
   authedWithGoogle: boolean;
+  accessToken?: string
 }

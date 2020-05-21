@@ -12,7 +12,7 @@
  * Copyright 2020 - WebSpace
  */
 
-import { ICreate, IForm, ILogin, IToken } from "./interfaces"
+import { ICreate, IForm, ILogin, IToken, IGoogleToken } from "./interfaces"
 import getEnvVars from '../../environment'
 
 
@@ -116,9 +116,10 @@ export const login  = (body: ILogin) => {
  * 
  * @param {IToken} token 
  */
-export const loginWithGoogle  = (token: IToken) => {
+export const loginWithGoogle  = (token: IGoogleToken) => {
+    console.log('attemping sign in with', token)
     return (dispatch: any) => {
-        fetch(`${baseUrl}${authPrefix}/signin/google`, {
+        fetch(`${baseUrl}${authPrefix}/signin/google/${token.type}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -131,7 +132,9 @@ export const loginWithGoogle  = (token: IToken) => {
             if(data.error) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
-            dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
+            console.log('response!', data)
+            if(data.data.user.accessToken) dispatch({ type: 'USER_LOGGED_IN_GOOGLE_MOBILE', payload: data.data })
+            else dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
         })
         .catch((err) => {
             console.log(err)
@@ -147,9 +150,16 @@ export const loginWithGoogle  = (token: IToken) => {
  * 
  * @param {IToken} credentials
  */
-export const logout  = (credentials: IToken) => {
+export const logout  = (credentials: IGoogleToken) => {
+    /**
+     * If an access token exists, add it to the request url
+     */
+    const signOutUrl = credentials.accessToken
+    ? `signout/${credentials.accessToken}`
+    : 'signout'
+    console.log('signoutURL!!!', signOutUrl)
     return (dispatch: any) => {
-        fetch(`${baseUrl}${authPrefix}/signout`, {
+        fetch(`${baseUrl}${authPrefix}/${signOutUrl}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

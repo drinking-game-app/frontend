@@ -43,3 +43,12 @@ export interface ILogin {
 export interface IToken {
     token: string
 }
+
+/**
+ * Type for a google authentication token
+ */
+export interface IGoogleToken {
+    token: string;
+    accessToken?: string;
+    type: string;
+}
