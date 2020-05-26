@@ -22,6 +22,7 @@ import * as actions from "../../actions";
 import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
 import LoginWithGoogle from "../platformSpecific/LoginWithGoogle";
+import LoginWithApple from "../platformSpecific/LoginWithApple.ios";
 
 
 /**
@@ -47,7 +48,7 @@ interface ILoginActions {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
-  loginWithGoogle: (token: object) => void;
+  loginWithThirdParty: (token: object) => void;
 }
 
 interface ILoginState {
@@ -128,16 +129,11 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
             this.props.formUpdate({ prop: "password", value })
           }
         />
-        {/* {
-          Platform.OS === "web"
-          ? ( */}
+        {
+          Platform.OS === "ios"
+          && <LoginWithApple />
+        }
             <LoginWithGoogle />
-          {/* )
-          :(
-            <LoginWithGoogleIOS />
-
-          )
-        } */}
 
         <RectButton onPress={this.submit} style={styles.formButton}>
           <Text>Login</Text>

@@ -20,7 +20,7 @@ import GoogleLogin from 'react-google-login';
 import getEnvVars from '../../../environment';
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
-import {loginWithGoogle} from "../../actions";
+import {loginWithThirdParty} from "../../actions";
 
 /**
  * Get Google Client ID from environment variables
@@ -33,7 +33,7 @@ const { WEB_GOOGLE_CLIENT_ID } = getEnvVars()
  * for the component
  */
 interface ILoginWithGoogleActions {
-    loginWithGoogle: (token: object) => void;
+    loginWithThirdParty: (token: object) => void;
 }
 
 interface ILoginWithGoogleState {
@@ -52,7 +52,7 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
         if(res.error) {
             this.setState({ error: res.error });
         } else {
-            this.props.loginWithGoogle({ token: res.tokenId });    
+            this.props.loginWithThirdParty({ token: res.tokenId, provider: 'google' });    
         }
     }
 
@@ -73,4 +73,4 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
     }
 }
 
-export default connect<ILoginWithGoogleActions>(null, {loginWithGoogle})(LoginWithGoogle)
+export default connect<ILoginWithGoogleActions>(null, {loginWithThirdParty})(LoginWithGoogle)

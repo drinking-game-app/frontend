@@ -22,8 +22,9 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "host.exp.expotest",
+      "bundleIdentifier": "ie.wspace.drinking-app-client",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.588944987607-afp8alav7caepo0auaua06lhtbip9s15"
