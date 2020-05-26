@@ -39,11 +39,10 @@ class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleS
               AppleAuthentication.AppleAuthenticationScope.EMAIL,
             ],
           })
+       
+          console.log('token!', result)
+          this.props.loginWithThirdParty({ token: result.authorizationCode, type: Platform.OS, provider: 'apple' });    
 
-          
-            console.log('token!', result)
-            this.props.loginWithThirdParty({ token: result.authorizationCode, type: Platform.OS, provider: 'apple' });    
-          // }
         } catch(err) {
           console.log('error!', err)
         

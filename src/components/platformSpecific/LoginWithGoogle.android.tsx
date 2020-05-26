@@ -16,7 +16,6 @@ const styles = require("../../themes")("Form");
  * Get Google Cliennt ID from environment variables
  */
 import Constants from "expo-constants";
-const ANDROID_GOOGLE_CLIENT_ID = Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID
 
 /**
  * Interface actions 
@@ -39,8 +38,8 @@ interface ILoginWithGoogleState {
  * payload
  */
 interface ILoginWithGooglePayload {
-  iosClientId?: string;
   androidClientId?: string;
+  androidStandaloneAppClientId?: string;
 }
 
 class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoogleState> {
@@ -55,7 +54,8 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
      */
     signInWithGoogleMobile = async() => {
       const payload: ILoginWithGooglePayload = {
-        androidClientId: ANDROID_GOOGLE_CLIENT_ID
+        androidClientId: Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID,
+        androidStandaloneAppClientId: Constants.manifest.extra.PROD_ANDROID_GOOGLE_CLIENT_ID
       }
           
       try {

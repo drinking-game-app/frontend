@@ -13,11 +13,11 @@
  */
 
 import React, { Component } from "react";
-import * as Google from 'expo-google-app-auth';
+import * as Google from "expo-google-app-auth";
 import { Text, View, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import {logout} from "../../actions";
+import { logout } from "../../actions";
 
 /**
  * Importing styles
@@ -30,8 +30,11 @@ const styles = require("../../themes")("Form");
  * Get Google Client ID from environment variables
  */
 import Constants from "expo-constants";
-const IOS_GOOGLE_CLIENT_ID = __DEV__ ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID
-const ANDROID_GOOGLE_CLIENT_ID = Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID
+const IOS_GOOGLE_CLIENT_ID = __DEV__
+  ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID
+  : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID;
+const ANDROID_GOOGLE_CLIENT_ID =
+  Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID;
 
 /**
  * Interface Props
@@ -43,11 +46,11 @@ type IProps = {
 };
 
 /**
- * Interface actions 
+ * Interface actions
  * for the component
  */
 interface ILogoutWithGoogleActions {
-    logout: (body: object) => void;
+  logout: (body: object) => void;
 }
 
 /**
@@ -55,7 +58,7 @@ interface ILogoutWithGoogleActions {
  * state
  */
 interface ILogoutWithGoogleState {
-    error: string;
+  error: string;
 }
 
 /**
@@ -64,58 +67,57 @@ interface ILogoutWithGoogleState {
  */
 interface ILogoutWithGooglePayload {
   iosClientId?: string;
-  androidClientId?: string;
+  iosStandaloneAppClientId?: string;
   accessToken: string;
 }
 
-class LogoutWithGoogle extends Component <IProps & ILogoutWithGoogleActions, ILogoutWithGoogleState> {
-    state = {
-        error: ''
+class LogoutWithGoogle extends Component<
+  IProps & ILogoutWithGoogleActions,
+  ILogoutWithGoogleState
+> {
+  state = {
+    error: "",
+  };
+
+  /**
+   * Logout with Google function
+   * Asynconously logs the user out on either an
+   * android of iOS device
+   */
+  logout = async () => {
+    const { accessToken } = this.props;
+
+    let payload: ILogoutWithGooglePayload = {
+      accessToken,
+      iosClientId: Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID,
+      iosStandaloneAppClientId:
+        Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID,
+    };
+
+    try {
+      const result = await Google.logOutAsync(payload);
+
+      const { token } = this.props;
+
+      this.props.logout({ token, accessToken });
+    } catch (err) {
+      console.log("error!", err);
+
+      this.setState({ error: err.message });
     }
+  };
 
-    /**
-     * Logout with Google function
-     * Asynconously logs the user out on either an 
-     * android of iOS device
-     */
-    logout = async() => {
-        const { accessToken } = this.props
-        
-        let payload: ILogoutWithGooglePayload = {
-          accessToken
-        }
+  render() {
+    return (
+      <View>
+        <RectButton onPress={this.logout} style={styles.formButton}>
+          <Text>Logout</Text>
+        </RectButton>
 
-        Platform.OS === "ios"
-        ? payload.iosClientId = IOS_GOOGLE_CLIENT_ID
-        : payload.androidClientId = ANDROID_GOOGLE_CLIENT_ID
-
-          try {
-            const result = await Google.logOutAsync(payload)
-
-            const {token} = this.props
-
-            this.props.logout({ token, accessToken });
- 
-          } catch(err) {
-            console.log('error!', err)
-          
-            this.setState({ error: err.message });
-          }
-        }
-
-    render() {
-        return (
-            <View>
-                <RectButton onPress={this.logout} style={styles.formButton}>
-                    <Text>Logout</Text>
-                </RectButton>
-    
-                {this.state.error !== ''
-                    && <Text>Error: {this.state.error}</Text>
-                }
-            </View>
-        )
-    }
+        {this.state.error !== "" && <Text>Error: {this.state.error}</Text>}
+      </View>
+    );
+  }
 }
 
 /**
@@ -128,8 +130,10 @@ const mapStateToProps = (state: any) => {
 
   return {
     token,
-    accessToken
+    accessToken,
   };
 };
 
-export default connect<IProps, ILogoutWithGoogleActions>(mapStateToProps,{logout})(LogoutWithGoogle)
+export default connect<IProps, ILogoutWithGoogleActions>(mapStateToProps, {
+  logout,
+})(LogoutWithGoogle);
