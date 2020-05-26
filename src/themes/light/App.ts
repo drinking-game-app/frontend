@@ -13,7 +13,7 @@ export default StyleSheet.create({
   title: {
     paddingHorizontal: 16,
     paddingBottom: 8,
-    color: '#ff004d',
+    color: '#222',
     fontSize: 20,
     fontWeight: 'bold',
   },

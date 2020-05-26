@@ -16,7 +16,7 @@ const styles = require("../../themes")("Form");
  * Get Google Cliennt ID from environment variables
  */
 import Constants from "expo-constants";
-const IOS_GOOGLE_CLIENT_ID = Constants.manifest.extra.IOS_GOOGLE_CLIENT_ID
+const IOS_GOOGLE_CLIENT_ID = __DEV__ ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID
 
 /**
  * Interface actions 

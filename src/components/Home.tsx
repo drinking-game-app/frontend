@@ -46,6 +46,7 @@ export default class Home extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Application Running in {__DEV__ ? 'Development' : 'Production'} mode</Text>
         <Text style={styles.title}>{this.state.text}</Text>
         <View>
           <TouchableOpacity>
