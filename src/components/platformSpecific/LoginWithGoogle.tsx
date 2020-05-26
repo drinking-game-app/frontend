@@ -25,7 +25,7 @@ import {loginWithThirdParty} from "../../actions";
  * Get Google Client ID from environment variables
  */
 import Constants from "expo-constants";
-const { WEB_GOOGLE_CLIENT_ID } = Constants.manifest.extra
+const WEB_GOOGLE_CLIENT_ID = Constants.manifest.extra.WEB_GOOGLE_CLIENT_ID
 
 
 /**
