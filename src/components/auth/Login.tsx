@@ -23,7 +23,7 @@ import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
 import LoginWithGoogle from "../platformSpecific/LoginWithGoogle";
 import LoginWithApple from "../platformSpecific/LoginWithApple.ios";
-
+import Constants from 'expo-constants'
 
 /**
  * Importing styles
@@ -54,6 +54,7 @@ interface ILoginActions {
 interface ILoginState {
   errors: any[]
 }
+
 
 class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
   state = {
@@ -97,8 +98,6 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
   };
 
 
-
-
   render() {
     const { email, password, toRegister, token } = this.props;
 
@@ -138,7 +137,7 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
         <RectButton onPress={this.submit} style={styles.formButton}>
           <Text>Login</Text>
         </RectButton>
-
+        <Text>Server URL - {Constants.manifest.extra.SERVER_URL}</Text>
         {this.state.errors.length > 0 && (
           <View>
             <Text>Please correct the following:</Text>

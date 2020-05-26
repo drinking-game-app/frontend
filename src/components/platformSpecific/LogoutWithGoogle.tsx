@@ -14,7 +14,6 @@
 
 import React, { Component } from "react";
 import GoogleLogout from 'react-google-login';
-import getEnvVars from '../../../environment';
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
 import {logout} from "../../actions";
@@ -22,7 +21,8 @@ import {logout} from "../../actions";
 /**
  * Get Google Client ID from environment variables
  */
-const { WEB_GOOGLE_CLIENT_ID } = getEnvVars()
+import Constants from "expo-constants";
+const { WEB_GOOGLE_CLIENT_ID } = Constants.manifest.extra
 
 /**
  * Interface actions 

@@ -12,11 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
-import { ICreate, IForm, ILogin, IToken, IThirdPartyToken } from "./interfaces"
-import getEnvVars from '../../environment'
-
-
-const { SERVER_URL } = getEnvVars()
+import { ICreate, IForm, ILogin, IThirdPartyToken } from "./interfaces"
+import Constants from "expo-constants";
 
 /**
  * Prefixes for api endpoints
@@ -28,7 +25,8 @@ const authPrefix = "/api/auth"
  * Get the baseURL for the server either from the .env file
  * or use a static IP
  */
-const baseUrl = SERVER_URL || 'http://192.168.0.164:3000'
+console.log('server url!!' , Constants.manifest.extra.SERVER_URL)
+const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000'
 
 /**
  * Determinds whether to display the login

@@ -1,22 +1,8 @@
 import React, { Component } from "react";
-import getEnvVars from '../../../environment';
 import { View, Text, Platform } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { loginWithThirdParty } from "../../actions";
 import * as AppleAuthentication from 'expo-apple-authentication';
-
-/**
- * Importing styles
- * @param theme path
- * @param App Module name
- */
-const styles = require("../../themes")("Form");
-
-/**
- * Get Apple Cliennt ID from environment variables
- */
-// const { IOS_GOOGLE_CLIENT_ID, ANDROID_GOOGLE_CLIENT_ID } = getEnvVars()
 
 /**
  * Interface actions 
@@ -32,15 +18,6 @@ interface ILoginWithAppleActions {
  */
 interface ILoginWithAppleState {
   error: string;
-}
-
-/**
- * Interface for the Apple logInAsync
- * payload
- */
-interface ILoginWithApplePayload {
-  iosClientId?: string;
-  androidClientId?: string;
 }
 
 class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleState> {

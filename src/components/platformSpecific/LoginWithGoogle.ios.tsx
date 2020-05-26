@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import getEnvVars from '../../../environment';
 import { View, Text, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
@@ -16,7 +15,8 @@ const styles = require("../../themes")("Form");
 /**
  * Get Google Cliennt ID from environment variables
  */
-const { IOS_GOOGLE_CLIENT_ID } = getEnvVars()
+import Constants from "expo-constants";
+const { IOS_GOOGLE_CLIENT_ID } = Constants.manifest.extra
 
 /**
  * Interface actions 
