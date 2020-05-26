@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import getEnvVars from '../../../environment';
 import { View, Text, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { loginWithGoogle } from "../../actions";
+import { loginWithThirdParty } from "../../actions";
 import * as Google from 'expo-google-app-auth';
 
 /**
@@ -16,14 +15,15 @@ const styles = require("../../themes")("Form");
 /**
  * Get Google Cliennt ID from environment variables
  */
-const { IOS_GOOGLE_CLIENT_ID, ANDROID_GOOGLE_CLIENT_ID } = getEnvVars()
+import Constants from "expo-constants";
+const { IOS_GOOGLE_CLIENT_ID } = Constants.manifest.extra
 
 /**
  * Interface actions 
  * for the component
  */
 interface ILoginWithGoogleActions {
-  loginWithGoogle: (token: object) => void;
+  loginWithThirdParty: (token: object) => void;
 }
 
 /**
@@ -63,7 +63,7 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
 
           if(result.type === "success") {
             console.log('token!', result)
-            this.props.loginWithGoogle({ token: result.idToken, accessToken: result.accessToken, type: Platform.OS });    
+            this.props.loginWithThirdParty({ token: result.idToken, accessToken: result.accessToken, type: Platform.OS, provider: 'google' });    
           }
         } catch(err) {
           console.log('error!', err)
@@ -86,5 +86,5 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
       }
 }
 
-export default connect<ILoginWithGoogleActions>(null, {loginWithGoogle})(LoginWithGoogle)
+export default connect<ILoginWithGoogleActions>(null, {loginWithThirdParty})(LoginWithGoogle)
 

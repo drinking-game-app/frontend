@@ -47,8 +47,9 @@ export interface IToken {
 /**
  * Type for a google authentication token
  */
-export interface IGoogleToken {
+export interface IThirdPartyToken {
     token: string;
     accessToken?: string;
+    provider: string;
     type: string;
 }

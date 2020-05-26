@@ -14,7 +14,6 @@
 
 import React, { Component } from "react";
 import * as Google from 'expo-google-app-auth';
-import getEnvVars from '../../../environment';
 import { Text, View, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
@@ -30,7 +29,8 @@ const styles = require("../../themes")("Form");
 /**
  * Get Google Client ID from environment variables
  */
-const { ANDROID_GOOGLE_CLIENT_ID } = getEnvVars()
+import Constants from "expo-constants";
+const { ANDROID_GOOGLE_CLIENT_ID } = Constants.manifest.extra
 
 /**
  * Interface Props

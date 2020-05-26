@@ -12,11 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
-import { ICreate, IForm, ILogin, IToken, IGoogleToken } from "./interfaces"
-import getEnvVars from '../../environment'
-
-
-const { SERVER_URL } = getEnvVars()
+import { ICreate, IForm, ILogin, IThirdPartyToken } from "./interfaces"
+import Constants from "expo-constants";
 
 /**
  * Prefixes for api endpoints
@@ -28,7 +25,8 @@ const authPrefix = "/api/auth"
  * Get the baseURL for the server either from the .env file
  * or use a static IP
  */
-const baseUrl = SERVER_URL || 'http://192.168.0.164:3000'
+console.log('server url!!' , Constants.manifest.extra.SERVER_URL)
+const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000'
 
 /**
  * Determinds whether to display the login
@@ -112,13 +110,16 @@ export const login  = (body: ILogin) => {
 }
 
 /**
- * Login with Google
+ * Login with a third party system
+ * 
+ * -Google
+ * -Apple (iOS only)
  * 
  * @param {IToken} token 
  */
-export const loginWithGoogle  = (token: IGoogleToken) => {
+export const loginWithThirdParty  = (token: IThirdPartyToken) => {
     return (dispatch: any) => {
-        fetch(`${baseUrl}${authPrefix}/signin/google/${token.type}`, {
+        fetch(`${baseUrl}${authPrefix}/signin/${token.provider}/${token.type}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -149,7 +150,7 @@ export const loginWithGoogle  = (token: IGoogleToken) => {
  * 
  * @param {IToken} credentials
  */
-export const logout  = (credentials: IGoogleToken) => {
+export const logout  = (credentials: IThirdPartyToken) => {
     /**
      * If an access token exists, add it to the request url
      */
@@ -170,7 +171,7 @@ export const logout  = (credentials: IGoogleToken) => {
             dispatch({ type: 'USER_LOGGED_OUT' })
         })
         .catch((err) => {
-            console.log(err)
+            console.log('Logout Error', err)
         })
     }
 }
