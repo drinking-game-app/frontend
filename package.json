@@ -13,9 +13,10 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.6",
-    "@react-navigation/bottom-tabs": "^5.4.2",
     "@react-navigation/native": "^5.3.0",
+    "@react-navigation/stack": "^5.4.1",
     "expo": "~37.0.9",
+    "expo-apple-authentication": "~2.1.0",
     "expo-constants": "^9.0.0",
     "expo-google-app-auth": "^8.1.0",
     "react": "~16.13.1",
@@ -30,8 +31,7 @@
     "react-native-web": "~0.12.2",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "expo-apple-authentication": "~2.1.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

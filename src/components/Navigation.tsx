@@ -13,55 +13,51 @@
  */
 
 import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Home from './Home'
 import About from './About';
 import Login from './auth/Login';
+import { View, Text, Button } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 /**
- * Declaring Tab to be a Bottom Tab Navigator
+ * Declaring Tab to be a Stack Navigator
  */
-const Tab = createBottomTabNavigator()
+const MainStack = createStackNavigator();
+const RootStack = createStackNavigator();
 
+function ModalScreen({ navigation }: any) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 30 }}>This will be the login screen</Text>
+        <Button onPress={() => navigation.goBack()} title="Dismiss" />
+      </View>
+    );
+  }
+
+const mainStack = () => {
+    return( 
+        <MainStack.Navigator headerMode="none">
+            <MainStack.Screen name="Home" component={Home} />
+        </MainStack.Navigator>
+    )
+}
 
 /**
  * Wrapper element for all tabs
  */
 const tabs = () => {
     return (
-        <NavigationContainer>
-            <Tab.Navigator>
-                <Tab.Screen
-                    name="Home"
-                    component={Home}
-                    options={{
-                        tabBarIcon: ({color}) => (
-                            <Icon name={'home'} size={32} color={color} />
-                        )
-                    }} 
-                />
-                <Tab.Screen
-                    name="Authed Page"
-                    component={About}
-                    options={{
-                        tabBarIcon: ({color}) => (
-                            <Icon name={'local-hotel'} size={32} color={color} />
-                        )
-                    }} 
-                />
-                <Tab.Screen
-                     name="Login"
-                     component={Login}
-                     options={{
-                         tabBarIcon: ({color}) => (
-                             <Icon name={'local-hotel'} size={32} color={color} />
-                         )
-                     }} 
-                />
-            </Tab.Navigator>
-        </NavigationContainer>
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <RootStack.Navigator mode="modal" headerMode="none">
+                    <RootStack.Screen name="Main" component={mainStack} />
+                    <RootStack.Screen name="Authenticate" component={ModalScreen} />
+                </RootStack.Navigator>
+            </NavigationContainer>
+        </SafeAreaProvider>
     )
 }
 

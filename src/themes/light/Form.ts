@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
 
-
 /**
  * Form Stylesheet for the light theme
  */
 export default StyleSheet.create({
     container: {
-    
+        flex: 1,
+        justifyContent: 'center',
     },
     input:{
         width: 350,
