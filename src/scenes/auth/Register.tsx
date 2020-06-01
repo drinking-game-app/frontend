@@ -12,17 +12,17 @@
  * Copyright 2020 - WebSpace
  */
 
-
-
 import React, { Component } from "react";
-import { Text, SafeAreaView, View } from "react-native";
+import { Text, View } from "react-native";
 import { connect } from "react-redux";
-import {
-  TouchableOpacity,
-  TextInput,
-  RectButton,
-} from "react-native-gesture-handler";
+
 import * as actions from "../../actions";
+import { Button, Layout } from "@ui-kitten/components";
+import { Formik, FormikProps } from "formik";
+import { SignUpSchema, SignUpData } from "../../data/sign-up.model";
+import { FormInput } from "../../components/form-input.component";
+import { EyeIcon, EyeOffIcon } from "../../assets/icons";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 /**
  * Importing styles
@@ -43,136 +43,112 @@ type IProps = {
   password: string;
   confirm_password: string;
   error: string;
+};
+
+/**
+ * Interface actions
+ * for the component
+ */
+interface IActions {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   create: (body: object) => void;
-};
+}
 
-class Register extends Component<IProps> {
-  state = {
-    errors: [],
+// class Register extends Component<IProps> {
+const Register = (props: IProps & IActions) => {
+  const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
+
+  const onPasswordIconPress = (): void => {
+    setPasswordVisible(!passwordVisible);
   };
 
   /**
    * If the inputs pass validation,
    * submit the request to the server
    */
-  submit = () => {
-    if (this.canSubmit()) {
-      const { name, email, password } = this.props;
-      this.props.create({name, email, password})
-    }
+  const submit = (values: any) => {
+    const { name, email, password } = values;
+
+    props.create({ name, email, password });
   };
 
-  /**
-   * Validate the inputted details before
-   * allowing the user to submit
-   */
-  canSubmit = (): boolean => {
-    const { name, email, password, confirm_password } = this.props;
-    const user = {
-      name,
-      email,
-      password,
-      confirm_password,
-    };
+  const renderPasswordIcon = (props: any): React.ReactElement => {
+    const IconComponent = passwordVisible ? EyeIcon : EyeOffIcon;
 
-    const keys = Object.keys(user);
-    const values = Object.values(user);
-
-    let errors: any = [];
-
-    values.map((dat, i) => {
-      if (dat === "") errors.push(`${keys[i]} is required`);
-      if(keys[i] === "password" && dat !== values[i + 1]) errors.push('password does not match confirm password')
-    });
-
-    this.setState({ errors: errors });
-
-    return errors.length > 0 ? false : true;
-  };
-
-  render() {
-    const { name, email, password, confirm_password } = this.props;
-    
     return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Register page</Text>
-        {this.props.actionSuccess ? (
-          <Text>Registered Successfully!</Text>
-        ) : (
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Username"
-              autoCapitalize="none"
-              placeholderTextColor="white"
-              value={name}
-              onChangeText={(value) =>
-                this.props.formUpdate({ prop: "name", value })
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              autoCapitalize="none"
-              placeholderTextColor="white"
-              value={email}
-              onChangeText={(value) =>
-                this.props.formUpdate({ prop: "email", value })
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              secureTextEntry={true}
-              autoCapitalize="none"
-              placeholderTextColor="white"
-              value={password}
-              onChangeText={(value) =>
-                this.props.formUpdate({ prop: "password", value })
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              secureTextEntry={true}
-              autoCapitalize="none"
-              placeholderTextColor="white"
-              value={confirm_password}
-              onChangeText={(value) =>
-                this.props.formUpdate({ prop: "confirm_password", value })
-              }
-            />
-
-            <RectButton onPress={this.submit} style={styles.formButton}>
-              <Text>Register</Text>
-            </RectButton>
-            {this.state.errors.length > 0 && (
-              <View>
-                <Text>Please correct the following:</Text>
-                {this.state.errors.map((dat, i) => {
-                  return <Text key={i}>{dat}</Text>;
-                })}
-              </View>
-            )}
-            {
-              this.props.error !== ""
-              && <Text>{this.props.error}</Text>
-            }
-          </View>
-        )}
-
-        <View>
-          <Text>Already have an account?</Text>
-          <TouchableOpacity onPress={() => this.props.isRegistering()}>
-            <Text>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <TouchableWithoutFeedback onPress={onPasswordIconPress}>
+        <IconComponent {...props} />
+      </TouchableWithoutFeedback>
     );
-  }
-}
+  };
+
+  const renderForm = (props: FormikProps<SignUpData>): React.ReactFragment => (
+    <React.Fragment>
+      <FormInput
+        id="name"
+        style={styles.formControl}
+        placeholder="Username"
+        autoCapitalize="none"
+      />
+      <FormInput
+        id="email"
+        style={styles.formControl}
+        placeholder="Email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <FormInput
+        id="password"
+        style={styles.formControl}
+        placeholder="Password"
+        secureTextEntry={!passwordVisible}
+        accessoryRight={renderPasswordIcon}
+      />
+      <FormInput
+        id="confirm_password"
+        style={styles.formControl}
+        placeholder="Confirm Password"
+        secureTextEntry={!passwordVisible}
+        accessoryRight={renderPasswordIcon}
+      />
+
+      <Button
+        style={styles.submitButton}
+        disabled={!props.isValid && !props.isValidating}
+        onPress={props.handleSubmit}
+      >
+        Register
+      </Button>
+    </React.Fragment>
+  );
+
+  const { name, email, password, confirm_password } = props;
+
+  if (props.actionSuccess) props.isRegistering();
+  return (
+    <Layout style={styles.formContainer}>
+      <Formik
+        initialValues={{ name, email, password, confirm_password }}
+        validationSchema={SignUpSchema}
+        onSubmit={(values) => submit(values)}
+      >
+        {renderForm}
+      </Formik>
+
+      {props.error !== "" && <Text>{props.error}</Text>}
+
+      <Button
+        style={styles.noAccountButton}
+        appearance="ghost"
+        status="basic"
+        onPress={() => props.isRegistering()}
+      >
+        Already have an account?
+      </Button>
+    </Layout>
+  );
+};
 
 /**
  * Return a list of people from our redux state
@@ -187,7 +163,7 @@ const mapStateToProps = (state: any) => {
     email,
     password,
     confirm_password,
-    error
+    error,
   };
 };
 

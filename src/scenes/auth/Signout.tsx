@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { logout } from "../../actions";
 import { RectButton } from "react-native-gesture-handler";
 import LogoutWithGoogle from './platformSpecific/LogoutWithGoogle'
+import { Button } from "@ui-kitten/components";
 
 /**
  * Importing styles
@@ -54,7 +55,7 @@ class Signout extends Component<IProps> {
     const { name, authedWithGoogle } = this.props;
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.formContainer}>
         <Text style={styles.title}>Welcome, {name}</Text>
        
         {
@@ -63,9 +64,9 @@ class Signout extends Component<IProps> {
             <LogoutWithGoogle />
           )
           : (
-            <RectButton onPress={this.submit} style={styles.formButton}>
-              <Text>Signout</Text>
-            </RectButton>
+            <Button onPress={this.submit} style={styles.formButton}>
+              Signout
+            </Button>
           )
         }
 

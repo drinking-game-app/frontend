@@ -69,6 +69,7 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         toRegister: false,
+        email: action.payload.user.email,
         name: "",
         password: "",
         confirm_password: "",

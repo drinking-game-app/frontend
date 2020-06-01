@@ -70,8 +70,8 @@ export const create  = (body: ICreate) => {
             if(data.error) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
-
-            dispatch({ type: 'USER_REGISTERED', payload: data })
+            console.log('registered!!', data)
+            dispatch({ type: 'USER_REGISTERED', payload: {user: data.data} })
         })
         .catch((err) => {
             console.log(err)

@@ -30,6 +30,7 @@ const styles = require("../../../themes")("Form");
  * Get Google Client ID from environment variables
  */
 import Constants from "expo-constants";
+import { Button } from "@ui-kitten/components";
 const IOS_GOOGLE_CLIENT_ID = __DEV__
   ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID
   : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID;
@@ -110,9 +111,9 @@ class LogoutWithGoogle extends Component<
   render() {
     return (
       <View>
-        <RectButton onPress={this.logout} style={styles.formButton}>
-          <Text>Logout</Text>
-        </RectButton>
+        <Button onPress={this.logout} style={styles.formButton}>
+          Logout
+        </Button>
 
         {this.state.error !== "" && <Text>Error: {this.state.error}</Text>}
       </View>
