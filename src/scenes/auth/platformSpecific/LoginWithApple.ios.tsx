@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Platform } from "react-native";
 import { connect } from "react-redux";
-import { loginWithThirdParty } from "../../actions";
+import { loginWithThirdParty } from "../../../actions";
 import * as AppleAuthentication from 'expo-apple-authentication';
 
 /**

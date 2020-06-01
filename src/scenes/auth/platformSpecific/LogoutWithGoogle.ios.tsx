@@ -5,7 +5,7 @@
  * File Created: Tuesday, 19th May 2020 5:18:52 pm
  * Author: Eoan O'Dea - eoan@wspace.ie
  * ---------------
- * File Description: Logout With Google android only
+ * File Description: Logout With Google Web only
  * Last Modified: Tuesday, 19th May 2020 5:19:18 pm
  * Modified By: Eoan O'Dea - eoan@wspace.ie
  * ---------------
@@ -17,19 +17,24 @@ import * as Google from "expo-google-app-auth";
 import { Text, View, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { logout } from "../../actions";
+import { logout } from "../../../actions";
 
 /**
  * Importing styles
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../themes")("Form");
+const styles = require("../../../themes")("Form");
 
 /**
  * Get Google Client ID from environment variables
  */
 import Constants from "expo-constants";
+const IOS_GOOGLE_CLIENT_ID = __DEV__
+  ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID
+  : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID;
+const ANDROID_GOOGLE_CLIENT_ID =
+  Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID;
 
 /**
  * Interface Props
@@ -61,8 +66,8 @@ interface ILogoutWithGoogleState {
  * payload
  */
 interface ILogoutWithGooglePayload {
-  androidClientId?: string;
-  androidStandaloneAppClientId?: string;
+  iosClientId?: string;
+  iosStandaloneAppClientId?: string;
   accessToken: string;
 }
 
@@ -84,9 +89,9 @@ class LogoutWithGoogle extends Component<
 
     let payload: ILogoutWithGooglePayload = {
       accessToken,
-      androidClientId: Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID,
-      androidStandaloneAppClientId:
-        Constants.manifest.extra.PROD_ANDROID_GOOGLE_CLIENT_ID,
+      iosClientId: Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID,
+      iosStandaloneAppClientId:
+        Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID,
     };
 
     try {

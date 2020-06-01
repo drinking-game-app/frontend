@@ -16,8 +16,10 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './Home'
-import Authenticate from './auth/Authenticate'
+import Authenticate from '../scenes/auth/Authenticate'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ApplicationProvider } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
 
 /**
  * Declaring Tab to be a Stack Navigator
@@ -38,14 +40,20 @@ const mainStack = () => {
  */
 const tabs = () => {
     return (
-        <SafeAreaProvider>
-            <NavigationContainer>
-                <RootStack.Navigator mode="modal" headerMode="none">
-                    <RootStack.Screen name="Main" component={mainStack} />
-                    <RootStack.Screen name="Authenticate" component={Authenticate} />
-                </RootStack.Navigator>
-            </NavigationContainer>
-        </SafeAreaProvider>
+        <ApplicationProvider
+        {...eva}
+        theme={eva.light}
+        >
+            <SafeAreaProvider>
+                <NavigationContainer>
+                    <RootStack.Navigator mode="modal" headerMode="none">
+                        <RootStack.Screen name="Main" component={mainStack} />
+                        <RootStack.Screen name="Authenticate" component={Authenticate} />
+                    </RootStack.Navigator>
+                </NavigationContainer>
+        
+            </SafeAreaProvider>
+        </ApplicationProvider>
     )
 }
 

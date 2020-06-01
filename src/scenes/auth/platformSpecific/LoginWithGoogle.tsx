@@ -19,7 +19,7 @@ import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
-import {loginWithThirdParty} from "../../actions";
+import {loginWithThirdParty} from "../../../actions";
 
 /**
  * Get Google Client ID from environment variables

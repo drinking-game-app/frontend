@@ -16,7 +16,7 @@ import React, { Component } from "react";
 import GoogleLogout from 'react-google-login';
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
-import {logout} from "../../actions";
+import {logout} from "../../../actions";
 
 /**
  * Get Google Client ID from environment variables

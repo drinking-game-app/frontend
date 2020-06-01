@@ -18,7 +18,7 @@ import { Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 import { RectButton } from "react-native-gesture-handler";
-import LogoutWithGoogle from '../platformSpecific/LogoutWithGoogle'
+import LogoutWithGoogle from './platformSpecific/LogoutWithGoogle'
 
 /**
  * Importing styles

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { loginWithThirdParty } from "../../actions";
+import { loginWithThirdParty } from "../../../actions";
 import * as Google from 'expo-google-app-auth';
 
 /**
@@ -10,7 +10,7 @@ import * as Google from 'expo-google-app-auth';
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../themes")("Form");
+const styles = require("../../../themes")("Form");
 
 /**
  * Get Google Cliennt ID from environment variables
