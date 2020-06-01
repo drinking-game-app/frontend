@@ -26,15 +26,6 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   formButton:{
-    width: 150,
-    height: 35,
-    backgroundColor: '#add8e6',
-    margin: 15,
-    padding: 8,
-    color: 'white',
-    borderRadius: 14,
-    fontSize: 16,
-    fontWeight: '300',
-    textAlign: 'center',
+    marginVertical: 24
   }
 });

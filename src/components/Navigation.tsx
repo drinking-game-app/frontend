@@ -18,7 +18,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from './Home'
 import Authenticate from '../scenes/auth/Authenticate'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 
 /**
@@ -40,6 +41,8 @@ const mainStack = () => {
  */
 const tabs = () => {
     return (
+        <>
+        <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider
         {...eva}
         theme={eva.light}
@@ -54,6 +57,7 @@ const tabs = () => {
         
             </SafeAreaProvider>
         </ApplicationProvider>
+        </>
     )
 }
 

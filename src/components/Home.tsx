@@ -12,9 +12,11 @@
  * Copyright 2020 - WebSpace
  */
 
-import React, { Component } from "react";
+import React from "react";
 import { Text, View, SafeAreaView } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
+import Constants from 'expo-constants'
+import { Button } from "@ui-kitten/components";
+
 
 /**
  * Importing styles
@@ -34,16 +36,18 @@ const Home = (props: any) => {
       <Text style={styles.subTitle}>
         Application Running in {__DEV__ ? "Development" : "Production"} mode
       </Text>
+      <Text style={styles.subTitle}>Server URL - {Constants.manifest.extra.SERVER_URL}</Text>
+
       <View style={styles.itemContainer}>
-        <RectButton
+        <Button
           style={styles.formButton}
           onPress={() => props.navigation.navigate("Authenticate")}
         >
-          <Text>Host</Text>
-        </RectButton>
-        <RectButton style={styles.formButton}>
-          <Text>Join</Text>
-        </RectButton>
+          Host
+        </Button>
+        <Button style={styles.formButton}>
+          Join
+        </Button>
       </View>
     </SafeAreaView>
   );

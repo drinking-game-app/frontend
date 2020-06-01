@@ -28,7 +28,7 @@ import { IInitialState } from "../../reducers/interfaces";
 import LoginWithGoogle from "./platformSpecific/LoginWithGoogle";
 import LoginWithApple from "./platformSpecific/LoginWithApple.ios";
 import { SignInData, SignInSchema } from '../../data/sign-in.model';
-import Constants from 'expo-constants'
+import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 
 /**
  * Importing styles
@@ -36,6 +36,17 @@ import Constants from 'expo-constants'
  * @param App Module name
  */
 const styles = require("../../themes")("Form");
+
+/**
+ * Interface actions
+ * for the component
+ */
+interface ILoginActions {
+  isRegistering: () => void;
+  formUpdate: ({ prop, value }: any) => void;
+  login: (body: object) => void;
+  loginWithThirdParty: (token: object) => void;
+}
 
 /**
  * Interface Props
@@ -50,26 +61,17 @@ interface ILoginProps {
   navigation?: any;
 }
 
-interface ILoginActions {
-  isRegistering: () => void;
-  formUpdate: ({ prop, value }: any) => void;
-  login: (body: object) => void;
-  loginWithThirdParty: (token: object) => void;
+/**
+ * Interface props for
+ * logging in and validating
+ */
+interface ILoginDetails {
+  email: string;
+  password: string;
 }
-
-interface ISignInData extends SignInData {
-  formUpdate: ({ prop, value }: any) => void;
-}
-
-interface ILoginState {
-  errors: any[]
-}
-
 
 const Login = (props: ILoginProps & ILoginActions) => {
-  const [errors, setErrors] = React.useState<string[]>([]);
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
-
 
   const onPasswordIconPress = (): void => {
     setPasswordVisible(!passwordVisible);
@@ -79,53 +81,26 @@ const Login = (props: ILoginProps & ILoginActions) => {
    * If the inputs pass validation,
    * submit the request to the server
    */
-  const submit = () => {
-    if (canSubmit()) {
-      const { email, password } = props;
-      props.login({ email, password });
-    }
-  };
+  const submit = (values: any) => {
+    const { email, password } = values;   
 
-  /**
-   * Validate the inputted details before
-   * allowing the user to submit
-   */
-  const canSubmit = (): boolean => {
-    const { email, password } = props;
-    const user = {
-      email,
-      password,
-    };
-
-    const keys = Object.keys(user);
-    const values = Object.values(user);
-
-    let errors: any = [];
-
-    values.map((dat, i) => {
-      if (dat === "") errors.push(`${keys[i]} is required`);
-    });
-
-    setErrors(errors)
-
-    return errors.length > 0 ? false : true;
+    props.login({ email, password });
   };
 
   const renderPasswordIcon = (props: any): React.ReactElement => {
-    // const IconComponent = passwordVisible ? EyeIcon : EyeOffIcon;
-    const name = passwordVisible ? 'eye-outline' : 'eye-off-outline'
+    const IconComponent = passwordVisible ? EyeIcon : EyeOffIcon;
+    // const name = passwordVisible ? 'eye-outline' : 'eye-off-outline'
     return (
       <TouchableWithoutFeedback onPress={onPasswordIconPress}>
-        {/* <Icon
+        <IconComponent
           {...props}
-          name="eye-outline"
-        /> */}
-        <Text>{name} icon</Text>
+        />
       </TouchableWithoutFeedback>
     );
   };
 
-  const renderForm = (props: FormikProps<ISignInData>): React.ReactFragment => (
+  
+  const renderForm = (props: FormikProps<SignInData>): React.ReactFragment => (
     <React.Fragment>
       <FormInput
         id='email'
@@ -133,9 +108,6 @@ const Login = (props: ILoginProps & ILoginActions) => {
         placeholder='Email'
         keyboardType='email-address'
         autoCapitalize="none"
-        onChangeText={(value) =>
-         props.formUpdate({ prop: "email", value })
-        }
       />
       <FormInput
         id='password'
@@ -143,9 +115,6 @@ const Login = (props: ILoginProps & ILoginActions) => {
         placeholder='Password'
         secureTextEntry={!passwordVisible}
         accessoryRight={renderPasswordIcon}
-        onChangeText={(value) =>
-          props.formUpdate({ prop: "email", value })
-        }
       />
       <View style={styles.resetPasswordContainer}>
         <Button
@@ -154,9 +123,11 @@ const Login = (props: ILoginProps & ILoginActions) => {
           Forgot password?
         </Button>
       </View>
+      
       <Button
         style={styles.submitButton}
-        onPress={() => props.handleSubmit}>
+        disabled={!props.isValid && !props.isValidating}
+        onPress={props.handleSubmit}>
         SIGN IN
       </Button>
     </React.Fragment>
@@ -169,40 +140,20 @@ const Login = (props: ILoginProps & ILoginActions) => {
     if(token !== "") return <Signout />
     if (toRegister) return <Register />
     return (
-  
       <Layout style={styles.formContainer}>
         <Formik
           initialValues={{email, password}}
           validationSchema={SignInSchema}
-          onSubmit={submit}>
+          
+          onSubmit={(values) => submit(values)}>
           {renderForm}
         </Formik>
-
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Email"
-          autoCapitalize="none"
-          placeholderTextColor="white"
-          value={email}
-          onChangeText={(value) =>
-            this.props.formUpdate({ prop: "email", value })
-          }
-        /> */}
         {
           Platform.OS === "ios"
           && <LoginWithApple />
         }
-            <LoginWithGoogle />
-
-        <Text>Server URL - {Constants.manifest.extra.SERVER_URL}</Text>
-        {errors.length > 0 && (
-          <View>
-            <Text>Please correct the following:</Text>
-            {errors.map((dat, i) => {
-              return <Text key={i}>{dat}</Text>;
-            })}
-          </View>
-        )}
+        
+        <LoginWithGoogle />
 
         <Button
           style={styles.noAccountButton}
