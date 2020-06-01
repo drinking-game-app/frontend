@@ -14,10 +14,10 @@
 
 
 import React, { Component } from "react";
-import { Text, SafeAreaView, TextInput, View, Platform } from "react-native";
+import { Text, SafeAreaView, TextInput, View, Platform, Button } from "react-native";
 import { connect } from "react-redux";
 import Register from "./Register";
-import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
+import { RectButton } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import Signout from "./Signout";
 import { IInitialState } from "../../reducers/interfaces";
@@ -42,6 +42,7 @@ interface ILoginProps {
   error: string;
   toRegister: boolean;
   token: string;
+  navigation: any;
 }
 
 interface ILoginActions {
@@ -149,9 +150,8 @@ class Login extends Component<ILoginProps & ILoginActions, ILoginState> {
         {this.props.error !== "" && <Text>{this.props.error}</Text>}
         <View>
           <Text>Don't have an Account?</Text>
-          <TouchableOpacity onPress={() => this.props.isRegistering()}>
-            <Text>Register</Text>
-          </TouchableOpacity>
+          <Button title="Register" onPress={() => this.props.isRegistering()} />
+          <Button title="Close" onPress={() => this.props.navigation.navigate('Main')} />
         </View>
       </SafeAreaView>
     );

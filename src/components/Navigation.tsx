@@ -15,11 +15,8 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import Home from './Home'
-import About from './About';
-import Login from './auth/Login';
-import { View, Text, Button } from 'react-native';
+import Authenticate from './auth/Authenticate'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 /**
@@ -27,15 +24,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
  */
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
-
-function ModalScreen({ navigation }: any) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ fontSize: 30 }}>This will be the login screen</Text>
-        <Button onPress={() => navigation.goBack()} title="Dismiss" />
-      </View>
-    );
-  }
 
 const mainStack = () => {
     return( 
@@ -54,7 +42,7 @@ const tabs = () => {
             <NavigationContainer>
                 <RootStack.Navigator mode="modal" headerMode="none">
                     <RootStack.Screen name="Main" component={mainStack} />
-                    <RootStack.Screen name="Authenticate" component={ModalScreen} />
+                    <RootStack.Screen name="Authenticate" component={Authenticate} />
                 </RootStack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>
