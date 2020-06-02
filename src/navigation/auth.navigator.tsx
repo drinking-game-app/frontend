@@ -1,0 +1,62 @@
+import React from 'react';
+import { RouteProp } from '@react-navigation/core';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { AppRoute } from './app-routes';
+import { AppNavigatorParams } from './app.navigator';
+import auth from '../scenes/auth';
+import { connect } from 'react-redux';
+import { IInitialState } from '../reducers/interfaces';
+
+type AuthNavigatorParams = AppNavigatorParams & {
+  [AppRoute.SIGN_IN]: undefined;
+  [AppRoute.SIGN_UP]: undefined;
+  [AppRoute.SIGN_OUT]: undefined;
+}
+
+export interface SignInScreenProps {
+  navigation: StackNavigationProp<AuthNavigatorParams, AppRoute.SIGN_IN>;
+  route: RouteProp<AuthNavigatorParams, AppRoute.SIGN_IN>;
+}
+
+export interface RegisterScreenProps {
+  navigation: StackNavigationProp<AuthNavigatorParams, AppRoute.SIGN_UP>;
+  route: RouteProp<AuthNavigatorParams, AppRoute.SIGN_UP>;
+}
+
+export interface SignoutScreenScreenProps {
+  navigation: StackNavigationProp<AuthNavigatorParams, AppRoute.SIGN_OUT>;
+  route: RouteProp<AuthNavigatorParams, AppRoute.SIGN_OUT>;
+}
+
+const Stack = createStackNavigator<AuthNavigatorParams>();
+
+interface IAuthProps {
+  token: string;
+}
+
+const Auth = (props: IAuthProps): React.ReactElement => (
+  <Stack.Navigator headerMode='none'>
+    {
+      !props.token || props.token == ""
+      ? (
+        <>
+          <Stack.Screen name={AppRoute.SIGN_IN} component={auth.SignInScreen}/>
+          <Stack.Screen name={AppRoute.SIGN_UP} component={auth.RegisterScreen}/>
+        </>
+      )
+      : <Stack.Screen name={AppRoute.SIGN_OUT} component={auth.SignoutScreen}/>
+    }
+    
+    
+  </Stack.Navigator>
+);
+
+const mapStateToProps = (state: IInitialState): IAuthProps => {
+  const {token} = state
+  return {token}
+}
+
+const AuthNavigator = connect(mapStateToProps, {})(Auth)
+
+export {AuthNavigator}
+

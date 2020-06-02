@@ -26,5 +26,8 @@ export default StyleSheet.create({
   },
   thirdPartyButtonContainer: {
     alignItems: "center",
+  },
+  formButton:{
+    marginVertical: 12
   }
 });

@@ -13,20 +13,20 @@
  */
 
 import React from "react";
-import { Text, View, Platform } from "react-native";
+import { View, Platform } from "react-native";
 import { connect } from "react-redux";
 import { Formik, FormikProps } from "formik";
-import Register from "./Register";
 import { Button, Layout, Icon } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as actions from "../../actions";
-import Signout from "./Signout";
 import { FormInput } from "../../components/form-input.component";
 import { IInitialState } from "../../reducers/interfaces";
 import LoginWithGoogle from "./platformSpecific/LoginWithGoogle";
 import LoginWithApple from "./platformSpecific/LoginWithApple.ios";
 import { SignInData, SignInSchema } from "../../data/sign-in.model";
 import { EyeIcon, EyeOffIcon } from "../../assets/icons";
+import { AppRoute } from "../../navigation/app-routes";
+import { SignInScreenProps } from "../../navigation/auth.navigator";
 
 /**
  * Importing styles
@@ -39,7 +39,7 @@ const styles = require("../../themes")("Form");
  * Interface actions
  * for the component
  */
-interface ILoginActions {
+interface ILoginActions extends SignInScreenProps {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
@@ -56,15 +56,18 @@ interface ILoginProps {
   error: string;
   toRegister: boolean;
   token: string;
-  navigation?: any;
 }
 
-const Login = (props: ILoginProps & ILoginActions) => {
+const LoginScreen = (props: ILoginProps & ILoginActions) => {
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
 
   const onPasswordIconPress = (): void => {
     setPasswordVisible(!passwordVisible);
   };
+
+  const navigateSignOut = (): void => {
+    props.navigation.navigate(AppRoute.SIGN_OUT)
+  }
 
   /**
    * If the inputs pass validation,
@@ -118,10 +121,8 @@ const Login = (props: ILoginProps & ILoginActions) => {
     </React.Fragment>
   );
 
-  const { email, password, toRegister, token } = props;
-
-  if (token !== "") return <Signout />;
-  if (toRegister) return <Register />;
+  const { email, password, token } = props;
+  // if(token !== "") navigateSignOut()
   return (
     <Layout style={styles.formContainer}>
       <Formik
@@ -139,7 +140,7 @@ const Login = (props: ILoginProps & ILoginActions) => {
         style={styles.noAccountButton}
         appearance="ghost"
         status="basic"
-        onPress={() => props.isRegistering()}
+        onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
       >
         Don't have an account?
       </Button>
@@ -148,7 +149,7 @@ const Login = (props: ILoginProps & ILoginActions) => {
         style={styles.noAccountButton}
         appearance="ghost"
         status="basic"
-        onPress={() => props.navigation.navigate("Main")}
+        onPress={() => props.navigation.navigate(AppRoute.HOME)}
       >
         Close
       </Button>
@@ -176,4 +177,4 @@ const mapStateToProps = (state: IInitialState): ILoginProps => {
 export default connect<ILoginProps, ILoginActions, {}>(
   mapStateToProps,
   actions
-)(Login);
+)(LoginScreen);

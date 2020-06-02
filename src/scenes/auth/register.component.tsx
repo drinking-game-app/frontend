@@ -23,6 +23,8 @@ import { SignUpSchema, SignUpData } from "../../data/sign-up.model";
 import { FormInput } from "../../components/form-input.component";
 import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { AppRoute } from "../../navigation/app-routes";
+import { RegisterScreenProps } from "../../navigation/auth.navigator";
 
 /**
  * Importing styles
@@ -49,14 +51,13 @@ type IProps = {
  * Interface actions
  * for the component
  */
-interface IActions {
+interface IActions extends RegisterScreenProps {
   isRegistering: () => void;
   formUpdate: ({ prop, value }: any) => void;
   create: (body: object) => void;
 }
 
-// class Register extends Component<IProps> {
-const Register = (props: IProps & IActions) => {
+const RegisterScreen = (props: IProps & IActions) => {
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
 
   const onPasswordIconPress = (): void => {
@@ -142,7 +143,7 @@ const Register = (props: IProps & IActions) => {
         style={styles.noAccountButton}
         appearance="ghost"
         status="basic"
-        onPress={() => props.isRegistering()}
+        onPress={() => props.navigation.navigate(AppRoute.SIGN_IN)}
       >
         Already have an account?
       </Button>
@@ -167,4 +168,4 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-export default connect(mapStateToProps, actions)(Register);
+export default connect(mapStateToProps, actions)(RegisterScreen);

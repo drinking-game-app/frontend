@@ -16,6 +16,7 @@ import React from "react";
 import { Text, View, SafeAreaView } from "react-native";
 import Constants from 'expo-constants'
 import { Button } from "@ui-kitten/components";
+import { AppRoute } from "../../navigation/app-routes";
 
 
 /**
@@ -23,7 +24,7 @@ import { Button } from "@ui-kitten/components";
  * @param theme path
  * @param App Module name
  */
-const styles = require("../themes")("App");
+const styles = require("../../themes")("App");
 
 /**
  * Rendering the view
@@ -41,7 +42,7 @@ const Home = (props: any) => {
       <View style={styles.itemContainer}>
         <Button
           style={styles.formButton}
-          onPress={() => props.navigation.navigate("Authenticate")}
+          onPress={() => props.navigation.navigate(AppRoute.AUTH)}
         >
           Host
         </Button>
