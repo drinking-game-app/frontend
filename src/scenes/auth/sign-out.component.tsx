@@ -21,6 +21,7 @@ import { Button } from "@ui-kitten/components";
 import { IInitialState } from "../../reducers/interfaces";
 import { SignoutScreenScreenProps } from "../../navigation/auth.navigator";
 import { AppRoute } from "../../navigation/app-routes";
+import { ButtonInput } from "../../components/form-button.component";
 
 /**
  * Importing styles
@@ -55,13 +56,13 @@ const SignoutScreen = (props: IProps & IActions) => {
    * session
    */
   const submit = () => {
-    props.setLoading()
+    props.setLoading();
     const { token } = props;
 
     props.logout({ token });
   };
 
-  const { name, authedWithGoogle } = props;
+  const { name, authedWithGoogle, isLoading } = props;
 
   return (
     <SafeAreaView style={styles.formContainer}>
@@ -70,15 +71,22 @@ const SignoutScreen = (props: IProps & IActions) => {
       {authedWithGoogle ? (
         <LogoutWithGoogle />
       ) : (
-        <Button onPress={submit} style={styles.formButton}>
-          Signout
-        </Button>
+        <ButtonInput
+          style={styles.formButton}
+          onPress={submit}
+          disabled={false}
+          loading={isLoading}
+          text="SIGNOUT"
+        />
       )}
 
-        <Button style={styles.formButton} onPress={() => props.navigation.navigate(AppRoute.HOME)} style={styles.formButton}>
-          Home
-        </Button>
-
+      <ButtonInput
+        style={styles.formButton}
+        onPress={() => props.navigation.navigate(AppRoute.HOME)}
+        disabled={false}
+        loading={false}
+        text="HOME"
+      />
     </SafeAreaView>
   );
 };
@@ -95,8 +103,11 @@ const mapStateToProps = (state: IInitialState): IProps => {
     name,
     token,
     authedWithGoogle,
-    isLoading
+    isLoading,
   };
 };
 
-export default connect<IProps, IActions>(mapStateToProps, { logout, setLoading })(SignoutScreen);
+export default connect<IProps, IActions>(mapStateToProps, {
+  logout,
+  setLoading,
+})(SignoutScreen);

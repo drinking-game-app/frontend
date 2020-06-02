@@ -16,7 +16,7 @@ export const FormInput = ({ id, ...inputProps }: FormInputProps): InputElement =
 
   const fieldProps: Partial<InputProps> = {
     status: error && 'danger',
-    // captionIcon: error && AlertTriangleIcon,
+    captionIcon: error && AlertTriangleIcon,
   };
 
   return (

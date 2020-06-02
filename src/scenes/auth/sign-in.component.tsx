@@ -16,7 +16,7 @@ import React from "react";
 import { View, Platform, Text } from "react-native";
 import { connect } from "react-redux";
 import { Formik, FormikProps } from "formik";
-import { Button, Layout, Icon, Spinner } from "@ui-kitten/components";
+import { Button, Layout } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import { FormInput } from "../../components/form-input.component";
@@ -27,6 +27,7 @@ import { SignInData, SignInSchema } from "../../data/sign-in.model";
 import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 import { AppRoute } from "../../navigation/app-routes";
 import { SignInScreenProps } from "../../navigation/auth.navigator";
+import { ButtonInput } from "../../components/form-button.component";
 
 /**
  * Importing styles
@@ -70,7 +71,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
    * submit the request to the server
    */
   const submit = (values: any) => {
-    props.setLoading()
+    props.setLoading();
     const { email, password } = values;
 
     props.login({ email, password });
@@ -78,7 +79,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
 
   const renderPasswordIcon = (props: any): React.ReactElement => {
     const IconComponent = passwordVisible ? EyeIcon : EyeOffIcon;
-    
+
     return (
       <TouchableWithoutFeedback onPress={onPasswordIconPress}>
         <IconComponent {...props} />
@@ -86,48 +87,49 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
     );
   };
 
-  const LoadingIndicator = (props: any) => (
-    <View>
-      <Spinner size="small" status='danger' />
-    </View>
-  )
-
-  const renderForm = (props: FormikProps<SignInData>): React.ReactFragment => (
-    <React.Fragment>
-      <FormInput
-        id="email"
-        style={styles.formControl}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <FormInput
-        id="password"
-        style={styles.formControl}
-        placeholder="Password"
-        secureTextEntry={!passwordVisible}
-        accessoryRight={renderPasswordIcon}
-      />
-      <View style={styles.resetPasswordContainer}>
-        <Button appearance="ghost" status="basic">
-          Forgot password?
-        </Button>
-      </View>
-
-      <Button
-        style={styles.submitButton}
-        disabled={!props.isValid && !props.isValidating && props.isSubmitting}
-        accessoryRight={LoadingIndicator}
-        onPress={props.handleSubmit}
-
-      >
-        SIGN IN
-      </Button>
-    </React.Fragment>
-  );
 
   const { email, password, error, isLoading } = props;
-  
+
+  const renderForm = (props: FormikProps<SignInData>): React.ReactFragment => {
+    const loading = isLoading || props.isSubmitting;
+
+    if(isLoading === false && props.isSubmitting === true) props.setSubmitting(false)
+    return (
+      <React.Fragment>
+        <FormInput
+          id="email"
+          style={styles.formControl}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <FormInput
+          id="password"
+          style={styles.formControl}
+          placeholder="Password"
+          secureTextEntry={!passwordVisible}
+          accessoryRight={renderPasswordIcon}
+        />
+
+        {error !== "" && <Text>{error}</Text>}
+
+        <View style={styles.resetPasswordContainer}>
+          <Button appearance="ghost" status="basic">
+            Forgot password?
+          </Button>
+        </View>
+
+        <ButtonInput
+          style={styles.submitButton}
+          disabled={!props.isValid && !props.isValidating}
+          onPress={() => props.handleSubmit()}
+          loading={loading}
+          text="SIGN IN"
+        />
+      </React.Fragment>
+    );
+  };
+
   return (
     <Layout style={styles.formContainer}>
       <Formik
@@ -137,10 +139,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
       >
         {renderForm}
       </Formik>
-      {isLoading == true && <Text>Loading</Text>}
-      {
-        error !== "" && <Text>{error}</Text>
-      }
+      
       {Platform.OS === "ios" && <LoginWithApple />}
 
       <LoginWithGoogle />

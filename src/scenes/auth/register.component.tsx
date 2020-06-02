@@ -12,10 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
-import React, { Component } from "react";
-import { Text, View } from "react-native";
+import React from "react";
 import { connect } from "react-redux";
-
 import * as actions from "../../actions";
 import { Button, Layout } from "@ui-kitten/components";
 import { Formik, FormikProps } from "formik";
@@ -25,6 +23,8 @@ import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { AppRoute } from "../../navigation/app-routes";
 import { RegisterScreenProps } from "../../navigation/auth.navigator";
+import { ButtonInput } from "../../components/form-button.component";
+import { Text } from "react-native";
 
 /**
  * Importing styles
@@ -45,6 +45,7 @@ type IProps = {
   password: string;
   confirm_password: string;
   error: string;
+  isLoading: boolean;
 };
 
 /**
@@ -65,15 +66,15 @@ const RegisterScreen = (props: IProps & IActions) => {
   };
 
   const navigateSignIn = (): void => {
-    props.navigation.navigate(AppRoute.SIGN_IN)
-  }
+    props.navigation.navigate(AppRoute.SIGN_IN);
+  };
 
   /**
    * If the inputs pass validation,
    * submit the request to the server
    */
   const submit = (values: any) => {
-    props.setLoading()
+    props.setLoading();
     const { name, email, password } = values;
 
     props.create({ name, email, password });
@@ -89,49 +90,55 @@ const RegisterScreen = (props: IProps & IActions) => {
     );
   };
 
-  const renderForm = (props: FormikProps<SignUpData>): React.ReactFragment => (
-    <React.Fragment>
-      <FormInput
-        id="name"
-        style={styles.formControl}
-        placeholder="Username"
-        autoCorrect={false}
-        autoCapitalize="none"
-      />
-      <FormInput
-        id="email"
-        style={styles.formControl}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <FormInput
-        id="password"
-        style={styles.formControl}
-        placeholder="Password"
-        secureTextEntry={!passwordVisible}
-        accessoryRight={renderPasswordIcon}
-      />
-      <FormInput
-        id="confirm_password"
-        style={styles.formControl}
-        placeholder="Confirm Password"
-        secureTextEntry={!passwordVisible}
-        accessoryRight={renderPasswordIcon}
-      />
+  const { name, email, password, confirm_password, error, isLoading } = props;
 
-      <Button
-        style={styles.submitButton}
-        disabled={!props.isValid && !props.isValidating}
-        onPress={props.handleSubmit}
-      >
-        Register
-      </Button>
-    </React.Fragment>
-  );
+  const renderForm = (props: FormikProps<SignUpData>): React.ReactFragment => {
+    const loading = isLoading || props.isSubmitting;
+    
+    if(isLoading === false && props.isSubmitting === true) props.setSubmitting(false)
+    return (
+      <React.Fragment>
+        <FormInput
+          id="name"
+          style={styles.formControl}
+          placeholder="Username"
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        <FormInput
+          id="email"
+          style={styles.formControl}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <FormInput
+          id="password"
+          style={styles.formControl}
+          placeholder="Password"
+          secureTextEntry={!passwordVisible}
+          accessoryRight={renderPasswordIcon}
+        />
+        <FormInput
+          id="confirm_password"
+          style={styles.formControl}
+          placeholder="Confirm Passwordd"
+          secureTextEntry={!passwordVisible}
+          accessoryRight={renderPasswordIcon}
+        />
+        {error !== "" && <Text>{error}</Text>}
 
-  const { name, email, password, confirm_password, error } = props;
-  
+        <ButtonInput
+          style={styles.submitButton}
+          disabled={!props.isValid && !props.isValidating}
+          onPress={() => props.handleSubmit()}
+          loading={loading}
+          text="REGISTER"
+        />
+      </React.Fragment>
+    );
+  };
+
   if (props.actionSuccess) navigateSignIn();
   return (
     <Layout style={styles.formContainer}>
@@ -142,8 +149,6 @@ const RegisterScreen = (props: IProps & IActions) => {
       >
         {renderForm}
       </Formik>
-
-      {error && error !== "" && <Text>{error}</Text>}
 
       <Button
         style={styles.noAccountButton}
@@ -163,7 +168,7 @@ const RegisterScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: any) => {
-  const { name, email, password, confirm_password, error } = state;
+  const { name, email, password, confirm_password, error, isLoading, actionSuccess } = state;
 
   return {
     name,
@@ -171,7 +176,9 @@ const mapStateToProps = (state: any) => {
     password,
     confirm_password,
     error,
+    isLoading,
+    actionSuccess
   };
 };
 
-export default connect(mapStateToProps, actions)(RegisterScreen);
+export default connect<IProps & IActions, {}>(mapStateToProps, actions)(RegisterScreen);
