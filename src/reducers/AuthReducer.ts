@@ -24,7 +24,7 @@ const initialState: IInitialState = {
   email: "",
   password: "",
   confirm_password: "",
-  toRegister: false,
+  isLoading: false,
   canSubmit: false,
   token: "",
   actionSuccess: false,
@@ -45,10 +45,10 @@ export default (state = initialState, action: IAction) => {
      * Determinds whether to display the
      * login or register component
      */
-    case "IS_REGISTERING":
+    case "IS_LOADING":
       return {
         ...state,
-        toRegister: !state.toRegister,
+        isLoading: !state.isLoading,
       };
 
     /**
@@ -75,6 +75,7 @@ export default (state = initialState, action: IAction) => {
         confirm_password: "",
         actionSuccess: true,
         error: "",
+        isLoading: false
       };
 
     /**
@@ -85,6 +86,7 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         error: action.payload.error,
+        isLoading: false
       };
 
     /**
@@ -100,6 +102,7 @@ export default (state = initialState, action: IAction) => {
         _id: action.payload.user!._id,
         password: "",
         error: "",
+        isLoading: false
       };
 
     /**
@@ -115,7 +118,8 @@ export default (state = initialState, action: IAction) => {
         _id: action.payload.user!._id,
         password: "",
         error: "",
-        authedWithGoogle: true
+        authedWithGoogle: true,
+        isLoading: false
       };
 
     /**
@@ -133,7 +137,8 @@ export default (state = initialState, action: IAction) => {
         accessToken: action.payload.user!.accessToken,
         password: "",
         error: "",
-        authedWithGoogle: true
+        authedWithGoogle: true,
+        isLoading: false
       };
 
     /**
@@ -146,7 +151,8 @@ export default (state = initialState, action: IAction) => {
         _id: "",
         name: "",
         email: "",
-        accessToken: ""
+        accessToken: "",
+        isLoading: false
       };
 
     /**

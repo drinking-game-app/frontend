@@ -47,16 +47,16 @@ class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleS
               AppleAuthentication.AppleAuthenticationScope.EMAIL,
             ],
           })
-
+          
+          const fullName = result.fullName.givenName + " " + result.fullName.familyName
+          
           const user = {
             email: result.email,
-            name: result.givenName || "" + result.familyName || "",
+            name: fullName,
             identityToken: result.identityToken
           }
        
-          console.log('token!', result)
           this.props.loginWithThirdParty({ token: result.authorizationCode, type: Platform.OS, provider: 'apple', user });    
-
         } catch(err) {
           console.log('error!', err)
         

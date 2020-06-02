@@ -13,10 +13,10 @@
  */
 
 import React from "react";
-import { View, Platform } from "react-native";
+import { View, Platform, Text } from "react-native";
 import { connect } from "react-redux";
 import { Formik, FormikProps } from "formik";
-import { Button, Layout, Icon } from "@ui-kitten/components";
+import { Button, Layout, Icon, Spinner } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as actions from "../../actions";
 import { FormInput } from "../../components/form-input.component";
@@ -40,7 +40,7 @@ const styles = require("../../themes")("Form");
  * for the component
  */
 interface ILoginActions extends SignInScreenProps {
-  isRegistering: () => void;
+  setLoading: () => void;
   formUpdate: ({ prop, value }: any) => void;
   login: (body: object) => void;
   loginWithThirdParty: (token: object) => void;
@@ -54,7 +54,7 @@ interface ILoginProps {
   email: string;
   password: string;
   error: string;
-  toRegister: boolean;
+  isLoading: boolean;
   token: string;
 }
 
@@ -65,15 +65,12 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const navigateSignOut = (): void => {
-    props.navigation.navigate(AppRoute.SIGN_OUT)
-  }
-
   /**
    * If the inputs pass validation,
    * submit the request to the server
    */
   const submit = (values: any) => {
+    props.setLoading()
     const { email, password } = values;
 
     props.login({ email, password });
@@ -88,6 +85,12 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
       </TouchableWithoutFeedback>
     );
   };
+
+  const LoadingIndicator = (props: any) => (
+    <View>
+      <Spinner size="small" status='danger' />
+    </View>
+  )
 
   const renderForm = (props: FormikProps<SignInData>): React.ReactFragment => (
     <React.Fragment>
@@ -113,16 +116,18 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
 
       <Button
         style={styles.submitButton}
-        disabled={!props.isValid && !props.isValidating}
+        disabled={!props.isValid && !props.isValidating && props.isSubmitting}
+        accessoryRight={LoadingIndicator}
         onPress={props.handleSubmit}
+
       >
         SIGN IN
       </Button>
     </React.Fragment>
   );
 
-  const { email, password, token } = props;
-  // if(token !== "") navigateSignOut()
+  const { email, password, error, isLoading } = props;
+  
   return (
     <Layout style={styles.formContainer}>
       <Formik
@@ -132,6 +137,10 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
       >
         {renderForm}
       </Formik>
+      {isLoading == true && <Text>Loading</Text>}
+      {
+        error !== "" && <Text>{error}</Text>
+      }
       {Platform.OS === "ios" && <LoginWithApple />}
 
       <LoginWithGoogle />
@@ -163,13 +172,13 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): ILoginProps => {
-  const { email, password, error, toRegister, token } = state;
+  const { email, password, error, isLoading, token } = state;
 
   return {
     email,
     password,
     error,
-    toRegister,
+    isLoading,
     token,
   };
 };

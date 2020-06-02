@@ -52,7 +52,7 @@ type IProps = {
  * for the component
  */
 interface IActions extends RegisterScreenProps {
-  isRegistering: () => void;
+  setLoading: () => void;
   formUpdate: ({ prop, value }: any) => void;
   create: (body: object) => void;
 }
@@ -64,11 +64,16 @@ const RegisterScreen = (props: IProps & IActions) => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const navigateSignIn = (): void => {
+    props.navigation.navigate(AppRoute.SIGN_IN)
+  }
+
   /**
    * If the inputs pass validation,
    * submit the request to the server
    */
   const submit = (values: any) => {
+    props.setLoading()
     const { name, email, password } = values;
 
     props.create({ name, email, password });
@@ -90,6 +95,7 @@ const RegisterScreen = (props: IProps & IActions) => {
         id="name"
         style={styles.formControl}
         placeholder="Username"
+        autoCorrect={false}
         autoCapitalize="none"
       />
       <FormInput
@@ -124,9 +130,9 @@ const RegisterScreen = (props: IProps & IActions) => {
     </React.Fragment>
   );
 
-  const { name, email, password, confirm_password } = props;
-
-  if (props.actionSuccess) props.isRegistering();
+  const { name, email, password, confirm_password, error } = props;
+  
+  if (props.actionSuccess) navigateSignIn();
   return (
     <Layout style={styles.formContainer}>
       <Formik
@@ -137,7 +143,7 @@ const RegisterScreen = (props: IProps & IActions) => {
         {renderForm}
       </Formik>
 
-      {props.error !== "" && <Text>{props.error}</Text>}
+      {error && error !== "" && <Text>{error}</Text>}
 
       <Button
         style={styles.noAccountButton}

@@ -32,9 +32,9 @@ const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:300
  * Determinds whether to display the login
  * or register view
  */
-export const isRegistering = () => {
+export const setLoading = () => {
     return {
-        type: 'IS_REGISTERING'
+        type: 'IS_LOADING'
     }
 }
 
@@ -129,10 +129,11 @@ export const loginWithThirdParty  = (token: IThirdPartyToken) => {
         })
         .then(response => response.json())
         .then((data) => {
-            if(data.error) {
+            console.log('response!', data)
+            if(data.error || data.success !== true) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
-            
+
             if(data.data.user.accessToken) dispatch({ type: 'USER_LOGGED_IN_GOOGLE_MOBILE', payload: data.data })
             else dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
         })

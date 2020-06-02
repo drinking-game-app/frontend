@@ -46,7 +46,7 @@ export interface IInitialState {
   email: string;
   password: string;
   confirm_password: string;
-  toRegister: boolean;
+  isLoading: boolean;
   canSubmit: boolean;
   token: string;
   actionSuccess: boolean;
