@@ -44,6 +44,12 @@ export interface IToken {
     token: string
 }
 
+interface IAppleLoginUser {
+    email: string;
+    name: string;
+    identityToken: string;
+}
+
 /**
  * Type for a google authentication token
  */
@@ -52,4 +58,5 @@ export interface IThirdPartyToken {
     accessToken?: string;
     provider: string;
     type: string;
+    user?: IAppleLoginUser
 }

@@ -24,4 +24,7 @@ export default StyleSheet.create({
   noAccountButton: {
     alignSelf: 'center',
   },
+  thirdPartyButtonContainer: {
+    alignItems: "center",
+  }
 });

@@ -4,6 +4,14 @@ import { connect } from "react-redux";
 import { loginWithThirdParty } from "../../../actions";
 import * as AppleAuthentication from 'expo-apple-authentication';
 
+
+/**
+ * Importing styles
+ * @param theme path
+ * @param App Module name
+ */
+const styles = require("../../../themes")("Form");
+
 /**
  * Interface actions 
  * for the component
@@ -33,15 +41,21 @@ class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleS
     signInWithAppleMobile = async() => {
 
       try {
-          const result = await AppleAuthentication.signInAsync({
+          const result: any = await AppleAuthentication.signInAsync({
             requestedScopes: [
               AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
               AppleAuthentication.AppleAuthenticationScope.EMAIL,
             ],
           })
+
+          const user = {
+            email: result.email,
+            name: result.givenName || "" + result.familyName || "",
+            identityToken: result.identityToken
+          }
        
           console.log('token!', result)
-          this.props.loginWithThirdParty({ token: result.authorizationCode, type: Platform.OS, provider: 'apple' });    
+          this.props.loginWithThirdParty({ token: result.authorizationCode, type: Platform.OS, provider: 'apple', user });    
 
         } catch(err) {
           console.log('error!', err)
@@ -52,7 +66,7 @@ class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleS
 
       render() {
           return (
-            <View>
+            <View style={styles.thirdPartyButtonContainer}>
               <AppleAuthentication.AppleAuthenticationButton
                 buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
                 buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
@@ -62,7 +76,7 @@ class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleS
               />
 
                 {this.state.error !== ''
-                    && <Text>Error: {this.state.error}</Text>
+                    && <Text style={{textAlign: 'center'}}>Error: {this.state.error}</Text>
                 }
             </View>
           )
