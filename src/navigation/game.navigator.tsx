@@ -23,7 +23,7 @@ export interface JoinGameScreenProps {
 const Stack = createStackNavigator<GameNavigatorParams>();
 
 export const GameNavigator = (): React.ReactElement => (
-  <Stack.Navigator headerMode='none'>
+  <Stack.Navigator headerMode='none' screenOptions={{animationEnabled: true}}>
     <Stack.Screen name={AppRoute.JOIN} component={game.JoinScreen}/>
   </Stack.Navigator>
 );

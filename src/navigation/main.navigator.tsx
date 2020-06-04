@@ -17,7 +17,7 @@ export interface HomeScreenProps {
 const Stack = createStackNavigator<MainNavigatorParams>();
 
 export const MainNavigator = (): React.ReactElement => (
-  <Stack.Navigator headerMode='none'>
+  <Stack.Navigator headerMode='none' screenOptions={{animationEnabled: true}}>
     <Stack.Screen name={AppRoute.HOME} component={main.Home}/>
   </Stack.Navigator>
 );

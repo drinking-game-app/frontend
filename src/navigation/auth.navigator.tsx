@@ -40,7 +40,7 @@ export interface IAuthProps {
 }
 
 const Auth = (props: IAuthProps): React.ReactElement => (
-  <Stack.Navigator headerMode="none">
+  <Stack.Navigator headerMode="none" screenOptions={{animationEnabled: true}}>
     {!props.token || props.token == "" ? (
       <>
         <Stack.Screen name={AppRoute.SIGN_IN} component={auth.SignInScreen} />

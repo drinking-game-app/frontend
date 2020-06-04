@@ -16,7 +16,7 @@ export type AppNavigatorParams = {
 const Stack = createStackNavigator<AppNavigatorParams>();
 
 export const AppNavigator = (props: Partial<StackNavigatorProps>): React.ReactElement => (
-  <Stack.Navigator {...props} mode="modal" headerMode='none'>
+  <Stack.Navigator {...props} mode="modal" headerMode='none' screenOptions={{animationEnabled: true}}>
     <Stack.Screen name={AppRoute.HOME} component={MainNavigator}/>
     <Stack.Screen name={AppRoute.AUTH} component={AuthNavigator}/>
     <Stack.Screen name={AppRoute.GAME} component={GameNavigator}/>
