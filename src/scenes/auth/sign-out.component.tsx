@@ -15,9 +15,9 @@
 import React from "react";
 import { Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
-import { logout, setLoading } from "../../actions";
+import { logout, setLoading } from "../../actions/auth";
 import LogoutWithGoogle from "./platformSpecific/LogoutWithGoogle";
-import { Button } from "@ui-kitten/components";
+import { Button, Spinner } from "@ui-kitten/components";
 import { IInitialState } from "../../reducers/interfaces";
 import { SignoutScreenScreenProps } from "../../navigation/auth.navigator";
 import { AppRoute } from "../../navigation/app-routes";
@@ -39,6 +39,7 @@ type IProps = {
   token: string;
   authedWithGoogle: boolean;
   isLoading: boolean;
+  isHost: boolean;
 };
 
 /**
@@ -51,6 +52,8 @@ interface IActions extends SignoutScreenScreenProps {
 }
 
 const SignoutScreen = (props: IProps & IActions) => {
+  if(props.isHost) props.navigation.navigate(AppRoute.GAME)
+
   /**
    * Logs out the user from their current
    * session
@@ -63,7 +66,7 @@ const SignoutScreen = (props: IProps & IActions) => {
   };
 
   const { name, authedWithGoogle, isLoading } = props;
-
+  
   return (
     <SafeAreaView style={styles.formContainer}>
       <Text style={styles.title}>Welcome, {name}</Text>
@@ -97,13 +100,15 @@ const SignoutScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { name, token, authedWithGoogle, isLoading } = state;
+  const { name, token, authedWithGoogle, isLoading } = state.auth;
+  const {isHost} = state.game
 
   return {
     name,
     token,
     authedWithGoogle,
     isLoading,
+    isHost
   };
 };
 

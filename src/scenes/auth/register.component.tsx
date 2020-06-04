@@ -14,7 +14,7 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
+import * as actions from "../../actions/auth";
 import { Button, Layout } from "@ui-kitten/components";
 import { Formik, FormikProps } from "formik";
 import { SignUpSchema, SignUpData } from "../../data/sign-up.model";
@@ -168,7 +168,7 @@ const RegisterScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: any) => {
-  const { name, email, password, confirm_password, error, isLoading, actionSuccess } = state;
+  const { name, email, password, confirm_password, error, isLoading, actionSuccess } = state.auth;
 
   return {
     name,

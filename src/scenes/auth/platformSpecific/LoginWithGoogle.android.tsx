@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { loginWithThirdParty } from "../../../actions";
+import { loginWithThirdParty } from "../../../actions/auth";
 import * as Google from 'expo-google-app-auth';
 
 /**

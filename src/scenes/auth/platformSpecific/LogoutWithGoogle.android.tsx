@@ -15,9 +15,9 @@
 import React, { Component } from "react";
 import * as Google from "expo-google-app-auth";
 import { Text, View, Platform } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { logout } from "../../../actions";
+import { logout } from "../../../actions/auth";
+import {IInitialState} from "../../../reducers/interfaces"
 
 /**
  * Importing styles
@@ -121,8 +121,8 @@ class LogoutWithGoogle extends Component<
  *
  * @param {*} state
  */
-const mapStateToProps = (state: any) => {
-  const { token, accessToken } = state;
+const mapStateToProps = (state: IInitialState) => {
+  const { token, accessToken } = state.auth;
 
   return {
     token,

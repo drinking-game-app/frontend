@@ -17,7 +17,7 @@ import * as Google from "expo-google-app-auth";
 import { Text, View, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { logout } from "../../../actions";
+import { logout } from "../../../actions/auth";
 
 /**
  * Importing styles
@@ -31,6 +31,7 @@ const styles = require("../../../themes")("Form");
  */
 import Constants from "expo-constants";
 import { Button } from "@ui-kitten/components";
+import { IInitialState } from "../../../reducers/interfaces";
 const IOS_GOOGLE_CLIENT_ID = __DEV__
   ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID
   : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID;
@@ -126,8 +127,8 @@ class LogoutWithGoogle extends Component<
  *
  * @param {*} state
  */
-const mapStateToProps = (state: any) => {
-  const { token, accessToken } = state;
+const mapStateToProps = (state: IInitialState) => {
+  const { token, accessToken } = state.auth;
 
   return {
     token,

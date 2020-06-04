@@ -16,8 +16,17 @@ import React from "react";
 import { JoinGameScreenProps } from "../../navigation/game.navigator";
 import { Layout, Button } from "@ui-kitten/components";
 import { Text } from "react-native";
-import Lobby from "./lobby.component";
 import { AppRoute } from "../../navigation/app-routes";
+import {gameActions} from "../../actions";
+import { FormikProps, Formik } from "formik";
+import { JoinLobbyData, JoinLobbySchema } from "../../data/join-lobby.model";
+import { IInitialState } from "../../reducers/interfaces";
+import { connect } from "react-redux";
+import { FormInput } from "../../components/form-input.component";
+import { ButtonInput } from "../../components/form-button.component";
+import { IHostGame } from "../../actions/game";
+
+
 
 /**
  * Importing styles
@@ -26,31 +35,98 @@ import { AppRoute } from "../../navigation/app-routes";
  */
 const styles = require("../../themes")("Game");
 
-interface IPlayer {
-    name: string
+
+/**
+ * Interface actions
+ * for the component
+ */
+interface IJoinActions extends JoinGameScreenProps {
+    setGameLoading: () => void;
+    formUpdate: ({ prop, value }: any) => void;
+    joinGame:(body: IHostGame) => void;
+  }
+interface IJoinProps{
+    username:string;
+    lobbyName:string;
+    error: string;
+    isLoading: boolean;
 }
 
+const JoinScreen = (props: IJoinActions & IJoinProps) => {
+    const {username,lobbyName,error,isLoading}=props;
+    /**
+   * If the inputs pass validation,
+   * submit the request to the server
+   */
+  const submit = (values: any) => {
+    props.setGameLoading();
+    const { lobbyName,username } = values;
 
-const playersArr: IPlayer[] = [
-    {
-        name: 'John'
-    },
-    {
-        name: 'Ross'
-    },
-    {
-        name: 'Sue Reardon'
-    },
-]
+    props.joinGame({lobbyName,username})
+};
+const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
+    const loading = isLoading || props.isSubmitting;
 
-const JoinScreen = (props: JoinGameScreenProps) => {
+    if(isLoading === false && props.isSubmitting === true) props.setSubmitting(false)
+    return (
+      <React.Fragment>
+        <FormInput
+          id="lobbyName"
+          style={styles.formControl}
+          placeholder="Join Code"
+          autoCapitalize="none"
+        />
+        <FormInput
+          id="username"
+          style={styles.formControl}
+          placeholder="Username"
+        />
+        
+
+        {error !== "" && <Text>{error}</Text>}
+
+        
+
+        <ButtonInput
+          style={styles.submitButton}
+          disabled={!props.isValid && !props.isValidating}
+          onPress={() => props.handleSubmit()}
+          loading={loading}
+          text="Join Game"
+        />
+      </React.Fragment>
+    );
+  };
+
     return (
         <Layout style={styles.container}>
             <Text style={styles.title}>Join</Text>
             <Button style={styles.submitButton} onPress={() => props.navigation.navigate(AppRoute.HOME)}>Home</Button>
-            <Lobby players={playersArr} />
+            <Formik
+                initialValues={{lobbyName,username}}
+                validationSchema={JoinLobbySchema}
+                onSubmit={(values)=>submit(values)}
+            >
+
+                {renderForm}
+            </Formik>
+            
         </Layout>
     )
 }
 
-export default JoinScreen
+const mapStateToProps = (state: IInitialState): IJoinProps => {
+    const { lobbyName, username,error,isLoading } = state.game;
+  
+    return {
+      lobbyName,
+      username,
+      error,
+      isLoading
+    };
+  };
+  
+  export default connect<IJoinProps, IJoinActions, {}>(
+    mapStateToProps,
+    gameActions
+  )(JoinScreen);

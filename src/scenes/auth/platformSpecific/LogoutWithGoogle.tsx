@@ -16,12 +16,13 @@ import React, { Component } from "react";
 import GoogleLogout from 'react-google-login';
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
-import {logout} from "../../../actions";
+import {logout} from "../../../actions/auth";
 
 /**
  * Get Google Client ID from environment variables
  */
 import Constants from "expo-constants";
+import { IInitialState } from "../../../reducers/interfaces";
 const WEB_GOOGLE_CLIENT_ID = Constants.manifest.extra.WEB_GOOGLE_CLIENT_ID
 
 /**
@@ -85,8 +86,8 @@ class LogoutWithGoogle extends Component <IProps & ILogoutWithGoogleActions, ILo
  *
  * @param {*} state
  */
-const mapStateToProps = (state: any) => {
-  const { token } = state;
+const mapStateToProps = (state: IInitialState) => {
+  const { token } = state.auth;
 
   return {
     token,

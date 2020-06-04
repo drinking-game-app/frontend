@@ -48,7 +48,7 @@ const Auth = (props: IAuthProps): React.ReactElement => (
       </>
     ) : (
       <>
-        <Stack.Screen name={AppRoute.HOST} component={game.HostScreen} />
+        {/* <Stack.Screen name={AppRoute.HOST} component={game.LobbyScreen} /> */}
         <Stack.Screen name={AppRoute.SIGN_OUT} component={auth.SignoutScreen} />
       </>
     )}
@@ -56,7 +56,8 @@ const Auth = (props: IAuthProps): React.ReactElement => (
 );
 
 const mapStateToProps = (state: IInitialState): IAuthProps => {
-  const { token } = state;
+  const { token } = state.auth;
+
   return { token };
 };
 

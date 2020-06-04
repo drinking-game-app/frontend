@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { Formik, FormikProps } from "formik";
 import { Button, Layout } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import * as actions from "../../actions";
+import * as actions from "../../actions/auth";
 import { FormInput } from "../../components/form-input.component";
 import { IInitialState } from "../../reducers/interfaces";
 import LoginWithGoogle from "./platformSpecific/LoginWithGoogle";
@@ -171,7 +171,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): ILoginProps => {
-  const { email, password, error, isLoading, token } = state;
+  const { email, password, error, isLoading, token } = state.auth;
 
   return {
     email,

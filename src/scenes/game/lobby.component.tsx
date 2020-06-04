@@ -13,7 +13,13 @@
  */
 
 import React from "react";
-import { Icon, ListItem, List, IconProps } from "@ui-kitten/components";
+import { Icon, ListItem, List, IconProps, Button } from "@ui-kitten/components";
+import { Text } from "react-native";
+import { IPlayer, IInitialState } from "../../reducers/interfaces";
+import { connect } from "react-redux";
+import {gameActions} from "../../actions";
+import { LobbyScreenProps } from "../../navigation/game.navigator";
+import { ButtonInput } from "../../components/form-button.component";
 
 /**
  * Importing styles
@@ -22,11 +28,9 @@ import { Icon, ListItem, List, IconProps } from "@ui-kitten/components";
  */
 const styles = require("../../themes")("Game");
 
-/**
- * Interface for a single player
- */
-interface IPlayer {
-    name: string
+interface IActions extends LobbyScreenProps {
+    setGameLoading: () => void;
+    leaveGame: () => void;
 }
 
 /**
@@ -34,10 +38,11 @@ interface IPlayer {
  * passed to to the lobby component
  */
 interface IProps {
-    players: IPlayer[]
+    players: IPlayer[];
+    isLoading: boolean;
 }
 
-const Lobby = (props: IProps) => {
+const LobbyScreen = (props: IProps & IActions) => {
     const renderItemIcon = (props: IconProps) => (
         <Icon {...props} name="person" />
     )
@@ -48,17 +53,48 @@ const Lobby = (props: IProps) => {
             accessoryLeft={renderItemIcon}
         />
     )
+
+    const endGame = () => {
+        props.setGameLoading()
+        props.leaveGame()
+    }
     
     let players: IPlayer[] = props.players
     if(players.length < 4) players = [...players, ...new Array(3).fill({name: 'Waiting for player...'})]
     
     return (
-        <List
-            style={styles.listContainer}
-            data={players}
-            renderItem={renderItem}
-        />
+        <>
+            <Text style={styles.title}>Join with this code: HK3J</Text>
+            
+            <ButtonInput
+                style={styles.submitButton}
+                onPress={endGame}
+                disabled={props.isLoading}
+                loading={props.isLoading}
+                text="Leave Lobby"
+            />
+            <List
+                style={styles.listContainer}
+                data={players}
+                renderItem={renderItem}
+            />
+        </>
     )
 }
 
-export default Lobby
+
+/**
+ * Return a list of people from our redux state
+ *
+ * @param {*} state
+ */
+const mapStateToProps = (state: IInitialState): IProps => {
+    const { players, isLoading } = state.game;
+  
+    return {
+    players,
+    isLoading
+    };
+  };
+
+export default connect<IProps, IActions>(mapStateToProps, gameActions)(LobbyScreen)

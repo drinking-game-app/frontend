@@ -16,7 +16,6 @@ import React from "react";
 import { HostGameScreenProps } from "../../navigation/game.navigator";
 import { Layout, Button } from "@ui-kitten/components";
 import { Text } from "react-native";
-import Lobby from "./lobby.component";
 import { AppRoute } from "../../navigation/app-routes";
 
 /**
@@ -26,30 +25,12 @@ import { AppRoute } from "../../navigation/app-routes";
  */
 const styles = require("../../themes")("Game");
 
-interface IPlayer {
-    name: string
-}
-
-
-const playersArr: IPlayer[] = [
-    {
-        name: 'John'
-    },
-    {
-        name: 'Ross'
-    },
-    {
-        name: 'Sue Reardon'
-    },
-]
-
 const HostScreen = (props: HostGameScreenProps) => {
     return (
         <Layout style={styles.container}>
             <Text style={styles.title}>Host</Text>
             <Button style={styles.submitButton} onPress={() => props.navigation.navigate(AppRoute.HOME)}>Home</Button>
             <Button style={styles.submitButton} onPress={() => props.navigation.navigate(AppRoute.SIGN_OUT)}>Sign out page</Button>
-            <Lobby players={playersArr} />
         </Layout>
     )
 }
