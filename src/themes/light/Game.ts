@@ -6,10 +6,9 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 32,
     paddingVertical: 16,
     paddingHorizontal: 16,
-    alignItems: "center",
-    justifyContent: "center",
   },
   title: {
     paddingHorizontal: 16,
@@ -19,15 +18,10 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center'
   },
-  subTitle: {
-    textAlign: 'center'
+  listContainer: {
+    maxHeight: 500
   },
-  itemContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+  submitButton: {
+    marginVertical: 24,
   },
-  formButton:{
-    marginVertical: 24
-  }
 });

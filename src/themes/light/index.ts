@@ -17,12 +17,13 @@
  */
 import App from './App';
 import Form from './Form'
-
+import Game from './Game'
 
 /**
  * Export these modules to the rest of the application
  */
 export default {
   App,
-  Form
+  Form,
+  Game
 };

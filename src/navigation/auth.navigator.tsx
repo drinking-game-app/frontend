@@ -1,17 +1,22 @@
-import React from 'react';
-import { RouteProp } from '@react-navigation/core';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
-import { AppRoute } from './app-routes';
-import { AppNavigatorParams } from './app.navigator';
-import auth from '../scenes/auth';
-import { connect } from 'react-redux';
-import { IInitialState } from '../reducers/interfaces';
+import React from "react";
+import { RouteProp } from "@react-navigation/core";
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from "@react-navigation/stack";
+import { AppRoute } from "./app-routes";
+import { AppNavigatorParams } from "./app.navigator";
+import auth from "../scenes/auth";
+import { connect } from "react-redux";
+import { IInitialState } from "../reducers/interfaces";
+import game from "../scenes/game";
 
 type AuthNavigatorParams = AppNavigatorParams & {
   [AppRoute.SIGN_IN]: undefined;
   [AppRoute.SIGN_UP]: undefined;
   [AppRoute.SIGN_OUT]: undefined;
-}
+  [AppRoute.HOST]: undefined;
+};
 
 export interface SignInScreenProps {
   navigation: StackNavigationProp<AuthNavigatorParams, AppRoute.SIGN_IN>;
@@ -30,33 +35,31 @@ export interface SignoutScreenScreenProps {
 
 const Stack = createStackNavigator<AuthNavigatorParams>();
 
-interface IAuthProps {
+export interface IAuthProps {
   token: string;
 }
 
 const Auth = (props: IAuthProps): React.ReactElement => (
-  <Stack.Navigator headerMode='none'>
-    {
-      !props.token || props.token == ""
-      ? (
-        <>
-          <Stack.Screen name={AppRoute.SIGN_IN} component={auth.SignInScreen}/>
-          <Stack.Screen name={AppRoute.SIGN_UP} component={auth.RegisterScreen}/>
-        </>
-      )
-      : <Stack.Screen name={AppRoute.SIGN_OUT} component={auth.SignoutScreen}/>
-    }
-    
-    
+  <Stack.Navigator headerMode="none">
+    {!props.token || props.token == "" ? (
+      <>
+        <Stack.Screen name={AppRoute.SIGN_IN} component={auth.SignInScreen} />
+        <Stack.Screen name={AppRoute.SIGN_UP} component={auth.RegisterScreen} />
+      </>
+    ) : (
+      <>
+        <Stack.Screen name={AppRoute.HOST} component={game.HostScreen} />
+        <Stack.Screen name={AppRoute.SIGN_OUT} component={auth.SignoutScreen} />
+      </>
+    )}
   </Stack.Navigator>
 );
 
 const mapStateToProps = (state: IInitialState): IAuthProps => {
-  const {token} = state
-  return {token}
-}
+  const { token } = state;
+  return { token };
+};
 
-const AuthNavigator = connect(mapStateToProps, {})(Auth)
+const AuthNavigator = connect(mapStateToProps, {})(Auth);
 
-export {AuthNavigator}
-
+export { AuthNavigator };

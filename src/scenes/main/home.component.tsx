@@ -46,7 +46,10 @@ const Home = (props: any) => {
         >
           Host
         </Button>
-        <Button style={styles.formButton}>
+        <Button 
+          style={styles.formButton}
+            onPress={() => props.navigation.navigate(AppRoute.GAME)}  
+        >
           Join
         </Button>
       </View>

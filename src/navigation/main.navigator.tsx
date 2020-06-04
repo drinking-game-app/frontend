@@ -5,16 +5,16 @@ import { AppRoute } from './app-routes';
 import { AppNavigatorParams } from './app.navigator';
 import main from '../scenes/main';
 
-type AuthNavigatorParams = AppNavigatorParams & {
+type MainNavigatorParams = AppNavigatorParams & {
   [AppRoute.HOME]: undefined;
 }
 
 export interface HomeScreenProps {
-  navigation: StackNavigationProp<AuthNavigatorParams, AppRoute.HOME>;
-  route: RouteProp<AuthNavigatorParams, AppRoute.HOME>;
+  navigation: StackNavigationProp<MainNavigatorParams, AppRoute.HOME>;
+  route: RouteProp<MainNavigatorParams, AppRoute.HOME>;
 }
 
-const Stack = createStackNavigator<AuthNavigatorParams>();
+const Stack = createStackNavigator<MainNavigatorParams>();
 
 export const MainNavigator = (): React.ReactElement => (
   <Stack.Navigator headerMode='none'>
