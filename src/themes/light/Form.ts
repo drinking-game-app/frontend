@@ -8,8 +8,6 @@ export default StyleSheet.create({
     flex: 1,
     paddingVertical: 16,
     paddingHorizontal: 16,
-    alignItems: "center",
-    justifyContent: "center",
   },
   resetPasswordContainer: {
     flexDirection: 'row',
