@@ -6,29 +6,22 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 32,
     paddingVertical: 16,
     paddingHorizontal: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    // backgroundColor: "#100241",
   },
   title: {
     paddingHorizontal: 16,
     paddingBottom: 8,
-    color: '#fff',
+    color: '#222',
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  subTitle: {
     textAlign: 'center'
   },
-  itemContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+  listContainer: {
+    maxHeight: 500
   },
-  formButton:{
-    marginVertical: 24
-  }
+  submitButton: {
+    marginVertical: 24,
+  },
 });

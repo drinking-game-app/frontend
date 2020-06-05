@@ -12,19 +12,19 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IInitialState, IAction } from "./interfaces";
+import { IAction, IAuthState } from "./interfaces";
 
 /**
  * Initial state for redux
  * Stores info about the
  * registering / logged in user
  */
-const initialState: IInitialState = {
+const initialState: IAuthState = {
   name: "",
   email: "",
   password: "",
   confirm_password: "",
-  toRegister: false,
+  isLoading: false,
   canSubmit: false,
   token: "",
   actionSuccess: false,
@@ -45,10 +45,10 @@ export default (state = initialState, action: IAction) => {
      * Determinds whether to display the
      * login or register component
      */
-    case "IS_REGISTERING":
+    case "IS_LOADING":
       return {
         ...state,
-        toRegister: !state.toRegister,
+        isLoading: !state.isLoading,
       };
 
     /**
@@ -69,11 +69,13 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         toRegister: false,
+        email: action.payload.user.email,
         name: "",
         password: "",
         confirm_password: "",
         actionSuccess: true,
         error: "",
+        isLoading: false
       };
 
     /**
@@ -84,6 +86,7 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         error: action.payload.error,
+        isLoading: false
       };
 
     /**
@@ -99,6 +102,7 @@ export default (state = initialState, action: IAction) => {
         _id: action.payload.user!._id,
         password: "",
         error: "",
+        isLoading: false
       };
 
     /**
@@ -114,7 +118,8 @@ export default (state = initialState, action: IAction) => {
         _id: action.payload.user!._id,
         password: "",
         error: "",
-        authedWithGoogle: true
+        authedWithGoogle: true,
+        isLoading: false
       };
 
     /**
@@ -132,7 +137,8 @@ export default (state = initialState, action: IAction) => {
         accessToken: action.payload.user!.accessToken,
         password: "",
         error: "",
-        authedWithGoogle: true
+        authedWithGoogle: true,
+        isLoading: false
       };
 
     /**
@@ -145,7 +151,8 @@ export default (state = initialState, action: IAction) => {
         _id: "",
         name: "",
         email: "",
-        accessToken: ""
+        accessToken: "",
+        isLoading: false
       };
 
     /**

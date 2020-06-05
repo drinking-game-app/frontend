@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import getEnvVars from '../../../environment';
 import { View, Text, Platform } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { loginWithGoogle } from "../../actions";
+import { loginWithThirdParty } from "../../../actions/auth";
 import * as Google from 'expo-google-app-auth';
 
 /**
@@ -11,19 +10,20 @@ import * as Google from 'expo-google-app-auth';
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../themes")("Form");
+const styles = require("../../../themes")("Form");
 
 /**
  * Get Google Cliennt ID from environment variables
  */
-const { ANDROID_GOOGLE_CLIENT_ID } = getEnvVars()
+import Constants from "expo-constants";
+import { Button } from "@ui-kitten/components";
 
 /**
  * Interface actions 
  * for the component
  */
 interface ILoginWithGoogleActions {
-  loginWithGoogle: (token: object) => void;
+  loginWithThirdParty: (token: object) => void;
 }
 
 /**
@@ -40,7 +40,7 @@ interface ILoginWithGoogleState {
  */
 interface ILoginWithGooglePayload {
   iosClientId?: string;
-  androidClientId?: string;
+  iosStandaloneAppClientId?: string;
 }
 
 class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoogleState> {
@@ -50,19 +50,21 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
 
     /**
      * Login with Google function
-     * Asynconously logs the user on an 
-     * android device
+     * Asynconously logs the user in on an 
+     * iOS device
      */
     signInWithGoogleMobile = async() => {
       const payload: ILoginWithGooglePayload = {
-        androidClientId: ANDROID_GOOGLE_CLIENT_ID
+        iosClientId: Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID,
+        iosStandaloneAppClientId: Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID
       }
-          
+
       try {
           const result = await Google.logInAsync(payload)
+
           if(result.type === "success") {
             console.log('token!', result)
-            this.props.loginWithGoogle({ token: result.idToken, accessToken: result.accessToken, type: Platform.OS });    
+            this.props.loginWithThirdParty({ token: result.idToken, accessToken: result.accessToken, type: Platform.OS, provider: 'google' });    
           }
         } catch(err) {
           console.log('error!', err)
@@ -74,9 +76,9 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
       render() {
           return (
             <View>
-              <RectButton onPress={this.signInWithGoogleMobile} style={styles.formButton}>
-                <Text>Login with Google android</Text>
-              </RectButton>
+              <Button onPress={this.signInWithGoogleMobile} style={styles.submitButton} status="basic">
+                Login with Google
+              </Button>
               {this.state.error !== ''
                     && <Text>Error: {this.state.error}</Text>
                 }
@@ -85,5 +87,5 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
       }
 }
 
-export default connect<ILoginWithGoogleActions>(null, {loginWithGoogle})(LoginWithGoogle)
+export default connect<ILoginWithGoogleActions>(null, {loginWithThirdParty})(LoginWithGoogle)
 

@@ -39,18 +39,45 @@ export interface IAction {
 }
 
 /**
- * Interface for the initial state
+ * Interface for the auth state
  */
-export interface IInitialState {
+export interface IAuthState {
   name: string;
   email: string;
   password: string;
   confirm_password: string;
-  toRegister: boolean;
+  isLoading: boolean;
   canSubmit: boolean;
   token: string;
   actionSuccess: boolean;
   error: string;
   authedWithGoogle: boolean;
   accessToken?: string
+}
+
+
+export interface IPlayer {
+  name: string
+}
+
+/**
+ * Interface for the game state
+ */
+export interface IGameState {
+  lobbyName: string;
+  username: string;
+  inLobby: boolean;
+  inGame: boolean;
+  isHost: boolean;
+  players: IPlayer[];
+  error:string;
+  isLoading:boolean;
+}
+
+/**
+ * Interface for the initial state
+ */
+export interface IInitialState {
+  auth: IAuthState;
+  game: IGameState;
 }
