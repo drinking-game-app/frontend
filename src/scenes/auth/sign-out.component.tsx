@@ -17,10 +17,8 @@ import { Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { logout, setLoading } from "../../actions/auth";
 import LogoutWithGoogle from "./platformSpecific/LogoutWithGoogle";
-import { Button, Spinner } from "@ui-kitten/components";
 import { IInitialState } from "../../reducers/interfaces";
 import { SignoutScreenScreenProps } from "../../navigation/auth.navigator";
-import { AppRoute } from "../../navigation/app-routes";
 import { ButtonInput } from "../../components/form-button.component";
 
 /**
@@ -52,8 +50,6 @@ interface IActions extends SignoutScreenScreenProps {
 }
 
 const SignoutScreen = (props: IProps & IActions) => {
-  if(props.isHost) props.navigation.navigate(AppRoute.GAME)
-
   /**
    * Logs out the user from their current
    * session
@@ -68,7 +64,7 @@ const SignoutScreen = (props: IProps & IActions) => {
   const { name, authedWithGoogle, isLoading } = props;
   
   return (
-    <SafeAreaView style={styles.formContainer}>
+    <SafeAreaView>
       <Text style={styles.title}>Welcome, {name}</Text>
 
       {authedWithGoogle ? (
@@ -82,14 +78,6 @@ const SignoutScreen = (props: IProps & IActions) => {
           text="SIGNOUT"
         />
       )}
-
-      <ButtonInput
-        style={styles.formButton}
-        onPress={() => props.navigation.navigate(AppRoute.HOME)}
-        disabled={false}
-        loading={false}
-        text="HOME"
-      />
     </SafeAreaView>
   );
 };

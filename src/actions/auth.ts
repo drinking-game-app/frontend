@@ -28,6 +28,8 @@ const authPrefix = "/api/auth"
 console.log('server url!!' , Constants.manifest.extra.SERVER_URL)
 const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000'
 
+const lobbyName = "HK4J"
+
 /**
  * Determinds whether to display the login
  * or register view
@@ -101,7 +103,7 @@ export const login  = (body: ILogin) => {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
-            const lobbyName = "HK4J"
+
             dispatch({ type: 'HOST_GAME', payload: {userName: data.data.user.name, lobbyName: lobbyName} })
         })
         .catch((err) => {
@@ -138,6 +140,9 @@ export const loginWithThirdParty  = (token: IThirdPartyToken) => {
 
             if(data.data.user.accessToken) dispatch({ type: 'USER_LOGGED_IN_GOOGLE_MOBILE', payload: data.data })
             else dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
+
+            dispatch({ type: 'HOST_GAME', payload: {userName: data.data.user.name, lobbyName: lobbyName} })
+
         })
         .catch((err) => {
             console.log(err)

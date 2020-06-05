@@ -16,7 +16,6 @@ import { IGameState, IPlayer } from "./interfaces";
 
 // import { IInitialState, IAction } from "./interfaces";
 
-
 interface IGameAction {
   type: string;
   payload: {
@@ -24,21 +23,23 @@ interface IGameAction {
     value: string;
     lobbyName?: string;
     userName?: string;
-  }
+  };
 }
-
 
 const playersArr: IPlayer[] = [
   {
-      name: 'John'
+    name: "John",
   },
   {
-      name: 'Ross'
+    name: "Ross",
   },
   {
-      name: 'Sue Reardon'
+    name: "Sue Reardon",
   },
-]
+  {
+    name: "It has to be wack'm",
+  },
+];
 
 /**
  * Initial state for redux
@@ -53,7 +54,7 @@ const initialState: IGameState = {
   isHost: false,
   players: playersArr,
   isLoading: false,
-  error:""
+  error: "",
 };
 
 /**
@@ -91,26 +92,31 @@ export default (state = initialState, action: IGameAction) => {
         username: action.payload.userName,
         inLobby: true,
         isHost: true,
-        isLoading: false
-      }
+        isLoading: false,
+      };
     case "JOIN_GAME":
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
         username: action.payload.userName,
         inLobby: true,
-        isLoading: false
-      }
-      
+        isLoading: false,
+      };
+
     case "LEAVE_GAME":
-        return {
-          ...state,
-          lobbyName: "",
-          inGame: false,
-          inLobby: false,
-          isHost: false,
-          isLoading: false
-        }
+      return {
+        ...state,
+        lobbyName: "",
+        inGame: false,
+        inLobby: false,
+        isHost: false,
+        isLoading: false,
+      };
+
+      case "START_GAME":
+      return  {
+
+      }
 
     /**
      * The default state reducer

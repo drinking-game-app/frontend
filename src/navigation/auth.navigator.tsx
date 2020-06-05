@@ -33,11 +33,11 @@ export interface SignoutScreenScreenProps {
   route: RouteProp<AuthNavigatorParams, AppRoute.SIGN_OUT>;
 }
 
-const Stack = createStackNavigator<AuthNavigatorParams>();
-
 export interface IAuthProps {
   token: string;
 }
+
+const Stack = createStackNavigator<AuthNavigatorParams>();
 
 const Auth = (props: IAuthProps): React.ReactElement => (
   <Stack.Navigator headerMode="none" screenOptions={{animationEnabled: true}}>
@@ -48,8 +48,7 @@ const Auth = (props: IAuthProps): React.ReactElement => (
       </>
     ) : (
       <>
-        {/* <Stack.Screen name={AppRoute.HOST} component={game.LobbyScreen} /> */}
-        <Stack.Screen name={AppRoute.SIGN_OUT} component={auth.SignoutScreen} />
+        <Stack.Screen name={AppRoute.HOST} component={game.LobbyScreen} />
       </>
     )}
   </Stack.Navigator>

@@ -12,10 +12,21 @@
  * Copyright 2020 - WebSpace
  */
 
+ /**
+  * Interface for hosting / joining a game
+  */
 export interface IHostGame {
     lobbyName: string;
     username: string;
 }
+
+/**
+ * Interface for starting a game
+ */
+// export interface IStartGame {
+//     token: string;
+//     lobbyName: string;
+// }
 
 /**
  * Determinds whether to set 
@@ -48,6 +59,12 @@ export const joinGame = (body: IHostGame) => {
     return {
         type: 'JOIN_GAME',
         payload: body
+    }
+}
+
+export const startGame = () => {
+    return {
+        type: 'START_GAME',
     }
 }
 

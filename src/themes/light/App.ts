@@ -10,14 +10,15 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
+    // backgroundColor: "#100241",
   },
   title: {
     paddingHorizontal: 16,
     paddingBottom: 8,
-    color: '#222',
+    color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   subTitle: {
     textAlign: 'center'

@@ -12,14 +12,14 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IInitialState, IAction } from "./interfaces";
+import { IAction, IAuthState } from "./interfaces";
 
 /**
  * Initial state for redux
  * Stores info about the
  * registering / logged in user
  */
-const initialState: IInitialState = {
+const initialState: IAuthState = {
   name: "",
   email: "",
   password: "",

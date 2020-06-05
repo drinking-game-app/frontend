@@ -13,13 +13,13 @@
  */
 
 import React from "react";
-import { Icon, ListItem, List, IconProps, Button } from "@ui-kitten/components";
-import { Text } from "react-native";
+import { Icon, ListItem, List, IconProps, Button, Layout, Text } from "@ui-kitten/components";
 import { IPlayer, IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
-import {gameActions} from "../../actions";
+import { gameActions } from "../../actions";
 import { LobbyScreenProps } from "../../navigation/game.navigator";
 import { ButtonInput } from "../../components/form-button.component";
+import { AppRoute } from "../../navigation/app-routes";
 
 /**
  * Importing styles
@@ -29,59 +29,97 @@ import { ButtonInput } from "../../components/form-button.component";
 const styles = require("../../themes")("Game");
 
 interface IActions extends LobbyScreenProps {
-    setGameLoading: () => void;
-    leaveGame: () => void;
+  setGameLoading: () => void;
+  leaveGame: () => void;
 }
 
 /**
- * Interface for props being 
+ * Interface for props being
  * passed to to the lobby component
  */
 interface IProps {
-    players: IPlayer[];
-    isLoading: boolean;
+  players: IPlayer[];
+  isLoading: boolean;
+  isHost: boolean;
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
-    const renderItemIcon = (props: IconProps) => (
-        <Icon {...props} name="person" />
-    )
+  const renderItemIcon = (props: IconProps) => (
+    <Icon {...props} name="person" />
+  );
 
-    const renderItem = ({item}: any) => (
-        <ListItem
-            title={item.name}
-            accessoryLeft={renderItemIcon}
+  const renderItem = ({ item }: any) => (
+    <ListItem title={item.name} accessoryLeft={renderItemIcon} />
+  );
+
+  const endGame = () => {
+    props.setGameLoading();
+    props.leaveGame();
+    props.navigation.navigate(AppRoute.HOME);
+  };
+
+  const startGame = () => {
+    props.setGameLoading();
+    props.startGame();
+    props.navigation.navigate(AppRoute.HOME);
+  };
+
+  let players: IPlayer[] = props.players;
+  if (players.length < 4)
+    players = [
+      ...players,
+      ...new Array(3).fill({ name: "Waiting for player..." }),
+    ];
+
+  const readyToPlay = props.players.length > 3;
+  return (
+    <Layout style={styles.container}>
+      <Text style={styles.title}>Join with this code: HK3J</Text>
+
+      <ButtonInput
+        style={styles.submitButton}
+        onPress={endGame}
+        disabled={props.isLoading}
+        loading={props.isLoading}
+        text={props.isHost ? "End Game" : "Leave Lobby"}
+      />
+      <List
+        style={styles.listContainer}
+        data={players}
+        renderItem={renderItem}
+      />
+
+      {props.isHost ? (
+        <ButtonInput
+          style={styles.submitButton}
+          onPress={startGame}
+          disabled={props.isLoading || !readyToPlay}
+          loading={props.isLoading}
+          text={
+            readyToPlay
+              ? "Start Game"
+              : `Waiting for ${4 - props.players.length} player${
+                    4 - props.players.length > 1 ? "s" : ""
+                }`
+          }
         />
-    )
-
-    const endGame = () => {
-        props.setGameLoading()
-        props.leaveGame()
-    }
-    
-    let players: IPlayer[] = props.players
-    if(players.length < 4) players = [...players, ...new Array(3).fill({name: 'Waiting for player...'})]
-    
-    return (
-        <>
-            <Text style={styles.title}>Join with this code: HK3J</Text>
-            
-            <ButtonInput
-                style={styles.submitButton}
-                onPress={endGame}
-                disabled={props.isLoading}
-                loading={props.isLoading}
-                text="Leave Lobby"
-            />
-            <List
-                style={styles.listContainer}
-                data={players}
-                renderItem={renderItem}
-            />
-        </>
-    )
-}
-
+      ) : (
+        <ButtonInput
+          style={styles.submitButton}
+          disabled={true}
+          loading={props.isLoading}
+          text={
+            readyToPlay
+              ? "Waiting for host to start the game"
+              : `Waiting for ${4 - props.players.length} player${
+                4 - props.players.length > 1 ? "s" : ""
+                }`
+          }
+        />
+      )}
+    </Layout>
+  );
+};
 
 /**
  * Return a list of people from our redux state
@@ -89,12 +127,16 @@ const LobbyScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-    const { players, isLoading } = state.game;
-  
-    return {
-    players,
-    isLoading
-    };
-  };
+  const { players, isLoading, isHost } = state.game;
 
-export default connect<IProps, IActions>(mapStateToProps, gameActions)(LobbyScreen)
+  return {
+    players,
+    isLoading,
+    isHost,
+  };
+};
+
+export default connect<IProps, IActions>(
+  mapStateToProps,
+  gameActions
+)(LobbyScreen);
