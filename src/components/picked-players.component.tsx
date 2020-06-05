@@ -17,6 +17,12 @@ import { Layout, Card } from "@ui-kitten/components";
 import { Text } from "react-native";
 import React from "react";
 
+/**
+ * Importing styles
+ * @param theme path
+ * @param App Module name
+ */
+const styles = require("../themes")("Game");
 
  /**
  * Interface for props being
@@ -29,6 +35,7 @@ interface IProps {
 const PickedPlayers = (props: IProps) => {
     return (
      <Layout>
+         <Text>Picked Players</Text>
          {props.players.map((player, i) => {
              <React.Fragment key={i}>
                 <Card>

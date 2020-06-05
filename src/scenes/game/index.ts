@@ -4,6 +4,7 @@
 import HostScreen from './host.component'
 import JoinScreen from './join.component'
 import LobbyScreen from './lobby.component'
+import GameScreen from './game.component'
 
 /**
  * Export these modules to the rest of the application
@@ -11,5 +12,6 @@ import LobbyScreen from './lobby.component'
 export default {
     HostScreen,
     JoinScreen,
-    LobbyScreen
+    LobbyScreen,
+    GameScreen
 }
