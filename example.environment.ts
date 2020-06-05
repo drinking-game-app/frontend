@@ -6,6 +6,19 @@ import Constants from "expo-constants";
 const localhost = 'http://localhost:3000'
 //'http://192.168.0.164:3000'
 
+interface IEnvVars {
+  SERVER_URL: string;
+  WEB_GOOGLE_CLIENT_ID: string;
+  IOS_GOOGLE_CLIENT_ID: string;
+  ANDROID_GOOGLE_CLIENT_ID: string;
+}
+
+interface IENV {
+  dev: IEnvVars;
+  staging: IEnvVars;
+  prod: IEnvVars
+}
+
 const ENV = {
  dev: {
     SERVER_URL: localhost,
