@@ -61,7 +61,14 @@ const Home = (props: IProps & IActions) => {
 
   return (
     <Layout style={styles.container}>
-      <Text style={styles.title}>Home</Text>
+      <Text style={styles.title}>
+        WHO IS 
+        <Text style={styles.titleRed}>
+          MORE LIKELY
+        </Text> 
+        TO
+      </Text>
+
       <Text style={styles.subTitle}>
         Application Running in {__DEV__ ? "Development" : "Production"} mode
       </Text>
