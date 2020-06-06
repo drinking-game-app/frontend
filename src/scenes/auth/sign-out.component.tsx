@@ -61,7 +61,7 @@ const SignoutScreen = (props: IProps & IActions) => {
     props.logout({ token });
   };
 
-  const { name, authedWithGoogle, isLoading } = props;
+  const { authedWithGoogle, isLoading } = props;
   
   return (
     <SafeAreaView>

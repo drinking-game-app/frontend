@@ -61,20 +61,39 @@ const Home = (props: IProps & IActions) => {
     <Icon {...props} name="settings-2-outline" />
   )
 
-  return (
-    <Layout style={styles.container}>
+  const renderSignoutAndCogContainer = () => {
+    if(props.token && props.token !== "") return (
       <View style={styles.signoutAndCogContainer}>
-        {props.token && props.token !== "" && <SignoutScreen />}
+        <SignoutScreen />
         <Button
-          style={styles.settingsCog}
-          onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
-          appearance='ghost' 
-          accessoryRight={settingsIcon}
+            style={styles.settingsCog}
+            onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
+            appearance='ghost' 
+            accessoryRight={settingsIcon}
         ></Button>
       </View>
+    )
+
+    return (
+      <View style={styles.signoutAndCogContainer}>
+        <Button
+            style={styles.settingsCog}
+            onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
+            appearance='ghost' 
+            accessoryRight={settingsIcon}
+        ></Button>
+      </View>
+    )
+  }
+
+  return (
+    <Layout style={styles.container}>
+      {renderSignoutAndCogContainer()}
       <Text style={styles.title}>
-        WHO IS <Text style={styles.titleRed}>MORE LIKELY</Text>
-        <br />
+        WHO IS 
+      </Text>
+      <Text style={styles.titleRed}>MORE LIKELY</Text>
+      <Text style={styles.title}>
         TO
       </Text>
 

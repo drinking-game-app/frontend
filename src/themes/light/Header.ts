@@ -5,17 +5,21 @@ import {StyleSheet} from 'react-native';
  */
 export default StyleSheet.create({
   container: {
-    // flex: 1,
     paddingVertical: 16,
     paddingHorizontal: 16,
-    alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "column-reverse",
     justifyContent: 'space-between'
   },
   title: {
     paddingVertical: 32,
     color: '#D7D98B',
     fontWeight: '400',
-    textAlign: 'center',
+    textAlign: 'left',
+    alignItems: "flex-start",
+  },
+  button: {
+    alignItems: "flex-end",
+    // maxWidth: '30%',
+    marginLeft: 'auto'
   }
 });

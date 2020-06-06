@@ -46,16 +46,16 @@ export default StyleSheet.create({
   formButton:{
     marginVertical: 10,
     paddingHorizontal: 150,
+    paddingVertical: 30,
     backgroundColor: '#AD0D4B',
-    border: 'none',
     width: '100%',
-    height: '100%',
   },
 
   signoutAndCogContainer: {
     position: 'absolute',
-    top: 20,
-    width: '100%',
+    top: 50,
+    width: '95%',
+    margin: 'auto',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
