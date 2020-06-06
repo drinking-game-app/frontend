@@ -10,8 +10,9 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#161F26",
+    backgroundColor: '#161F26',
   },
+
   title: {
     paddingHorizontal: 16,
     paddingBottom: 8,
@@ -20,6 +21,7 @@ export default StyleSheet.create({
     fontWeight: '400',
     textAlign: 'center',
   },
+
   titleRed: {
     paddingHorizontal: 16,
     paddingBottom: 8,
@@ -28,15 +30,23 @@ export default StyleSheet.create({
     fontWeight: '900',
     textAlign: 'center',
   },
+
   subTitle: {
     textAlign: 'center'
   },
+
   itemContainer: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
+
   formButton:{
-    marginVertical: 24
+    marginVertical: 10,
+    paddingHorizontal: 150,
+    backgroundColor: '#AD0D4B',
+    border: 'none',
+    width: '100%',
+    height: '100%',
   }
 });

@@ -69,26 +69,29 @@ const Home = (props: IProps & IActions) => {
         TO
       </Text>
 
-      <Text style={styles.subTitle}>
+      {/* <Text style={styles.subTitle}>
         Application Running in {__DEV__ ? "Development" : "Production"} mode
       </Text>
-      <Text style={styles.subTitle}>Server URL - {Constants.manifest.extra.SERVER_URL}</Text>
+      <Text style={styles.subTitle}>Server URL - {Constants.manifest.extra.SERVER_URL}</Text> */}
+      
       {
         props.token && props.token !== ""
         && <SignoutScreen />
       }
+
       <View>
         <Button
-          style={styles.formButton}
+          style={[styles.formButton, styles.itemContainer]}
           onPress={() => hostOrLogin()}
         >
-          Host
+          HOST
         </Button>
+
         <Button 
-          style={styles.formButton}
+          style={[styles.formButton, styles.itemContainer]}
             onPress={() => props.navigation.navigate(AppRoute.GAME)}  
         >
-          Join
+          JOIN
         </Button>
       </View>
     </Layout>
