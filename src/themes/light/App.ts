@@ -6,15 +6,15 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+    // paddingVertical: 16,
+    // paddingHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: '#161F26',
   },
 
   title: {
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     paddingBottom: 8,
     color: '#D7D98B',
     fontSize: 45,
@@ -23,7 +23,7 @@ export default StyleSheet.create({
   },
 
   titleRed: {
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     paddingBottom: 8,
     color: '#AD0D4B',
     fontSize: 45,
@@ -32,7 +32,7 @@ export default StyleSheet.create({
   },
 
   subTitle: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   itemContainer: {

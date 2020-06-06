@@ -62,11 +62,7 @@ const Home = (props: IProps & IActions) => {
   return (
     <Layout style={styles.container}>
       <Text style={styles.title}>
-        WHO IS 
-        <Text style={styles.titleRed}>
-          MORE LIKELY
-        </Text> 
-        TO
+        WHO IS <Text style={styles.titleRed}>MORE LIKELY</Text><br/>TO
       </Text>
 
       {/* <Text style={styles.subTitle}>
