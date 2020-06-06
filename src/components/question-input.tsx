@@ -17,7 +17,9 @@ import { Text } from "react-native";
 import React from "react";
 
 
+const QuesionInput =()=>{
 
+}
 // const PickedPlayers = (props: IProps) => {
 //     return (
 //      <Layout>
@@ -33,4 +35,4 @@ import React from "react";
 //     )
 // }
 
-export default PickedPlayers
+export default QuesionInput

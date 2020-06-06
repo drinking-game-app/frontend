@@ -55,6 +55,7 @@ const initialState: IGameState = {
   players: playersArr,
   isLoading: false,
   error: "",
+  pickedPlayers: [playersArr[0], playersArr[3]]
 };
 
 /**
@@ -113,10 +114,12 @@ export default (state = initialState, action: IGameAction) => {
         isLoading: false,
       };
 
-      case "START_GAME":
-      return  {
-
-      }
+    case "START_GAME":
+      return {
+        ...state,
+        inGame: true,
+        isLoading: false,
+      };
 
     /**
      * The default state reducer

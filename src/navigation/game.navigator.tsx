@@ -11,6 +11,7 @@ type GameNavigatorParams = AppNavigatorParams & {
   [AppRoute.HOST]: undefined;
   [AppRoute.JOIN]: undefined;
   [AppRoute.LOBBY]: undefined;
+  [AppRoute.LOBBY]: undefined;
 }
 
 export interface HostGameScreenProps {
@@ -32,6 +33,7 @@ const Stack = createStackNavigator<GameNavigatorParams>();
 
 interface IGameProps {
   inLobby: boolean;
+  inGame: boolean;
 }
 
 export const Game = (props: IGameProps): React.ReactElement => (
@@ -42,7 +44,9 @@ export const Game = (props: IGameProps): React.ReactElement => (
         <Stack.Screen name={AppRoute.JOIN} component={game.JoinScreen}/>
       )
       : (
-        <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
+        !props.inGame
+        ? <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
+        : <Stack.Screen name={AppRoute.GAME} component={game.GameScreen}/>
       )
     }
     
@@ -50,9 +54,9 @@ export const Game = (props: IGameProps): React.ReactElement => (
 );
 
 const mapStateToProps = (state: IInitialState): IGameProps => {
-  const { inLobby } = state.game;
+  const { inLobby, inGame } = state.game;
 
-  return { inLobby };
+  return { inLobby, inGame };
 };
 
 const GameNavigator = connect(mapStateToProps, {})(Game);

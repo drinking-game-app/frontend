@@ -72,6 +72,7 @@ export interface IGameState {
   players: IPlayer[];
   error:string;
   isLoading:boolean;
+  pickedPlayers: IPlayer[]
 }
 
 /**

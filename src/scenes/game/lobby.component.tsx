@@ -31,6 +31,7 @@ const styles = require("../../themes")("Game");
 interface IActions extends LobbyScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
+  startGame: () => void;
 }
 
 /**
@@ -61,7 +62,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   const startGame = () => {
     props.setGameLoading();
     props.startGame();
-    props.navigation.navigate(AppRoute.HOME);
+    props.navigation.navigate(AppRoute.GAME);
   };
 
   let players: IPlayer[] = props.players;
