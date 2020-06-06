@@ -10,5 +10,6 @@ export enum AppRoute {
     LOBBY = 'Lobby',
     IN_GAME = 'In Game',
     END_GAME = 'End Game',
-    SETTINGS = 'Settings'
+    SETTINGS = 'Settings',
+    DEVINFO = "Dev info"
 }

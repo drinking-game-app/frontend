@@ -20,6 +20,7 @@ import { gameActions } from "../../actions";
 import { LobbyScreenProps } from "../../navigation/game.navigator";
 import { ButtonInput } from "../../components/form-button.component";
 import { AppRoute } from "../../navigation/app-routes";
+import { ModalHeader } from "../../components/modal-header.component";
 
 /**
  * Importing styles
@@ -42,6 +43,7 @@ interface IProps {
   players: IPlayer[];
   isLoading: boolean;
   isHost: boolean;
+  lobbyName: string;
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
@@ -75,14 +77,14 @@ const LobbyScreen = (props: IProps & IActions) => {
   const readyToPlay = props.players.length > 3;
   return (
     <Layout style={styles.container}>
-      <Text style={styles.title}>Join with this code: HK3J</Text>
-
-      <ButtonInput
-        style={styles.submitButton}
-        onPress={endGame}
-        disabled={props.isLoading}
+      <ModalHeader
+        text={`Join with this code: ${props.lobbyName}`}
+        buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={props.isLoading}
-        text={props.isHost ? "End Game" : "Leave Lobby"}
+        disabled={props.isLoading}
+        icon="close-outline"
+        status="danger"
+        onPress={() => endGame()}
       />
       <List
         style={styles.listContainer}
@@ -128,12 +130,13 @@ const LobbyScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { players, isLoading, isHost } = state.game;
+  const { players, isLoading, isHost, lobbyName } = state.game;
 
   return {
     players,
     isLoading,
     isHost,
+    lobbyName
   };
 };
 

@@ -7,9 +7,15 @@ import main from '../scenes/main';
 
 type MainNavigatorParams = AppNavigatorParams & {
   [AppRoute.HOME]: undefined;
+  [AppRoute.DEVINFO]: undefined;
 }
 
 export interface HomeScreenProps {
+  navigation: StackNavigationProp<MainNavigatorParams, AppRoute.HOME>;
+  route: RouteProp<MainNavigatorParams, AppRoute.HOME>;
+}
+
+export interface DevInfoScreenProps {
   navigation: StackNavigationProp<MainNavigatorParams, AppRoute.HOME>;
   route: RouteProp<MainNavigatorParams, AppRoute.HOME>;
 }
@@ -19,5 +25,6 @@ const Stack = createStackNavigator<MainNavigatorParams>();
 export const MainNavigator = (props: MainNavigatorParams): React.ReactElement => (
   <Stack.Navigator {...props} headerMode='none' screenOptions={{animationEnabled: true}}>
     <Stack.Screen name={AppRoute.HOME} component={main.Home}/>
+    <Stack.Screen name={AppRoute.DEVINFO} component={main.DevInfoScreen}/>
   </Stack.Navigator>
 );

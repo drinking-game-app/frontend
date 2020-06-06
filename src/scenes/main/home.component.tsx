@@ -14,16 +14,15 @@
 
 import React from "react";
 import { View, SafeAreaView } from "react-native";
-import Constants from 'expo-constants'
-import { Button, Layout, Text } from "@ui-kitten/components";
+import Constants from "expo-constants";
+import { Button, Layout, Text, Icon, IconProps } from "@ui-kitten/components";
 import { AppRoute } from "../../navigation/app-routes";
 import { IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
-import {gameActions} from "../../actions";
+import { gameActions } from "../../actions";
 import { HomeScreenProps } from "../../navigation/main.navigator";
 import { IHostGame } from "../../actions/game";
 import SignoutScreen from "../auth/sign-out.component";
-
 
 /**
  * Importing styles
@@ -46,34 +45,38 @@ interface IProps {
  * Rendering the view
  */
 const Home = (props: IProps & IActions) => {
-
   /**
    * If the user is logged in, start a new game as a host
-   * 
+   *
    * if not redirect them to auth
    */
   const hostOrLogin = () => {
-    if(props.token && props.token !== "") {
-      props.hostGame({username: props.name, lobbyName: 'RYAN'})
-      props.navigation.navigate(AppRoute.GAME)
-    } else props.navigation.navigate(AppRoute.AUTH)
-  }
+    if (props.token && props.token !== "") {
+      props.hostGame({ username: props.name, lobbyName: "RYAN" });
+      props.navigation.navigate(AppRoute.GAME);
+    } else props.navigation.navigate(AppRoute.AUTH);
+  };
+
+  const settingsIcon = (props: IconProps) => (
+    <Icon {...props} name="settings-2-outline" />
+  )
 
   return (
     <Layout style={styles.container}>
+      <View style={styles.signoutAndCogContainer}>
+        {props.token && props.token !== "" && <SignoutScreen />}
+        <Button
+          style={styles.settingsCog}
+          onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
+          appearance='ghost' 
+          accessoryRight={settingsIcon}
+        ></Button>
+      </View>
       <Text style={styles.title}>
-        WHO IS <Text style={styles.titleRed}>MORE LIKELY</Text><br/>TO
+        WHO IS <Text style={styles.titleRed}>MORE LIKELY</Text>
+        <br />
+        TO
       </Text>
-
-      {/* <Text style={styles.subTitle}>
-        Application Running in {__DEV__ ? "Development" : "Production"} mode
-      </Text>
-      <Text style={styles.subTitle}>Server URL - {Constants.manifest.extra.SERVER_URL}</Text> */}
-      
-      {
-        props.token && props.token !== ""
-        && <SignoutScreen />
-      }
 
       <View>
         <Button
@@ -83,9 +86,9 @@ const Home = (props: IProps & IActions) => {
           HOST
         </Button>
 
-        <Button 
+        <Button
           style={[styles.formButton, styles.itemContainer]}
-            onPress={() => props.navigation.navigate(AppRoute.GAME)}  
+          onPress={() => props.navigation.navigate(AppRoute.GAME)}
         >
           JOIN
         </Button>
@@ -94,7 +97,6 @@ const Home = (props: IProps & IActions) => {
   );
 };
 
-
 const mapStateToProps = (state: IInitialState): IProps => {
   const { token, name } = state.auth;
   const { isHost } = state.game;
@@ -102,4 +104,4 @@ const mapStateToProps = (state: IInitialState): IProps => {
   return { token, name, isHost };
 };
 
-export default connect(mapStateToProps, gameActions)(Home)
+export default connect(mapStateToProps, gameActions)(Home);

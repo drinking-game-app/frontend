@@ -6,17 +6,18 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    // paddingVertical: 16,
-    // paddingHorizontal: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "center",
     backgroundColor: '#161F26',
+    position: 'relative'
   },
 
   title: {
     // paddingHorizontal: 16,
-    paddingTop: '37%',
-    paddingBottom: '20%',
+    // paddingTop: '37%',
+    paddingVertical: 32,
     color: '#D7D98B',
     fontSize: 45,
     fontWeight: '400',
@@ -49,5 +50,14 @@ export default StyleSheet.create({
     border: 'none',
     width: '100%',
     height: '100%',
+  },
+
+  signoutAndCogContainer: {
+    position: 'absolute',
+    top: 20,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });

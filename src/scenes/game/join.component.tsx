@@ -24,6 +24,7 @@ import { connect } from "react-redux";
 import { FormInput } from "../../components/form-input.component";
 import { ButtonInput } from "../../components/form-button.component";
 import { IHostGame } from "../../actions/game";
+import { ModalHeader } from "../../components/modal-header.component";
 
 
 
@@ -99,8 +100,12 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
 
     return (
         <Layout style={styles.container}>
-            <Text style={styles.title}>Join</Text>
-            <Button style={styles.submitButton} onPress={() => props.navigation.navigate(AppRoute.HOME)}>Home</Button>
+          <ModalHeader
+              text="Join a lobby"
+              icon="close-outline"
+              status="danger"
+              onPress={() => props.navigation.navigate(AppRoute.HOME)}
+            />
             <Formik
                 initialValues={{lobbyName,username}}
                 validationSchema={JoinLobbySchema}

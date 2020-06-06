@@ -28,6 +28,7 @@ import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 import { AppRoute } from "../../navigation/app-routes";
 import { SignInScreenProps } from "../../navigation/auth.navigator";
 import { ButtonInput } from "../../components/form-button.component";
+import { ModalHeader } from "../../components/modal-header.component";
 
 /**
  * Importing styles
@@ -132,6 +133,12 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
 
   return (
     <Layout style={styles.formContainer}>
+      <ModalHeader
+        text="Sign in"
+        icon="close-outline"
+        status="danger"
+        onPress={() => props.navigation.navigate(AppRoute.HOME)}
+      />
       <Formik
         initialValues={{ email, password }}
         validationSchema={SignInSchema}
@@ -153,14 +160,6 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         Don't have an account?
       </Button>
 
-      <Button
-        style={styles.noAccountButton}
-        appearance="ghost"
-        status="basic"
-        onPress={() => props.navigation.navigate(AppRoute.HOME)}
-      >
-        Close
-      </Button>
     </Layout>
   );
 };

@@ -18,6 +18,7 @@
 import App from './App';
 import Form from './Form'
 import Game from './Game'
+import Header from './Header'
 
 /**
  * Export these modules to the rest of the application
@@ -25,5 +26,6 @@ import Game from './Game'
 export default {
   App,
   Form,
-  Game
+  Game,
+  Header
 };

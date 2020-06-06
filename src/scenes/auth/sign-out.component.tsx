@@ -65,8 +65,6 @@ const SignoutScreen = (props: IProps & IActions) => {
   
   return (
     <SafeAreaView>
-      <Text style={styles.title}>Welcome, {name}</Text>
-
       {authedWithGoogle ? (
         <LogoutWithGoogle />
       ) : (

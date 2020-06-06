@@ -25,6 +25,7 @@ import { AppRoute } from "../../navigation/app-routes";
 import { RegisterScreenProps } from "../../navigation/auth.navigator";
 import { ButtonInput } from "../../components/form-button.component";
 import { Text } from "react-native";
+import { ModalHeader } from "../../components/modal-header.component";
 
 /**
  * Importing styles
@@ -142,6 +143,12 @@ const RegisterScreen = (props: IProps & IActions) => {
   if (props.actionSuccess) navigateSignIn();
   return (
     <Layout style={styles.formContainer}>
+      <ModalHeader
+        text="Register"
+        icon="close-outline"
+        status="danger"
+        onPress={() => props.navigation.navigate(AppRoute.HOME)}
+      />
       <Formik
         initialValues={{ name, email, password, confirm_password }}
         validationSchema={SignUpSchema}
