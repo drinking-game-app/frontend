@@ -9,13 +9,14 @@ export default StyleSheet.create({
     // paddingVertical: 16,
     // paddingHorizontal: 16,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     backgroundColor: '#161F26',
   },
 
   title: {
     // paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingTop: '37%',
+    paddingBottom: '20%',
     color: '#D7D98B',
     fontSize: 45,
     fontWeight: '400',
