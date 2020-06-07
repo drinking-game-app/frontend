@@ -40,6 +40,7 @@ interface IActions extends GameScreenProps {
   leaveGame: () => void;
   answerQuestion: ({ question }: IQuestion) => void;
   setPhase: (phase: string) => void;
+  endGame: () => void;
 }
 
 /**
@@ -52,7 +53,7 @@ interface IProps {
   currentQuestion: IQuestion;
 }
 
-const phases = ["", "Question Gathering", "Hotseat", "Disconnected"];
+const phases = ["", "Question Gathering", "Hotseat", "Leaderboard", "Disconnected"];
 
 const GameScreen = (props: IProps & IActions) => {
   const [currentPhaseIndex, setCurrentPhaseIndex] = React.useState<number>(0);
@@ -67,6 +68,8 @@ const GameScreen = (props: IProps & IActions) => {
   };
 
   const gamePhaseController = () => {
+    // if(props.phase === 'Leaderboard') props.endGame()
+
     switch (props.phase) {
       case "Question Gathering":
         return (
@@ -83,8 +86,9 @@ const GameScreen = (props: IProps & IActions) => {
             answerQuestion={answerQuestion}
           />
         );
-      case "Leaderboard":
-        return <Text>Leaderboard</Text>;
+      // case "Leaderboard":
+      //   return props.endGame()
+      //   return <React.Fragment><Text>Leaderboard</Text><Button onPress={() => props.endGame()}>End Game</Button></React.Fragment>;
       case "Disconnected":
         return <Text>Disconnected</Text>;
 

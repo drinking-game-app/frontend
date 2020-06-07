@@ -79,7 +79,6 @@ export const startGame = () => {
  * 
  */
 export const inputQuestion = (question: IQuestion) => {
-    console.log(question, 'question input!')
     return {
         type: 'INPUT_QUESTION',
         payload: question
@@ -93,6 +92,16 @@ export const inputQuestion = (question: IQuestion) => {
 export const leaveGame = () => {
     return {
         type: 'LEAVE_GAME',
+    }
+}
+
+/**
+ * Ends a game / round depending
+ * on the number of rounds
+ */
+export const endGame = () => {
+    return {
+        type: 'END_GAME',
     }
 }
 

@@ -57,7 +57,8 @@ export interface IAuthState {
 
 
 export interface IPlayer {
-  name: string
+  name: string;
+  points: number;
 }
 
 
@@ -86,6 +87,9 @@ export interface IGameState {
   questionInput: string;
   questions: IQuestion[]
   numOfQuestions: number;
+  numOfRounds: number;
+  roundOver: boolean;
+  round: number;
   phase: string;
   currentQuestion: IQuestion;
 }

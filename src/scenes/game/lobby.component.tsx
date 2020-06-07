@@ -44,6 +44,7 @@ interface IProps {
   isLoading: boolean;
   isHost: boolean;
   lobbyName: string;
+  roundOver: boolean;
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
@@ -51,9 +52,16 @@ const LobbyScreen = (props: IProps & IActions) => {
     <Icon {...props} name="person" />
   );
 
-  const renderItem = ({ item }: any) => (
-    <ListItem title={item.name} accessoryLeft={renderItemIcon} />
-  );
+  const renderListItemPoints = (points: number) => (
+    <Text>{points} points</Text>
+  )
+
+  const renderItem = ({ item }: any) => {
+    if(props.roundOver) return <ListItem title={item.name} accessoryLeft={renderItemIcon} accessoryRight={() => renderListItemPoints(item.points)} />
+
+
+    return <ListItem title={item.name} accessoryLeft={renderItemIcon} />
+  }
 
   const endGame = () => {
     props.setGameLoading();
@@ -73,12 +81,15 @@ const LobbyScreen = (props: IProps & IActions) => {
       ...players,
       ...new Array(3).fill({ name: "Waiting for player..." }),
     ];
+  if(props.roundOver) {
+    players.sort((a, b) => b.points - a.points)  
+  }
 
   const readyToPlay = props.players.length > 3;
   return (
     <Layout style={styles.container}>
       <ModalHeader
-        text={`Join with this code: ${props.lobbyName}`}
+        text={props.roundOver ? `Leaderboard` : `Join with this code: ${props.lobbyName}`}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={props.isLoading}
         disabled={props.isLoading}
@@ -100,7 +111,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           loading={props.isLoading}
           text={
             readyToPlay
-              ? "Start Game"
+              ? `Start ${props.roundOver ? 'Round' : 'Game'}`
               : `Waiting for ${4 - props.players.length} player${
                     4 - props.players.length > 1 ? "s" : ""
                 }`
@@ -130,13 +141,14 @@ const LobbyScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { players, isLoading, isHost, lobbyName } = state.game;
+  const { players, isLoading, isHost, lobbyName, roundOver } = state.game;
 
   return {
     players,
     isLoading,
     isHost,
-    lobbyName
+    lobbyName,
+    roundOver
   };
 };
 

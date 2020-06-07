@@ -30,15 +30,19 @@ interface IGameAction {
 const playersArr: IPlayer[] = [
   {
     name: "John",
+    points: 300
   },
   {
     name: "Ross",
+    points: 700
   },
   {
     name: "Sue Reardon",
+    points: 12000
   },
   {
     name: "It has to be wack'm",
+    points: 20
   },
 ];
 
@@ -60,6 +64,9 @@ const initialState: IGameState = {
   questionInput: "Who\'s more likely to",
   questions: [],
   numOfQuestions: 3,
+  numOfRounds: 3,
+  roundOver: false,
+  round: 0,
   phase: "",
   currentQuestion: {
     question: "",
@@ -129,6 +136,12 @@ export default (state = initialState, action: IGameAction) => {
         inGame: true,
         isLoading: false,
       };
+    case "START_GAME":
+      return {
+        ...state,
+        inGame: true,
+        isLoading: false,
+      };
 
     case "INPUT_QUESTION":
       const questions = state.questions
@@ -143,6 +156,13 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "SET_PHASE": 
+      if(action.payload === "Leaderboard") return {
+        ...state,
+        phase: action.payload,
+        roundOver: true,
+        inGame: false
+      }
+      
       return {
         ...state,
         phase: action.payload
@@ -156,6 +176,12 @@ export default (state = initialState, action: IGameAction) => {
       return {
         ...state,
         questions: stateQuestions
+      }
+    case "END_GAME":
+      return {
+        ...state,
+        roundOver: true,
+        inGame: false
       }
     /**
      * The default state reducer
