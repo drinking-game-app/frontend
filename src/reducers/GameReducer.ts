@@ -14,8 +14,6 @@
 
 import { IGameState, IPlayer, IQuestion } from "./interfaces";
 
-// import { IInitialState, IAction } from "./interfaces";
-
 interface IGameAction {
   type: string;
   payload: {
@@ -27,24 +25,24 @@ interface IGameAction {
   };
 }
 
-const playersArr: IPlayer[] = [
-  {
-    name: "John",
-    points: 300
-  },
-  {
-    name: "Ross",
-    points: 700
-  },
-  {
-    name: "Sue Reardon",
-    points: 12000
-  },
-  {
-    name: "It has to be wack'm",
-    points: 20
-  },
-];
+// const playersArr: IPlayer[] = [
+//   {
+//     name: "John",
+//     score: 300
+//   },
+//   {
+//     name: "Ross",
+//     score: 700
+//   },
+//   {
+//     name: "Sue Reardon",
+//     score: 12000
+//   },
+//   {
+//     name: "It has to be wack'm",
+//     score: 20
+//   },
+// ];
 
 /**
  * Initial state for redux
@@ -57,21 +55,19 @@ const initialState: IGameState = {
   inLobby: false,
   inGame: false,
   isHost: false,
-  players: playersArr,
+  players: [],
   isLoading: false,
   error: "",
-  pickedPlayers: [playersArr[0], playersArr[3]],
+  messages: [],
+  pickedPlayers: [],
   questionInput: "Who\'s more likely to",
   questions: [],
-  numOfQuestions: 3,
-  numOfRounds: 3,
   roundOver: false,
   round: 0,
   phase: "",
-  currentQuestion: {
-    question: "",
-    username: ""
-  }
+  currentQuestionId: 0,
+  askedQuestions: [],
+  roundOptions: undefined
 };
 
 /**
@@ -91,6 +87,33 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         isLoading: !state.isLoading,
       };
+
+    /**
+     * Update the messages array 
+     * with messages from the gamesock
+     * server
+     */
+    case "SET_MESSAGES": 
+      const messages = state.messages
+      messages.push(action.payload as string)
+
+      return {
+        ...state,
+        messages: messages
+      }
+
+    /**
+     * Update the list of players
+     */
+    case "UPDATE_PLAYERS":
+      const players = state.players
+      players.push(action.payload as IPlayer)
+
+      return {
+        ...state,
+        players
+      }
+
     /**
      * When a API request responds with
      * an error, store it in the state
@@ -135,14 +158,16 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         inGame: true,
         isLoading: false,
-      };
-    case "START_GAME":
-      return {
-        ...state,
-        inGame: true,
-        isLoading: false,
+        phase: "Starting Game",
+        roundOptions: action.payload
       };
 
+    case "SET_PICKED_PLAYERS":
+      const statePlayers = state.players
+      return {
+        ...state,
+
+      }
     case "INPUT_QUESTION":
       const questions = state.questions
       
@@ -162,7 +187,7 @@ export default (state = initialState, action: IGameAction) => {
         roundOver: true,
         inGame: false
       }
-      
+
       return {
         ...state,
         phase: action.payload

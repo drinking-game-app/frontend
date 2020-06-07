@@ -12,6 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
+import {Player, Question, RoundOptions} from '@rossmacd/gamesock-client'
+
 /**
  * Interface for a user
  */
@@ -56,9 +58,9 @@ export interface IAuthState {
 }
 
 
-export interface IPlayer {
-  name: string;
-  points: number;
+export interface IPlayer extends Player {
+  pIndex?:number
+  inHotseat?:boolean
 }
 
 
@@ -83,15 +85,16 @@ export interface IGameState {
   players: IPlayer[];
   error:string;
   isLoading:boolean;
+  messages: string[];
   pickedPlayers: IPlayer[];
   questionInput: string;
   questions: IQuestion[]
-  numOfQuestions: number;
-  numOfRounds: number;
   roundOver: boolean;
   round: number;
   phase: string;
-  currentQuestion: IQuestion;
+  currentQuestionId: number;
+  askedQuestions: Question[];
+  roundOptions: RoundOptions | undefined;
 }
 
 /**

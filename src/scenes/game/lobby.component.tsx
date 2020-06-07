@@ -52,12 +52,12 @@ const LobbyScreen = (props: IProps & IActions) => {
     <Icon {...props} name="person" />
   );
 
-  const renderListItemPoints = (points: number) => (
-    <Text>{points} points</Text>
+  const renderListItemPoints = (score: number) => (
+    <Text>{score} points</Text>
   )
 
   const renderItem = ({ item }: any) => {
-    if(props.roundOver) return <ListItem title={item.name} accessoryLeft={renderItemIcon} accessoryRight={() => renderListItemPoints(item.points)} />
+    if(props.roundOver) return <ListItem title={item.name} accessoryLeft={renderItemIcon} accessoryRight={() => renderListItemPoints(item.score)} />
 
 
     return <ListItem title={item.name} accessoryLeft={renderItemIcon} />
@@ -82,7 +82,7 @@ const LobbyScreen = (props: IProps & IActions) => {
       ...new Array(3).fill({ name: "Waiting for player..." }),
     ];
   if(props.roundOver) {
-    players.sort((a, b) => b.points - a.points)  
+    players.sort((a, b) => b.score - a.score)  
   }
 
   const readyToPlay = props.players.length > 3;
