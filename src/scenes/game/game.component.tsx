@@ -17,6 +17,7 @@ import { Layout, Text } from "@ui-kitten/components"
 import PickedPlayers from "../../components/picked-players.component";
 import { IPlayer, IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
+import QuestionInput from "../../components/question-input.component";
 
 /**
  * Importing styles
@@ -36,10 +37,10 @@ interface IProps {
 const GameScreen = (props: IProps) => {
     
     return (
-        <Layout>
+        <Layout style={styles.container}>
             <Text>Game Screen</Text>
             <PickedPlayers players={props.pickedPlayers} />
-
+            <QuestionInput />
 
         </Layout>
     )

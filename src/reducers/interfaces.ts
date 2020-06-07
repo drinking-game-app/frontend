@@ -60,6 +60,12 @@ export interface IPlayer {
   name: string
 }
 
+export interface IQuestion {
+  user: string;
+  question: string;
+  answer?: string;
+}
+
 /**
  * Interface for the game state
  */
@@ -72,7 +78,9 @@ export interface IGameState {
   players: IPlayer[];
   error:string;
   isLoading:boolean;
-  pickedPlayers: IPlayer[]
+  pickedPlayers: IPlayer[];
+  questionInput: string;
+  questions: IQuestion[]
 }
 
 /**

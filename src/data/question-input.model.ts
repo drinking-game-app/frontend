@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 export class QuestionInputData {
 
   constructor(
-    readonly question: string) {
+    readonly questionInput: string) {
 
   }
 
@@ -14,6 +14,6 @@ export class QuestionInputData {
   }
 }
 
-export const JoinLobbySchema = Yup.object().shape({
-    question: Yup.string().matches(/^Who's more likely.*$/, { message: 'Question must start with \"Whos\'s more likely\"' })
+export const QuestionSchema = Yup.object().shape({
+    questionInput: Yup.string().matches(/^Who's more likely.*$/, { message: 'Question must start with \"Whos\'s more likely\"' }).required('Question is required')
 });

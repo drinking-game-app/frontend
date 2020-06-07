@@ -45,10 +45,11 @@ export default StyleSheet.create({
 
   formButton:{
     marginVertical: 10,
-    paddingHorizontal: 150,
+    paddingHorizontal: 100,
     paddingVertical: 30,
     backgroundColor: '#AD0D4B',
-    width: '100%',
+    // width: '100%',
+    // marginHorizontal: 'auto'
   },
 
   signoutAndCogContainer: {

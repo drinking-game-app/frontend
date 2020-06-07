@@ -55,7 +55,9 @@ const initialState: IGameState = {
   players: playersArr,
   isLoading: false,
   error: "",
-  pickedPlayers: [playersArr[0], playersArr[3]]
+  pickedPlayers: [playersArr[0], playersArr[3]],
+  questionInput: "",
+  questions: []
 };
 
 /**

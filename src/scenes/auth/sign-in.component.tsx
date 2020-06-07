@@ -110,6 +110,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
           placeholder="Password"
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
+          autoCapitalize="none"
         />
 
         {error !== "" && <Text>{error}</Text>}

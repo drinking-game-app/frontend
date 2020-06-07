@@ -13,9 +13,9 @@
  */
 
 import { IPlayer } from "../reducers/interfaces";
-import { Layout, Card } from "@ui-kitten/components";
-import { Text } from "react-native";
+import { Layout, Card, Text } from "@ui-kitten/components";
 import React from "react";
+import { View } from "react-native";
 
 /**
  * Importing styles
@@ -34,16 +34,20 @@ interface IProps {
 
 const PickedPlayers = (props: IProps) => {
     return (
-     <Layout>
-         <Text>Picked Players</Text>
-         {props.players.map((player, i) => {
-             <React.Fragment key={i}>
-                <Card>
-                    <Text style={styles.title}>{player.name}</Text>
-                </Card>
-                <Text>{i === 0 ? 'You' : player.name}</Text>
-             </React.Fragment>
-         })}
+     <Layout style={styles.container}>
+         <Text style={styles.title}>Picked Players</Text>
+         <View style={styles.pickedPlayerContainer}>
+            {props.players.map((player, i) => {
+                return (
+                    <View key={i} style={styles.pickedPlayer}>
+                        <Card style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]}>
+                            <Text style={styles.title}>{player.name}</Text>
+                        </Card>
+                        <Text style={[styles.belowCardText, i === 0 ? styles.alignLeft : styles.alignRight ]} appearance='hint'>{i === 0 ? 'You' : player.name}</Text>
+                    </View>
+                )
+            })}
+         </View>
      </Layout>   
     )
 }

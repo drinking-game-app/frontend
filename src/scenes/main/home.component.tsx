@@ -99,14 +99,14 @@ const Home = (props: IProps & IActions) => {
 
       <View>
         <Button
-          style={[styles.formButton, styles.itemContainer]}
+          style={styles.formButton}
           onPress={() => hostOrLogin()}
         >
           HOST
         </Button>
 
         <Button
-          style={[styles.formButton, styles.itemContainer]}
+          style={styles.formButton}
           onPress={() => props.navigation.navigate(AppRoute.GAME)}
         >
           JOIN
