@@ -29,6 +29,11 @@ export interface LobbyScreenProps {
   route: RouteProp<GameNavigatorParams, AppRoute.LOBBY>;
 }
 
+export interface GameScreenProps {
+  navigation: StackNavigationProp<GameNavigatorParams, AppRoute.GAME>;
+  route: RouteProp<GameNavigatorParams, AppRoute.GAME>;
+}
+
 const Stack = createStackNavigator<GameNavigatorParams>();
 
 interface IGameProps {

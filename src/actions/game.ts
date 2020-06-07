@@ -12,6 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
+import { IQuestion } from "../reducers/interfaces"
+
  /**
   * Interface for hosting / joining a game
   */
@@ -62,9 +64,25 @@ export const joinGame = (body: IHostGame) => {
     }
 }
 
+/**
+ * Start a new game
+ * 
+ */
 export const startGame = () => {
     return {
         type: 'START_GAME',
+    }
+}
+
+/**
+ * Start a new game
+ * 
+ */
+export const inputQuestion = (question: IQuestion) => {
+    console.log(question, 'question input!')
+    return {
+        type: 'INPUT_QUESTION',
+        payload: question
     }
 }
 
@@ -75,5 +93,26 @@ export const startGame = () => {
 export const leaveGame = () => {
     return {
         type: 'LEAVE_GAME',
+    }
+}
+
+/**
+ * Set the phase within a game
+ */
+export const setPhase = (phase: string) => {
+    return {
+        type: "SET_PHASE",
+        payload: phase
+    }
+}
+
+
+/**
+ * Answer a question within a game
+ */
+export const answerQuestion = (question: IQuestion) => {
+    return {
+        type: "ANSWER_QUESTION",
+        payload: question
     }
 }

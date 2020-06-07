@@ -12,17 +12,18 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IGameState, IPlayer } from "./interfaces";
+import { IGameState, IPlayer, IQuestion } from "./interfaces";
 
 // import { IInitialState, IAction } from "./interfaces";
 
 interface IGameAction {
   type: string;
   payload: {
-    prop: string;
-    value: string;
+    prop?: string;
+    value?: string;
     lobbyName?: string;
-    userName?: string;
+    username?: string;
+    question?: string;
   };
 }
 
@@ -56,8 +57,14 @@ const initialState: IGameState = {
   isLoading: false,
   error: "",
   pickedPlayers: [playersArr[0], playersArr[3]],
-  questionInput: "",
-  questions: []
+  questionInput: "Who\'s more likely to",
+  questions: [],
+  numOfQuestions: 3,
+  phase: "",
+  currentQuestion: {
+    question: "",
+    username: ""
+  }
 };
 
 /**
@@ -92,7 +99,7 @@ export default (state = initialState, action: IGameAction) => {
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
-        username: action.payload.userName,
+        username: action.payload.username,
         inLobby: true,
         isHost: true,
         isLoading: false,
@@ -101,7 +108,7 @@ export default (state = initialState, action: IGameAction) => {
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
-        username: action.payload.userName,
+        username: action.payload.username,
         inLobby: true,
         isLoading: false,
       };
@@ -123,6 +130,33 @@ export default (state = initialState, action: IGameAction) => {
         isLoading: false,
       };
 
+    case "INPUT_QUESTION":
+      const questions = state.questions
+      
+      questions.push(action.payload as IQuestion)
+
+      return {
+        ...state,
+        questionInput: "Who\'s more likely to",
+        questions: questions,
+        isLoading: false
+      };
+
+    case "SET_PHASE": 
+      return {
+        ...state,
+        phase: action.payload
+      }
+    case "ANSWER_QUESTION":
+      let stateQuestions = state.questions
+      const questionI = stateQuestions.findIndex(question => question.username === action.payload.username)
+
+      stateQuestions[questionI] = action.payload as IQuestion
+
+      return {
+        ...state,
+        questions: stateQuestions
+      }
     /**
      * The default state reducer
      */

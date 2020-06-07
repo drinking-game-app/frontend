@@ -52,5 +52,11 @@ export default StyleSheet.create({
   alignRight: {
     color: '#9F37DE',
     textAlign: 'right'
+  },
+  gameLoadingSpinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 30
   }
 });

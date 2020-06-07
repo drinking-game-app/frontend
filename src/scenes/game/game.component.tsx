@@ -13,11 +13,16 @@
  */
 
 import React from "react";
-import { Layout, Text } from "@ui-kitten/components"
+import { Layout, Text, Spinner, Button } from "@ui-kitten/components";
 import PickedPlayers from "../../components/picked-players.component";
-import { IPlayer, IInitialState } from "../../reducers/interfaces";
+import { IPlayer, IInitialState, IQuestion } from "../../reducers/interfaces";
 import { connect } from "react-redux";
 import QuestionInput from "../../components/question-input.component";
+import { gameActions } from "../../actions";
+import { ModalHeader } from "../../components/modal-header.component";
+import { GameScreenProps } from "../../navigation/game.navigator";
+import { AppRoute } from "../../navigation/app-routes";
+import { View } from "react-native";
 
 /**
  * Importing styles
@@ -27,24 +32,103 @@ import QuestionInput from "../../components/question-input.component";
 const styles = require("../../themes")("Game");
 
 /**
+ * Interface for Actions being
+ * passed to the game screen component
+ */
+interface IActions extends GameScreenProps {
+  setGameLoading: () => void;
+  leaveGame: () => void;
+  answerQuestion: ({ question }: IQuestion) => void;
+  setPhase: (phase: string) => void;
+}
+
+/**
  * Interface for props being
  * passed to to the game screen component
  */
 interface IProps {
-    pickedPlayers: IPlayer[];
+  pickedPlayers: IPlayer[];
+  phase: string;
+  currentQuestion: IQuestion;
 }
 
-const GameScreen = (props: IProps) => {
-    
-    return (
-        <Layout style={styles.container}>
-            <Text>Game Screen</Text>
+const phases = ["", "Question Gathering", "Hotseat", "Disconnected"];
+
+const GameScreen = (props: IProps & IActions) => {
+  const [currentPhaseIndex, setCurrentPhaseIndex] = React.useState<number>(0);
+  const endGame = () => {
+    props.setGameLoading();
+    props.leaveGame();
+    props.navigation.navigate(AppRoute.HOME);
+  };
+
+  const answerQuestion = (question: IQuestion) => {
+    props.answerQuestion(question);
+  };
+
+  const gamePhaseController = () => {
+    switch (props.phase) {
+      case "Question Gathering":
+        return (
+          <React.Fragment>
             <PickedPlayers players={props.pickedPlayers} />
             <QuestionInput />
+          </React.Fragment>
+        );
+      case "Hotseat":
+        return (
+          <PickedPlayers
+            players={props.pickedPlayers}
+            question={props.currentQuestion}
+            answerQuestion={answerQuestion}
+          />
+        );
+      case "Leaderboard":
+        return <Text>Leaderboard</Text>;
+      case "Disconnected":
+        return <Text>Disconnected</Text>;
 
-        </Layout>
-    )
-}
+      default:
+        return (
+          <View style={styles.gameLoadingSpinner}>
+            <Spinner size="large" />
+          </View>
+        );
+    }
+  };
+
+  /**
+   * Cycle through the phases for dev purposes
+   */
+  const cyclePhase = () => {
+    setCurrentPhaseIndex((oldPhaseIndex) => {
+      const newPhaseIndex =
+        oldPhaseIndex > phases.length - 1 ? 0 : (oldPhaseIndex += 1);
+
+      props.setPhase(phases[newPhaseIndex]);
+      return newPhaseIndex;
+    });
+  };
+
+  return (
+    <Layout style={styles.container}>
+      <ModalHeader
+        text="Game Screen"
+        icon="close-outline"
+        status="danger"
+        onPress={() => endGame()}
+      />
+      <Text>
+        Phase:{" "}
+        {phases[currentPhaseIndex] === ""
+          ? "Loading"
+          : phases[currentPhaseIndex]}
+      </Text>
+      <Button onPress={() => cyclePhase()}>Next Phase</Button>
+      {gamePhaseController()}
+    </Layout>
+  );
+};
 
 /**
  * Return a list of people from our redux state
@@ -52,14 +136,16 @@ const GameScreen = (props: IProps) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-    const { pickedPlayers } = state.game;
-  
-    return {
-      pickedPlayers,
-    };
+  const { pickedPlayers, phase, currentQuestion } = state.game;
+
+  return {
+    pickedPlayers,
+    phase,
+    currentQuestion
   };
-  
-  export default connect<IProps>(
-    mapStateToProps
-  )(GameScreen);
-  
+};
+
+export default connect<IProps, IActions>(
+  mapStateToProps,
+  gameActions
+)(GameScreen);

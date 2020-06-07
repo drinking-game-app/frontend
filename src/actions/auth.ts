@@ -104,7 +104,7 @@ export const login  = (body: ILogin) => {
             }
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
 
-            dispatch({ type: 'HOST_GAME', payload: {userName: data.data.user.name, lobbyName: lobbyName} })
+            dispatch({ type: 'HOST_GAME', payload: {username: data.data.user.name, lobbyName: lobbyName} })
         })
         .catch((err) => {
             console.log(err)

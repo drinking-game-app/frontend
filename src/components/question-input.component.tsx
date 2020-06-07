@@ -12,12 +12,12 @@
  * Copyright 2020 - WebSpace
  */
 
-import { Layout, Button, IconProps, Icon } from "@ui-kitten/components";
+import { Layout, Button, IconProps, Icon, Text } from "@ui-kitten/components";
 import React from "react";
 import { Formik, FormikProps } from "formik";
 import { QuestionSchema, QuestionInputData } from "../data/question-input.model";
 import { FormInput } from "./form-input.component";
-import { IInitialState } from "../reducers/interfaces";
+import { IInitialState, IQuestion } from "../reducers/interfaces";
 import {gameActions} from "../actions";
 import { connect } from "react-redux";
 import { ButtonInput } from "./form-button.component";
@@ -36,8 +36,8 @@ const styles = require("../themes")("Form");
  * for the component
  */
 interface IActions {
-    setLoading: () => void;
-    submitQuestion: ({ question }: any) => void;
+    setGameLoading: () => void;
+    inputQuestion: ({ question }: IQuestion) => void;
 }
 
 /**
@@ -47,23 +47,27 @@ interface IActions {
 interface IProps {
     isLoading: boolean;
     questionInput: string;
+    questions: IQuestion[];
+    username: string;
+    numOfQuestions: number;
 }
 
 const QuesionInput = (props: IProps & IActions) =>{
 
-    const submit = (values: any) => {
-        props.setLoading()
-        const {question} = values
+    const submit = (values: {questionInput: string}) => {
+        console.log('submitting!!!')
+        props.setGameLoading()
+        
+        const question: IQuestion = {
+            username: props.username,
+            question: values.questionInput
+        }
 
-        props.submitQuestion({ question })
+        props.inputQuestion(question)
     }
 
     const renderShuffleIcon = (props: IconProps): React.ReactElement => (
         <Icon {...props} name="shuffle-2-outline" />
-    )
-
-    const renderSubmitIcon = (props: IconProps): React.ReactElement => (
-        <Icon {...props} name="checkmark-outline" />
     )
 
     const shuffleQuestion = () => {
@@ -77,14 +81,15 @@ const QuesionInput = (props: IProps & IActions) =>{
 
         if(isLoading === false && props.isSubmitting === true) props.setSubmitting(false)
         return (
-            <KeyboardAwareScrollView
-            style={{ backgroundColor: '#4c69a5' }}
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            contentContainerStyle={styles.questionInputContainer}
-            // scrollEnabled={false}
-          >
+            <View style={styles.questionInputContainer}>
+            {/* // <KeyboardAwareScrollView
+            //     style={{ backgroundColor: '#4c69a5' }}
+            //     resetScrollToCoords={{ x: 0, y: 0 }}
+            //     contentContainerStyle={styles.questionInputContainer}
+            //     // scrollEnabled={false}
+            // > */}
             {/* // <KeyboardAvoidingView behavior='padding' style={styles.questionInputContainer}> */}
-                {/* <View style={styles.questionInputContainer}> */}
+                
                     <Button
                         accessoryLeft={renderShuffleIcon}
                         onPress={() => shuffleQuestion}
@@ -93,10 +98,11 @@ const QuesionInput = (props: IProps & IActions) =>{
                         style={styles.questionInputButton}
                     />
                     <FormInput
-                        id="question"
+                        id="questionInput"
                         style={[styles.questionInput]}
                         size="large"
-                        placeholder="Insert your question"
+                        placeholder="Insert your question"    
+                        value={props.values.questionInput}         
                     />
                     <ButtonInput
                         icon="checkmark-outline"
@@ -107,18 +113,29 @@ const QuesionInput = (props: IProps & IActions) =>{
                         status="success"
                         style={styles.questionInputButton}
                     />
-                {/* </View> */}
+                
                 {/* // </KeyboardAvoidingView> */}
-            </KeyboardAwareScrollView>
+            {/* </KeyboardAwareScrollView> */}
+            </View>
         )
     }
 
+    if(props.numOfQuestions <= props.questions.length) return (
+        <Layout>
+            <Text>Questions submitted! Waiting for other players...</Text>
+        </Layout>
+    )
     return (
         <Layout>
+            <Text>Input your questions {props.questions.length} / {props.numOfQuestions}</Text>
             <Formik
-                initialValues={{ questionInput }}
+                initialValues={{ questionInput: questionInput }}
                 validationSchema={QuestionSchema}
-                onSubmit={(values) => submit(values)}
+                onSubmit={(values, actions) => {
+                    submit(values)
+                    actions.setValues({questionInput: questionInput})
+                    
+                }}
             >{renderForm}</Formik>
         </Layout>
     )
@@ -130,10 +147,10 @@ const QuesionInput = (props: IProps & IActions) =>{
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-    const { isLoading, questionInput } = state.game;
+    const { isLoading, questionInput, questions, username, numOfQuestions } = state.game;
   
     return {
-        isLoading, questionInput
+        isLoading, questionInput, questions, username, numOfQuestions
     };
   };
   

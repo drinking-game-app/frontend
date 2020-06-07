@@ -12,10 +12,10 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IPlayer } from "../reducers/interfaces";
+import { IPlayer, IQuestion } from "../reducers/interfaces";
 import { Layout, Card, Text } from "@ui-kitten/components";
 import React from "react";
-import { View } from "react-native";
+import { View} from "react-native";
 
 /**
  * Importing styles
@@ -24,25 +24,42 @@ import { View } from "react-native";
  */
 const styles = require("../themes")("Game");
 
+/**
+ * Interface actions
+ * for the component
+ */
+interface IActions {
+    answerQuestion?: ({ question }: IQuestion) => void;
+}
+
  /**
  * Interface for props being
  * passed to to the picked players component
  */
 interface IProps {
     players: IPlayer[];
+    question?: IQuestion
 }
 
-const PickedPlayers = (props: IProps) => {
+const PickedPlayers = (props: IProps & IActions) => {
+    const onSelectPlayer = (i: number) => {
+        if(props.question && props.answerQuestion) {
+            let question = props.question
+            question.answer = i
+            props.answerQuestion(question)
+        }
+    }
+
     return (
      <Layout style={styles.container}>
          <Text style={styles.title}>Picked Players</Text>
          <View style={styles.pickedPlayerContainer}>
             {props.players.map((player, i) => {
                 return (
-                    <View key={i} style={styles.pickedPlayer}>
-                        <Card style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]}>
-                            <Text style={styles.title}>{player.name}</Text>
-                        </Card>
+                    <View style={styles.pickedPlayer} key={i}>                            
+                            <Card style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]} onPress={() => onSelectPlayer(i)}>
+                                <Text style={styles.title}>{player.name}</Text>
+                            </Card>
                         <Text style={[styles.belowCardText, i === 0 ? styles.alignLeft : styles.alignRight ]} appearance='hint'>{i === 0 ? 'You' : player.name}</Text>
                     </View>
                 )
@@ -51,6 +68,7 @@ const PickedPlayers = (props: IProps) => {
      </Layout>   
     )
 }
+
 
 export default PickedPlayers
 

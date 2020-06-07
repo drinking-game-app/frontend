@@ -9,7 +9,7 @@ export class QuestionInputData {
 
   static empty(): QuestionInputData {
     return new QuestionInputData(
-      'Who\'s more likely',
+      'Who\'s more likely to',
     );
   }
 }

@@ -103,6 +103,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
+          value={props.values.email}
         />
         <FormInput
           id="password"
@@ -111,6 +112,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
           autoCapitalize="none"
+          value={props.values.password}
         />
 
         {error !== "" && <Text>{error}</Text>}

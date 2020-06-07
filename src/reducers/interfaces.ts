@@ -60,10 +60,14 @@ export interface IPlayer {
   name: string
 }
 
+
+/**
+ * Interface for a question
+ */
 export interface IQuestion {
-  user: string;
+  username: string;
   question: string;
-  answer?: string;
+  answer?: number;
 }
 
 /**
@@ -81,6 +85,9 @@ export interface IGameState {
   pickedPlayers: IPlayer[];
   questionInput: string;
   questions: IQuestion[]
+  numOfQuestions: number;
+  phase: string;
+  currentQuestion: IQuestion;
 }
 
 /**
