@@ -13,10 +13,10 @@
  */
 
 import React from "react";
-import { View, Platform, Text } from "react-native";
+import { View, Platform } from "react-native";
 import { connect } from "react-redux";
 import { Formik, FormikProps } from "formik";
-import { Button, Layout } from "@ui-kitten/components";
+import { Button, Layout, Text, Icon, IconProps } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as actions from "../../actions/auth";
 import { FormInput } from "../../components/form-input.component";
@@ -100,14 +100,17 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         <FormInput
           id="email"
           style={styles.formControl}
+          size='large'
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
           value={props.values.email}
+
         />
         <FormInput
           id="password"
           style={styles.formControl}
+          size='large'
           placeholder="Password"
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
@@ -118,7 +121,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         {error !== "" && <Text>{error}</Text>}
 
         <View style={styles.resetPasswordContainer}>
-          <Button appearance="ghost" status="basic">
+          <Button appearance="ghost" status="control">
             Forgot password?
           </Button>
         </View>
@@ -137,11 +140,13 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
   return (
     <Layout style={styles.formContainer}>
       <ModalHeader
-        text="Sign in"
+        style={styles.homeBtn}
+        text=""
         icon="close-outline"
         status="danger"
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
+
       <Formik
         initialValues={{ email, password }}
         validationSchema={SignInSchema}
@@ -152,16 +157,31 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
       
       {Platform.OS === "ios" && <LoginWithApple />}
 
+      <View style = {styles.customHrTag} />
+
       <LoginWithGoogle />
 
       <Button
+        style={styles.noAccountButton}
+        onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
+      >
+        SIGN UP
+      </Button>
+
+      {/* <Button
         style={styles.noAccountButton}
         appearance="ghost"
         status="basic"
         onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
       >
         Don't have an account?
-      </Button>
+      </Button> */}
+
+      {/* <ButtonInput 
+        style={styles.noAccountButton}
+        onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
+        text="SIGN UP"
+      /> */}
 
     </Layout>
   );

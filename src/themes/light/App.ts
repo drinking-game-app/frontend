@@ -17,7 +17,7 @@ export default StyleSheet.create({
   title: {
     // paddingHorizontal: 16,
     // paddingTop: '37%',
-    paddingVertical: 32,
+    paddingBottom: 82,
     color: '#D7D98B',
     fontSize: 45,
     fontWeight: '400',
@@ -45,16 +45,22 @@ export default StyleSheet.create({
 
   formButton:{
     marginVertical: 10,
-    paddingHorizontal: 100,
-    paddingVertical: 30,
+    paddingHorizontal: 150,
+    paddingVertical: 50,
     backgroundColor: '#AD0D4B',
+    border: 0,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: { width: 2, height: 2},
+    borderRadius: 5,
     // width: '100%',
     // marginHorizontal: 'auto'
   },
 
   signoutAndCogContainer: {
     position: 'absolute',
-    top: 50,
+    top: 20,
     width: '95%',
     margin: 'auto',
     display: 'flex',

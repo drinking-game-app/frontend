@@ -14,6 +14,7 @@
 
 import { ICreate, IForm, ILogin, IThirdPartyToken } from "./interfaces"
 import Constants from "expo-constants";
+import { hostGame } from "./game";
 
 /**
  * Prefixes for api endpoints
@@ -103,8 +104,8 @@ export const login  = (body: ILogin) => {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
-
-            dispatch({ type: 'HOST_GAME', payload: {username: data.data.user.name, lobbyName: lobbyName} })
+            hostGame({username: data.data.user.name, token: data.data.token})
+            // dispatch({ type: 'HOST_GAME', payload: {username: data.data.user.name, token: data.data.token} })
         })
         .catch((err) => {
             console.log(err)

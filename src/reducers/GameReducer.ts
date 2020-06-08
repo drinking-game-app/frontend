@@ -12,17 +12,13 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IGameState, IPlayer, IQuestion } from "./interfaces";
+import { IGameState, IPlayer } from "./interfaces";
+import { RoundOptions, Question } from "@rossmacd/gamesock-client";
+import { GameOptions, HotseatOptions } from "../actions/socket";
 
 interface IGameAction {
   type: string;
-  payload: {
-    prop?: string;
-    value?: string;
-    lobbyName?: string;
-    username?: string;
-    question?: string;
-  };
+  payload: any;
 }
 
 // const playersArr: IPlayer[] = [
@@ -52,6 +48,12 @@ interface IGameAction {
 const initialState: IGameState = {
   lobbyName: "",
   username: "",
+  user: {
+    id: "",
+    name: "",
+    score: 0,
+    inHotseat: false,
+  },
   inLobby: false,
   inGame: false,
   isHost: false,
@@ -60,14 +62,17 @@ const initialState: IGameState = {
   error: "",
   messages: [],
   pickedPlayers: [],
-  questionInput: "Who\'s more likely to",
+  questionInput: "Who's more likely to",
   questions: [],
   roundOver: false,
   round: 0,
   phase: "",
+  timer: 0,
+  hotseatOptions: undefined,
   currentQuestionId: 0,
   askedQuestions: [],
-  roundOptions: undefined
+  roundOptions: undefined,
+  numOfRounds: 3,
 };
 
 /**
@@ -89,31 +94,42 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     /**
-     * Update the messages array 
+     * Update the messages array
      * with messages from the gamesock
      * server
      */
-    case "SET_MESSAGES": 
-      const messages = state.messages
-      messages.push(action.payload as string)
+    case "SET_MESSAGES":
+      const messages = state.messages;
+      messages.push(action.payload as string);
 
       return {
         ...state,
-        messages: messages
-      }
+        messages: messages,
+      };
 
     /**
      * Update the list of players
      */
-    case "UPDATE_PLAYERS":
-      const players = state.players
-      players.push(action.payload as IPlayer)
+    case "PLAYER_LIST_UPDATE":
+      return {
+        ...state,
+        players: action.payload,
+      };
+    /**
+     * Update a single player
+     */
+    case "PLAYER_SINGLE_UPDATE":
+      let players = state.players;
+      const playerI = state.players.findIndex(
+        (player: IPlayer) => player.id === action.payload.id
+      );
+
+      players[playerI] = action.payload as IPlayer;
 
       return {
         ...state,
-        players
-      }
-
+        players: players,
+      };
     /**
      * When a API request responds with
      * an error, store it in the state
@@ -126,19 +142,23 @@ export default (state = initialState, action: IGameAction) => {
     //   };
 
     case "HOST_GAME":
+      
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
-        username: action.payload.username,
+        user: action.payload.user,
         inLobby: true,
         isHost: true,
         isLoading: false,
       };
+
     case "JOIN_GAME":
+      
+
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
-        username: action.payload.username,
+        user: action.payload.user,
         inLobby: true,
         isLoading: false,
       };
@@ -152,62 +172,114 @@ export default (state = initialState, action: IGameAction) => {
         isHost: false,
         isLoading: false,
       };
-
     case "START_GAME":
+      return {
+        ...state,
+        numOfRounds: action.payload,
+      };
+
+    case "START_ROUND":
+      const roundOptions = action.payload as RoundOptions;
+      let user = state.user;
+      if (
+        roundOptions.hotseatPlayers.some(
+          (player: IPlayer) => player.id === user.id
+        )
+      ) {
+        user.inHotseat = true;
+      } else user.inHotseat = false;
+
       return {
         ...state,
         inGame: true,
         isLoading: false,
-        phase: "Starting Game",
-        roundOptions: action.payload
+        user: user,
+        roundOptions: roundOptions,
       };
 
-    case "SET_PICKED_PLAYERS":
-      const statePlayers = state.players
-      return {
-        ...state,
-
-      }
     case "INPUT_QUESTION":
-      const questions = state.questions
-      
-      questions.push(action.payload as IQuestion)
+      const questions = state.questions;
+
+      questions.push(action.payload as Question);
 
       return {
         ...state,
-        questionInput: "Who\'s more likely to",
+        questionInput: "Who's more likely to",
         questions: questions,
-        isLoading: false
+        isLoading: false,
       };
 
-    case "SET_PHASE": 
-      if(action.payload === "Leaderboard") return {
+    case "TIMER_UPDATE":
+      if (action.payload === 0 && state.phase === 'Hotseat' &&state.timer!==0) {
+          return {
+            ...state,
+            timer: action.payload,
+            questions: state.questions.shift(),
+            currentQuestionId: state.currentQuestionId++
+        }
+      }
+      return {
+        ...state,
+        timer: action.payload,
+      };
+    case "SET_PHASE":
+      if (action.payload === "Leaderboard") 
+        return {
+          ...state,
+          phase: action.payload,
+          roundOver: true,
+          currentQuestionId: 0,
+          inGame: false,
+          askedQuestions: [],
+        };
+
+      return {
         ...state,
         phase: action.payload,
-        roundOver: true,
-        inGame: false
-      }
+      };
+
+    case "START_HOTSEAT":
+      const allQuestions = action.payload.questions as Question[]
+      const hotseatOptions = action.payload.hotseatOptions as HotseatOptions
 
       return {
         ...state,
-        phase: action.payload
+        questions: allQuestions,
+        hotseatOptions: hotseatOptions
       }
+    case "ON_HOTSEAT_ANSWER":
+      let newQuestions = state.questions
+      newQuestions[action.payload.questionIndex].answers = action.payload.answers
+      return {
+        ...state,
+        questions: newQuestions
+      }
+
+    case "SET_CURRENT_QUESTION":
+      return {
+        ...state,
+        currentQuestionId: state.currentQuestionId += 1,
+      };
+
     case "ANSWER_QUESTION":
-      let stateQuestions = state.questions
-      const questionI = stateQuestions.findIndex(question => question.username === action.payload.username)
+      let stateQuestions = state.questions;
+      const questionI = stateQuestions.findIndex(
+        (question) => question.playerId === action.payload.id
+      );
 
-      stateQuestions[questionI] = action.payload as IQuestion
+      stateQuestions[questionI] = action.payload as Question;
 
       return {
         ...state,
-        questions: stateQuestions
-      }
+        questions: stateQuestions,
+      };
+
     case "END_GAME":
       return {
         ...state,
         roundOver: true,
-        inGame: false
-      }
+        inGame: false,
+      };
     /**
      * The default state reducer
      */

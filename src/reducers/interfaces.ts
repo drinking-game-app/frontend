@@ -13,6 +13,7 @@
  */
 
 import {Player, Question, RoundOptions} from '@rossmacd/gamesock-client'
+import { HotseatOptions } from '../actions/socket';
 
 /**
  * Interface for a user
@@ -67,11 +68,11 @@ export interface IPlayer extends Player {
 /**
  * Interface for a question
  */
-export interface IQuestion {
-  username: string;
-  question: string;
-  answer?: number;
-}
+// export interface IQuestion {
+//   username: string;
+//   question: string;
+//   answer?: number;
+// }
 
 /**
  * Interface for the game state
@@ -79,6 +80,7 @@ export interface IQuestion {
 export interface IGameState {
   lobbyName: string;
   username: string;
+  user: IPlayer;
   inLobby: boolean;
   inGame: boolean;
   isHost: boolean;
@@ -88,13 +90,16 @@ export interface IGameState {
   messages: string[];
   pickedPlayers: IPlayer[];
   questionInput: string;
-  questions: IQuestion[]
+  questions: Question[]
   roundOver: boolean;
   round: number;
   phase: string;
+  timer: number;
   currentQuestionId: number;
   askedQuestions: Question[];
+  hostSeatOptions: HotseatOptions | undefined;
   roundOptions: RoundOptions | undefined;
+  numOfRounds: number;
 }
 
 /**

@@ -21,6 +21,8 @@ import { Text, View } from "react-native";
 import { connect } from "react-redux";
 import {loginWithThirdParty} from "../../../actions/auth";
 
+const styles = require("../../../themes")("Form");
+
 /**
  * Get Google Client ID from environment variables
  */
@@ -60,6 +62,7 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
         return (
             <View>
                 <GoogleLogin
+                    style={styles.thirdPartyButtonContainer}
                     clientId={WEB_GOOGLE_CLIENT_ID}
                     onSuccess={this.responseGoogle}
                     onFailure={this.responseGoogle}

@@ -12,23 +12,25 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IQuestion } from "../reducers/interfaces"
+import { IPlayer } from "../reducers/interfaces"
+import * as GameSockClient from '@rossmacd/gamesock-client'
+import { GameOptions, HotseatOptions } from "./socket"
 
  /**
-  * Interface for hosting / joining a game
+  * Interface for hosting a game
   */
 export interface IHostGame {
-    lobbyName: string;
     username: string;
+    token: string;
 }
 
 /**
- * Interface for starting a game
+ * Interface for joining a game
  */
-// export interface IStartGame {
-//     token: string;
-//     lobbyName: string;
-// }
+export interface IJoinGame {
+    username: string;
+    lobbyName: string;
+}
 
 /**
  * Determinds whether to set 
@@ -41,36 +43,86 @@ export const setGameLoading = () => {
 }
 
 /**
+ * Messages sent from the gamesock library
+ */
+export const setMessages = (message: string) => {
+    console.log('Socket message: ', message)
+    return {
+        type: 'SET_MESSAGES',
+        payload: message
+    }
+}
+
+
+/**
  * Initilise a lobby as a host
  * 
  * @param {IHostGame} body 
  */
 export const hostGame = (body: IHostGame) => {
-    return {
-        type: 'HOST_GAME',
-        payload: body
+    console.log('running host game!')
+    return (dispatch: any) => {
+        console.log('after return')
+        const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
+        
+        console.log('lobby name!', lobbyName)
+        GameSockClient.createLobby(lobbyName, body.token).then((players) => {
+            console.log('lobby made', players)
+            let user = Array.isArray(players)
+            ? players[0]
+            : players
+            user.name = body.username
+            
+            GameSockClient.updateSelf(lobbyName, user)
+            console.log('updated self', user)
+
+            dispatch({
+                type: 'HOST_GAME',
+                payload: {lobbyName: lobbyName, user: user}
+            })
+        })
     }
 }
 
 /**
  * Initilise a lobby as a join
  * 
- * @param {IHostGame} body 
+ * @param {IJoinGame} body 
  */
-export const joinGame = (body: IHostGame) => {
-    return {
-        type: 'JOIN_GAME',
-        payload: body
-    }
+export const joinGame = (body: IJoinGame) => {
+    GameSockClient.joinLobby(body.lobbyName).then((players) => {
+        let user = Array.isArray(players)
+        ? players[players.length - 1]
+        : players
+        user.name = body.username
+        GameSockClient.updateSelf(body.lobbyName, user)
+
+        return {
+            type: 'JOIN_GAME',
+            payload: {lobbyName: body.lobbyName, user: user}
+        }
+    })
 }
 
 /**
  * Start a new game
  * 
  */
-export const startGame = () => {
+export const startGame = (gameOptions: GameOptions) => {
     return {
         type: 'START_GAME',
+        payload: gameOptions
+    }
+}
+
+/**
+ * Start a new round
+ * 
+ */
+export const startRound = (roundOptions: GameSockClient.RoundOptions) => {
+    return {
+        type: 'START_ROUND',
+        payload: roundOptions
     }
 }
 
@@ -78,10 +130,66 @@ export const startGame = () => {
  * Start a new game
  * 
  */
-export const inputQuestion = (question: IQuestion) => {
+export const inputQuestion = (question: GameSockClient.Question) => {
     return {
         type: 'INPUT_QUESTION',
         payload: question
+    }
+}
+
+/**
+ * Updates the seconds left on a timer
+ * 
+ * @param {number} time 
+ */
+export const timerUpdate = (time: number) => {
+    return {
+        type: 'TIMER_UPDATE',
+        payload: time
+    }
+}
+
+/**
+ * Starting a hot seat during a round
+ * 
+ * @param {Question[]} questions
+ * @param {HotseatOptions} hotseatOptions
+ */
+export const startHotseat = (questions: GameSockClient.Question[], hotseatOptions: HotseatOptions) => {
+    return {
+        type: 'START_HOTSEAT',
+        payload: {questions, hotseatOptions}
+    }
+}
+
+export const onHotseatAnswer = (questionIndex: number, answers: number[]) => {
+    return {
+        type: 'ON_HOTSEAT_ANSWER',
+        payload: {questionIndex, answers}
+    }
+}
+
+/**
+ * Update the list of players
+ * 
+ * @param {IPlayer[]} players
+ */
+export const playerListUpdate = (players: IPlayer[]) => {
+    return {
+        type: 'PLAYER_LIST_UPDATE',
+        payload: players
+    }
+}
+
+/**
+ * Update a single player
+ * 
+ * @param {IPlayer} players
+ */
+export const playerUpdate = (player: IPlayer) => {
+    return {
+        type: 'PLAYER_SINGLE_UPDATE',
+        payload: player
     }
 }
 

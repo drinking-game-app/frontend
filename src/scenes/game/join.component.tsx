@@ -33,7 +33,7 @@ import { ModalHeader } from "../../components/modal-header.component";
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../themes")("Game");
+const styles = require("../../themes")("Form");
 
 
 /**
@@ -99,7 +99,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
   };
 
     return (
-        <Layout style={styles.container}>
+        <Layout style={styles.formContainer}>
           <ModalHeader
               text="Join a lobby"
               icon="close-outline"
