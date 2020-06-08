@@ -17,12 +17,14 @@ import React from "react";
 import { Formik, FormikProps } from "formik";
 import { QuestionSchema, QuestionInputData } from "../data/question-input.model";
 import { FormInput } from "./form-input.component";
-import { IInitialState, IQuestion } from "../reducers/interfaces";
+import { IInitialState, IPlayer } from "../reducers/interfaces";
 import {gameActions} from "../actions";
 import { connect } from "react-redux";
 import { ButtonInput } from "./form-button.component";
 import { View, KeyboardAvoidingView } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Question, RoundOptions } from "@rossmacd/gamesock-client";
+
 
 /**
  * Importing styles
@@ -37,7 +39,7 @@ const styles = require("../themes")("Form");
  */
 interface IActions {
     setGameLoading: () => void;
-    inputQuestion: ({ question }: IQuestion) => void;
+    inputQuestion: ({ question }: Question) => void;
 }
 
 /**
@@ -47,19 +49,18 @@ interface IActions {
 interface IProps {
     isLoading: boolean;
     questionInput: string;
-    questions: IQuestion[];
-    username: string;
-    numOfQuestions: number;
+    questions: Question[];
+    user: IPlayer;
+    roundOptions: RoundOptions;
 }
 
 const QuesionInput = (props: IProps & IActions) =>{
-
     const submit = (values: {questionInput: string}) => {
         console.log('submitting!!!')
         props.setGameLoading()
         
-        const question: IQuestion = {
-            username: props.username,
+        const question: Question = {
+            playerId: props.user.id,
             question: values.questionInput
         }
 
@@ -120,14 +121,14 @@ const QuesionInput = (props: IProps & IActions) =>{
         )
     }
 
-    if(props.numOfQuestions <= props.questions.length) return (
+    if(props.roundOptions.numQuestions <= props.questions.length) return (
         <Layout>
             <Text>Questions submitted! Waiting for other players...</Text>
         </Layout>
     )
     return (
         <Layout>
-            <Text>Input your questions {props.questions.length} / {props.numOfQuestions}</Text>
+            <Text>Input your questions {props.questions.length} / {props.roundOptions.numQuestions}</Text>
             <Formik
                 initialValues={{ questionInput: questionInput }}
                 validationSchema={QuestionSchema}
@@ -147,10 +148,10 @@ const QuesionInput = (props: IProps & IActions) =>{
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-    const { isLoading, questionInput, questions, username, numOfQuestions } = state.game;
+    const { isLoading, questionInput, questions, user, roundOptions } = state.game;
   
     return {
-        isLoading, questionInput, questions, username, numOfQuestions
+        isLoading, questionInput, questions, user, roundOptions
     };
   };
   

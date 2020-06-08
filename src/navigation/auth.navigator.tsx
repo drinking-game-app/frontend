@@ -34,15 +34,18 @@ export interface SignoutScreenScreenProps {
   route: RouteProp<AuthNavigatorParams, AppRoute.SIGN_OUT>;
 }
 
+interface IGameActions {
+  initGameSock: () => void;
+}
+
 export interface IAuthProps {
   token: string;
   init: boolean;
-  initGameSock: () => void;
 }
 
 const Stack = createStackNavigator<AuthNavigatorParams>();
 
-const Auth = (props: IAuthProps): React.ReactElement => {
+const Auth = (props: IAuthProps & IGameActions): React.ReactElement => {
   if (!props.init) props.initGameSock();
   return (
     <Stack.Navigator

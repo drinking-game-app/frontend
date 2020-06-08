@@ -13,8 +13,7 @@
  */
 
 import React from "react";
-import { View, SafeAreaView } from "react-native";
-import Constants from "expo-constants";
+import { View } from "react-native";
 import { Button, Layout, Text, Icon, IconProps } from "@ui-kitten/components";
 import { AppRoute } from "../../navigation/app-routes";
 import { IInitialState } from "../../reducers/interfaces";

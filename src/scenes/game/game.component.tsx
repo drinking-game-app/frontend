@@ -12,10 +12,10 @@
  * Copyright 2020 - WebSpace
  */
 
-import React from "react";
-import { Layout, Text, Spinner, Button } from "@ui-kitten/components";
+import React, { useEffect, useState } from "react";
+import { Layout, Text, Spinner } from "@ui-kitten/components";
 import PickedPlayers from "../../components/picked-players.component";
-import { IPlayer, IInitialState, IQuestion } from "../../reducers/interfaces";
+import { IPlayer, IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
 import QuestionInput from "../../components/question-input.component";
 import { gameActions } from "../../actions";
@@ -23,6 +23,9 @@ import { ModalHeader } from "../../components/modal-header.component";
 import { GameScreenProps } from "../../navigation/game.navigator";
 import { AppRoute } from "../../navigation/app-routes";
 import { View } from "react-native";
+import { onRequestQuestions, Question, RoundOptions } from "@rossmacd/gamesock-client";
+import Timer from "../../components/timer.component";
+import { userInfo } from "os";
 
 /**
  * Importing styles
@@ -38,7 +41,7 @@ const styles = require("../../themes")("Game");
 interface IActions extends GameScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
-  answerQuestion: ({ question }: IQuestion) => void;
+  answerQuestion: ({ question }: Question) => void;
   setPhase: (phase: string) => void;
   endGame: () => void;
 }
@@ -48,47 +51,57 @@ interface IActions extends GameScreenProps {
  * passed to to the game screen component
  */
 interface IProps {
-  pickedPlayers: IPlayer[];
+  // pickedPlayers: IPlayer[];
   phase: string;
-  currentQuestion: IQuestion;
+  currentQuestionId: number;
+  questions: Question[];
+  roundOptions: RoundOptions | undefined;
+  user: IPlayer
 }
 
-const phases = ["", "Question Gathering", "Hotseat", "Leaderboard", "Disconnected"];
-
 const GameScreen = (props: IProps & IActions) => {
-  const [currentPhaseIndex, setCurrentPhaseIndex] = React.useState<number>(0);
+  const [serverHasQuestions, setServerHasQuestions] = useState<boolean>(false)
+    
+  useEffect(() => {
+      onRequestQuestions(() => {
+        console.log('requesting questions')
+        setServerHasQuestions((oldBool) => {
+          return true
+        })
+        return props.questions.map(question => question.question)
+      })
+  })
+
   const endGame = () => {
     props.setGameLoading();
     props.leaveGame();
     props.navigation.navigate(AppRoute.HOME);
   };
 
-  const answerQuestion = (question: IQuestion) => {
+  const answerQuestion = (question: Question) => {
     props.answerQuestion(question);
   };
 
   const gamePhaseController = () => {
-    // if(props.phase === 'Leaderboard') props.endGame()
-
+    const userIsInHotseat = props.roundOptions?.hotseatPlayers.some(player => player.id === props.user.id)
     switch (props.phase) {
       case "Question Gathering":
+
         return (
           <React.Fragment>
-            <PickedPlayers players={props.pickedPlayers} />
-            <QuestionInput />
+            <Timer serverHasQuestions={serverHasQuestions} />
+            <PickedPlayers players={props.roundOptions?.hotseatPlayers} />
+            {!userIsInHotseat ? <QuestionInput /> : <Text>Waiting for other players to write some good quesitions...</Text>}
           </React.Fragment>
         );
       case "Hotseat":
         return (
           <PickedPlayers
-            players={props.pickedPlayers}
-            question={props.currentQuestion}
+            players={props.roundOptions?.hotseatPlayers}
+            question={props.questions[props.currentQuestionId]}
             answerQuestion={answerQuestion}
           />
         );
-      // case "Leaderboard":
-      //   return props.endGame()
-      //   return <React.Fragment><Text>Leaderboard</Text><Button onPress={() => props.endGame()}>End Game</Button></React.Fragment>;
       case "Disconnected":
         return <Text>Disconnected</Text>;
 
@@ -101,34 +114,15 @@ const GameScreen = (props: IProps & IActions) => {
     }
   };
 
-  /**
-   * Cycle through the phases for dev purposes
-   */
-  const cyclePhase = () => {
-    setCurrentPhaseIndex((oldPhaseIndex) => {
-      const newPhaseIndex =
-        oldPhaseIndex > phases.length - 1 ? 0 : (oldPhaseIndex += 1);
-
-      props.setPhase(phases[newPhaseIndex]);
-      return newPhaseIndex;
-    });
-  };
-
   return (
     <Layout style={styles.container}>
       <ModalHeader
-        text="Game Screen"
+        text={props.phase}
         icon="close-outline"
         status="danger"
         onPress={() => endGame()}
       />
-      <Text>
-        Phase:{" "}
-        {phases[currentPhaseIndex] === ""
-          ? "Loading"
-          : phases[currentPhaseIndex]}
-      </Text>
-      <Button onPress={() => cyclePhase()}>Next Phase</Button>
+      
       {gamePhaseController()}
     </Layout>
   );
@@ -140,12 +134,14 @@ const GameScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { pickedPlayers, phase, currentQuestion } = state.game;
+  const { user, phase, currentQuestionId, questions, roundOptions } = state.game;
 
   return {
-    pickedPlayers,
+    user,
     phase,
-    currentQuestion
+    currentQuestionId,
+    questions,
+    roundOptions
   };
 };
 

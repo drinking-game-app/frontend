@@ -17,6 +17,9 @@ export default StyleSheet.create({
     textAlign: 'left',
     alignItems: "flex-start",
   },
+  leaderboardTitle: {
+    color: 'pink',
+  },
   button: {
     // alignItems: "flex-end",
     // marginLeft: 'auto'

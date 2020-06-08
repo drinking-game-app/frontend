@@ -14,31 +14,12 @@
 
 import { IGameState, IPlayer } from "./interfaces";
 import { RoundOptions, Question } from "@rossmacd/gamesock-client";
-import { GameOptions, HotseatOptions } from "../actions/socket";
+import { HotseatOptions } from "../actions/socket";
 
 interface IGameAction {
   type: string;
   payload: any;
 }
-
-// const playersArr: IPlayer[] = [
-//   {
-//     name: "John",
-//     score: 300
-//   },
-//   {
-//     name: "Ross",
-//     score: 700
-//   },
-//   {
-//     name: "Sue Reardon",
-//     score: 12000
-//   },
-//   {
-//     name: "It has to be wack'm",
-//     score: 20
-//   },
-// ];
 
 /**
  * Initial state for redux
@@ -135,7 +116,7 @@ export default (state = initialState, action: IGameAction) => {
 
       return {
         ...state,
-        players: players,
+        players: [...players],
       };
     /**
      * When a API request responds with
@@ -218,10 +199,16 @@ export default (state = initialState, action: IGameAction) => {
 
     case "TIMER_UPDATE":
       if (action.payload === 0 && state.phase === 'Hotseat' &&state.timer!==0) {
-          return {
+        console.log('shifting questions', state.questions)  
+        // const shiftedQuestions = state.questions.shift()
+        // console.log('done', shiftedQuestions)  
+        state.questions.shift()
+
+        console.log('affetare questions', state.questions)  
+        return {
             ...state,
             timer: action.payload,
-            questions: state.questions.shift(),
+            questions: [...state.questions],
             currentQuestionId: state.currentQuestionId++
         }
       }
@@ -230,7 +217,7 @@ export default (state = initialState, action: IGameAction) => {
         timer: action.payload,
       };
     case "SET_PHASE":
-      if (action.payload === "Leaderboard") 
+      if (action.payload === "Round Ended") 
         return {
           ...state,
           phase: action.payload,
@@ -246,20 +233,20 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "START_HOTSEAT":
-      const allQuestions = action.payload.questions as Question[]
-      const hotseatOptions = action.payload.hotseatOptions as HotseatOptions
-
+      // const allQuestions =  as Question[]
+      // const hotseatOptions =  as HotseatOptions
+      console.log('start hotseat reducer', action.payload)
       return {
         ...state,
-        questions: allQuestions,
-        hotseatOptions: hotseatOptions
+        questions: [...action.payload.questions],
+        hotseatOptions: action.payload.hotseatOptions
       }
     case "ON_HOTSEAT_ANSWER":
       let newQuestions = state.questions
       newQuestions[action.payload.questionIndex].answers = action.payload.answers
       return {
         ...state,
-        questions: newQuestions
+        questions: [...newQuestions]
       }
 
     case "SET_CURRENT_QUESTION":

@@ -38,6 +38,7 @@ interface ModalHeaderProps extends ButtonProps {
   icon: string;
   buttonText?: string;
   loading?: boolean;
+  isLeaderboard?: boolean;
 }
 
 export const ModalHeader = ({
@@ -45,6 +46,7 @@ export const ModalHeader = ({
   icon,
   buttonText,
   loading = false,
+  isLeaderboard = false,
   ...ButtonProps
 }: ModalHeaderProps): ButtonElement => {
 
@@ -61,7 +63,7 @@ export const ModalHeader = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title} category="h1">
+      <Text style={[styles.title, isLeaderboard && styles.leaderboardTitle]} category="h1">
         {text}
       </Text>
 

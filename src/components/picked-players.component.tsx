@@ -16,6 +16,7 @@ import { IPlayer, IQuestion } from "../reducers/interfaces";
 import { Layout, Card, Text } from "@ui-kitten/components";
 import React from "react";
 import { View} from "react-native";
+import { Player } from "@rossmacd/gamesock-client";
 
 /**
  * Importing styles
@@ -37,7 +38,7 @@ interface IActions {
  * passed to to the picked players component
  */
 interface IProps {
-    players: IPlayer[];
+    players: [Player, Player];
     question?: IQuestion
 }
 
@@ -50,9 +51,14 @@ const PickedPlayers = (props: IProps & IActions) => {
         }
     }
 
+    const title = props.question && props.question.question
+    ? props.question.question
+    : "Picked Players"
+
     return (
      <Layout style={styles.container}>
-         <Text style={styles.title}>Picked Players</Text>
+         <Text style={styles.title}>{title}</Text>
+         
          <View style={styles.pickedPlayerContainer}>
             {props.players.map((player, i) => {
                 return (

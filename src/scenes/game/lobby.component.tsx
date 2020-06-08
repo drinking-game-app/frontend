@@ -21,6 +21,8 @@ import { LobbyScreenProps } from "../../navigation/game.navigator";
 import { ButtonInput } from "../../components/form-button.component";
 import { AppRoute } from "../../navigation/app-routes";
 import { ModalHeader } from "../../components/modal-header.component";
+import * as GameSockClient from '@rossmacd/gamesock-client'
+
 
 /**
  * Importing styles
@@ -32,7 +34,7 @@ const styles = require("../../themes")("Game");
 interface IActions extends LobbyScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
-  startGame: () => void;
+  startHostGame: (lobbyName: string) => void;
 }
 
 /**
@@ -71,7 +73,8 @@ const LobbyScreen = (props: IProps & IActions) => {
 
   const startGame = () => {
     props.setGameLoading();
-    props.startGame();
+    // props.startHostGame(props.lobbyName);
+    GameSockClient.startGame(props.lobbyName)
     props.navigation.navigate(AppRoute.GAME);
   };
 
@@ -93,6 +96,7 @@ const LobbyScreen = (props: IProps & IActions) => {
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={props.isLoading}
         disabled={props.isLoading}
+        isLeaderboard={props.roundOver}
         icon="close-outline"
         status="danger"
         onPress={() => endGame()}

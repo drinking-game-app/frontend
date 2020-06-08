@@ -16,6 +16,7 @@ import { IPlayer } from "../reducers/interfaces"
 import * as GameSockClient from '@rossmacd/gamesock-client'
 import { GameSocketConfigExport, GameOptions, HotseatOptions } from "./socket"
 import Constants from "expo-constants";
+import { Dispatch } from "redux";
  
 /**
   * Interface for hosting a game
@@ -55,31 +56,44 @@ export const setMessages = (message: string) => {
 }
 
 export const initGameSock = () => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         GameSockClient.setup(Constants.manifest.extra.SERVER_URL, `${Constants.manifest.extra.SERVER_URL}/timesync`)
 
         GameSockClient.onStartGame((newGameOptions:GameOptions)=>{
-            startGame(newGameOptions)
+            console.log('starting game')
+            startGame(newGameOptions.rounds, dispatch)
         })
 
         GameSockClient.onStartRound((newRoundOptions)=>{
-        if(newRoundOptions.roundNum === 1) {setPhase('Starting Game')}
-        else {setPhase('Starting Round')}
+            if(newRoundOptions.roundNum === 1) {setPhase('Starting Game', dispatch)}
+            else {setPhase('Starting Round',dispatch)}
+            console.log('starting round')
+
+            startRound(newRoundOptions, dispatch)    
+
+            setTimeout(() => {
+                setPhase('Question Gathering', dispatch)  
+            }, 2*1000);
         })
 
         GameSockClient.onStartHotseat((allQuestions,hotseatOptions)=>{
-            setPhase('Hotseat')
-            startHotseat(allQuestions,hotseatOptions)
+            console.log('starting hotseat')
+
+            setPhase('Hotseat', dispatch)
+            startHotseat(allQuestions,hotseatOptions, dispatch)
         })
 
-        GameSockClient.onRoundEnd(() => { 
-            setPhase('Round Ended')
+        GameSockClient.onRoundEnd(() => {
+            console.log('ending round')
+
+            setPhase('Round Ended', dispatch)
             endGame()
         })
 
         GameSockClient.onSinglePlayerUpdate((newPlayer)=>{
+            console.log('single player update', newPlayer)
+
             playerUpdate(newPlayer, dispatch)
-            
         })
 
         GameSockClient.onPlayerListUpdate((players)=>{
@@ -96,11 +110,9 @@ export const initGameSock = () => {
         })
 
         GameSockClient.onTimerUpdate((secondsLeft)=>{
-            timerUpdate(secondsLeft)
+            timerUpdate(secondsLeft, dispatch)
         })
 
-
-        // 
         GameSockClient.onMessage((message)=>{
             setMessages(message.msg)
         })
@@ -118,7 +130,7 @@ export const initGameSock = () => {
  * @param {IHostGame} body 
  */
 export const hostGameAction = (body: IHostGame) =>  {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
         
         GameSockClient.createLobby(lobbyName, body.token).then((players) => {
@@ -170,7 +182,7 @@ export const hostGame = (body: IHostGame,dispatch:any) =>  {
  * @param {IJoinGame} body 
  */
 export const joinGame = (body: IJoinGame) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         GameSockClient.joinLobby(body.lobbyName).then((players) => {
             let user = Array.isArray(players)
             ? players[players.length - 1]
@@ -188,25 +200,45 @@ export const joinGame = (body: IJoinGame) => {
 }
 
 /**
+ * Start a new game as a host
+ * 
+ */
+// export const startHostGame = (lobbyName: string) => {
+//     // console.log('running host game be')
+//     // return (dispatch: Dispatch) => {
+//     //     console.log('starting game')
+//         GameSockClient.startGame(lobbyName)
+//         // ((gameOptions: GameOptions) => {
+//         //     console.log('game starting!', gameOptions)
+//         //     dispatch({
+//         //         type: 'START_GAME',
+//         //         payload: gameOptions.rounds
+//         //     })
+//         // })
+//     // }
+// }
+
+/**
  * Start a new game
  * 
  */
-export const startGame = (gameOptions: GameOptions) => {
-    return {
+export const startGame = (rounds: number, dispatch: Dispatch) => {
+    dispatch({
         type: 'START_GAME',
-        payload: gameOptions
-    }
+        payload: rounds
+    })
 }
 
 /**
  * Start a new round
  * 
  */
-export const startRound = (roundOptions: GameSockClient.RoundOptions) => {
-    return {
+export const startRound = (roundOptions: GameSockClient.RoundOptions, dispatch: Dispatch) => {
+    console.log('starting round!')
+    dispatch({
         type: 'START_ROUND',
         payload: roundOptions
-    }
+    })
 }
 
 /**
@@ -225,11 +257,11 @@ export const inputQuestion = (question: GameSockClient.Question) => {
  * 
  * @param {number} time 
  */
-export const timerUpdate = (time: number) => {
-    return {
+export const timerUpdate = (time: number, dispatch: Dispatch) => {
+    dispatch({
         type: 'TIMER_UPDATE',
         payload: time
-    }
+    })
 }
 
 /**
@@ -238,11 +270,12 @@ export const timerUpdate = (time: number) => {
  * @param {Question[]} questions
  * @param {HotseatOptions} hotseatOptions
  */
-export const startHotseat = (questions: GameSockClient.Question[], hotseatOptions: HotseatOptions) => {
-    return {
+export const startHotseat = (questions: GameSockClient.Question[], hotseatOptions: HotseatOptions, dispatch: Dispatch) => {
+    console.log('starting hotseat and setting questions!', questions)
+    dispatch({
         type: 'START_HOTSEAT',
         payload: {questions, hotseatOptions}
-    }
+    })
 }
 
 export const onHotseatAnswer = (questionIndex: number, answers: number[]) => {
@@ -257,7 +290,7 @@ export const onHotseatAnswer = (questionIndex: number, answers: number[]) => {
  * 
  * @param {IPlayer[]} players
  */
-export const playerListUpdate = (players: IPlayer[], dispatch: any) => {
+export const playerListUpdate = (players: IPlayer[], dispatch: Dispatch) => {
 
         dispatch({
             type: 'PLAYER_LIST_UPDATE',
@@ -270,7 +303,7 @@ export const playerListUpdate = (players: IPlayer[], dispatch: any) => {
  * 
  * @param {IPlayer} players
  */
-export const playerUpdate = (player: IPlayer, dispatch: any) => {
+export const playerUpdate = (player: IPlayer, dispatch: Dispatch) => {
 
     dispatch({
         type: 'PLAYER_SINGLE_UPDATE',
@@ -301,18 +334,18 @@ export const endGame = () => {
 /**
  * Set the phase within a game
  */
-export const setPhase = (phase: string) => {
-    return {
+export const setPhase = (phase: string, dispatch: Dispatch) => {
+    dispatch({
         type: "SET_PHASE",
         payload: phase
-    }
+    })
 }
 
 
 /**
  * Answer a question within a game
  */
-export const answerQuestion = (question: IQuestion) => {
+export const answerQuestion = (question: GameSockClient.Question) => {
     return {
         type: "ANSWER_QUESTION",
         payload: question
