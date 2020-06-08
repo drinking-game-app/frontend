@@ -23,7 +23,7 @@ import { IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
 import { FormInput } from "../../components/form-input.component";
 import { ButtonInput } from "../../components/form-button.component";
-import { IHostGame } from "../../actions/game";
+import { IJoinGame } from "../../actions/game";
 import { ModalHeader } from "../../components/modal-header.component";
 
 
@@ -43,7 +43,7 @@ const styles = require("../../themes")("Form");
 interface IJoinActions extends JoinGameScreenProps {
     setGameLoading: () => void;
     formUpdate: ({ prop, value }: any) => void;
-    joinGame:(body: IHostGame) => void;
+    joinGame:(body: IJoinGame) => void;
   }
 interface IJoinProps{
     username:string;
@@ -73,13 +73,15 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
         <FormInput
           id="lobbyName"
           style={styles.formControl}
-          placeholder="Join Code"
+          size='large'
+          placeholder="Enter Join Code"
           autoCapitalize="none"
         />
         <FormInput
           id="username"
           style={styles.formControl}
-          placeholder="Username"
+          size='large'
+          placeholder="Create a Username"
         />
         
 
@@ -92,7 +94,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           disabled={!props.isValid && !props.isValidating}
           onPress={() => props.handleSubmit()}
           loading={loading}
-          text="Join Game"
+          text="JOIN"
         />
       </React.Fragment>
     );
@@ -101,7 +103,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
     return (
         <Layout style={styles.formContainer}>
           <ModalHeader
-              text="Join a lobby"
+              text=""
               icon="close-outline"
               status="danger"
               onPress={() => props.navigation.navigate(AppRoute.HOME)}

@@ -6,6 +6,7 @@ import { AppNavigatorParams } from './app.navigator';
 import game from '../scenes/game'
 import { IInitialState } from '../reducers/interfaces';
 import { connect } from 'react-redux';
+import { initGameSock } from '../actions/game';
 
 type GameNavigatorParams = AppNavigatorParams & {
   [AppRoute.HOST]: undefined;
@@ -39,9 +40,12 @@ const Stack = createStackNavigator<GameNavigatorParams>();
 interface IGameProps {
   inLobby: boolean;
   inGame: boolean;
+  init: boolean;
 }
 
-export const Game = (props: IGameProps): React.ReactElement => (
+export const Game = (props: IGameProps): React.ReactElement => {
+  if(!props.init) initGameSock()
+  return (
   <Stack.Navigator headerMode='none' screenOptions={{animationEnabled: true}}>
     {
       !props.inLobby
@@ -54,14 +58,14 @@ export const Game = (props: IGameProps): React.ReactElement => (
         : <Stack.Screen name={AppRoute.GAME} component={game.GameScreen}/>
       )
     }
-    
   </Stack.Navigator>
-);
+  )
+}
 
 const mapStateToProps = (state: IInitialState): IGameProps => {
-  const { inLobby, inGame } = state.game;
+  const { inLobby, inGame, init } = state.game;
 
-  return { inLobby, inGame };
+  return { inLobby, inGame, init };
 };
 
 const GameNavigator = connect(mapStateToProps, {})(Game);

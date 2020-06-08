@@ -21,12 +21,18 @@ interface IProps {
     questions: GameSockClient.Question[]
 }
 
+
+console.log('running! socket')
 /**
  * Set the functions for the Gamesock library
  * 
  * 
  */
-const gamesockConfig =(props: IProps)=>{
+const GameSockConfig =(props: IProps)=>{
+    console.log('running! check 2 socket')
+
+    // GameSockClient.setup(Constants.manifest.extra.SERVER_URL, `${Constants.manifest.extra.SERVER_URL}/timesync`)
+
     GameSockClient.onStartGame((newGameOptions:GameOptions)=>{
         startGame(newGameOptions)
     })
@@ -72,9 +78,8 @@ const gamesockConfig =(props: IProps)=>{
     GameSockClient.onMessage((message)=>{
         setMessages(message.msg)
     })
-
-
 }
+// gamesockConfig();
 
 /**
  * Return a list of people from our redux state
@@ -89,9 +94,9 @@ const mapStateToProps = (state: IInitialState): IProps => {
     };
   };
   
-  export default connect<IProps>(
+  export const GameSocketConfigExport = () => {connect<IProps>(
     mapStateToProps
-  )(gamesockConfig);
+  )(GameSockConfig);}
   
 
 // export default gamesockConfig 

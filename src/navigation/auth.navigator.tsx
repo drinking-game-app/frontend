@@ -10,6 +10,7 @@ import auth from "../scenes/auth";
 import { connect } from "react-redux";
 import { IInitialState } from "../reducers/interfaces";
 import game from "../scenes/game";
+import * as actions from "../actions/game";
 
 type AuthNavigatorParams = AppNavigatorParams & {
   [AppRoute.SIGN_IN]: undefined;
@@ -35,31 +36,43 @@ export interface SignoutScreenScreenProps {
 
 export interface IAuthProps {
   token: string;
+  init: boolean;
+  initGameSock: () => void;
 }
 
 const Stack = createStackNavigator<AuthNavigatorParams>();
 
-const Auth = (props: IAuthProps): React.ReactElement => (
-  <Stack.Navigator headerMode="none" screenOptions={{animationEnabled: true}}>
-    {!props.token || props.token == "" ? (
-      <>
-        <Stack.Screen name={AppRoute.SIGN_IN} component={auth.SignInScreen} />
-        <Stack.Screen name={AppRoute.SIGN_UP} component={auth.RegisterScreen} />
-      </>
-    ) : (
-      <>
-        <Stack.Screen name={AppRoute.HOST} component={game.LobbyScreen} />
-      </>
-    )}
-  </Stack.Navigator>
-);
+const Auth = (props: IAuthProps): React.ReactElement => {
+  if (!props.init) props.initGameSock();
+  return (
+    <Stack.Navigator
+      headerMode="none"
+      screenOptions={{ animationEnabled: true }}
+    >
+      {!props.token || props.token == "" ? (
+        <>
+          <Stack.Screen name={AppRoute.SIGN_IN} component={auth.SignInScreen} />
+          <Stack.Screen
+            name={AppRoute.SIGN_UP}
+            component={auth.RegisterScreen}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name={AppRoute.HOST} component={game.LobbyScreen} />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+};
 
 const mapStateToProps = (state: IInitialState): IAuthProps => {
   const { token } = state.auth;
+  const { init } = state.game;
 
-  return { token };
+  return { token, init };
 };
 
-const AuthNavigator = connect(mapStateToProps, {})(Auth);
+const AuthNavigator = connect(mapStateToProps, actions)(Auth);
 
 export { AuthNavigator };

@@ -104,7 +104,8 @@ export const login  = (body: ILogin) => {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
-            hostGame({username: data.data.user.name, token: data.data.token})
+            // dispatch(hostGame({username: data.data.user.name, token: data.data.token}))
+            hostGame({username: data.data.user.name, token: data.data.token},dispatch)
             // dispatch({ type: 'HOST_GAME', payload: {username: data.data.user.name, token: data.data.token} })
         })
         .catch((err) => {

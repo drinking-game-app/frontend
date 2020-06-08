@@ -73,6 +73,7 @@ const initialState: IGameState = {
   askedQuestions: [],
   roundOptions: undefined,
   numOfRounds: 3,
+  init: false
 };
 
 /**
@@ -82,6 +83,11 @@ const initialState: IGameState = {
  */
 export default (state = initialState, action: IGameAction) => {
   switch (action.type) {
+    case "INITIALISE_GAMESOCK":
+      return {
+        ...state,
+        init: true
+      }
     /**
      * Toggles the toRegister boolean
      * Determinds whether to display the
@@ -111,9 +117,10 @@ export default (state = initialState, action: IGameAction) => {
      * Update the list of players
      */
     case "PLAYER_LIST_UPDATE":
+      
       return {
         ...state,
-        players: action.payload,
+        players: [...action.payload],
       };
     /**
      * Update a single player

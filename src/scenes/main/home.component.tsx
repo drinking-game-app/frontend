@@ -32,7 +32,7 @@ import SignoutScreen from "../auth/sign-out.component";
 const styles = require("../../themes")("App");
 
 interface IActions extends HomeScreenProps {
-  hostGame: (body: IHostGame) => void;
+  hostGameAction: (body: IHostGame) => void;
 }
 
 interface IProps {
@@ -52,7 +52,7 @@ const Home = (props: IProps & IActions) => {
    */
   const hostOrLogin = () => {
     if (props.token && props.token !== "") {
-      props.hostGame({ username: props.name, lobbyName: "RYAN" });
+      props.hostGameAction({ username: props.name, token: props.token });
       props.navigation.navigate(AppRoute.GAME);
     } else props.navigation.navigate(AppRoute.AUTH);
   };

@@ -167,22 +167,6 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
       >
         SIGN UP
       </Button>
-
-      {/* <Button
-        style={styles.noAccountButton}
-        appearance="ghost"
-        status="basic"
-        onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
-      >
-        Don't have an account?
-      </Button> */}
-
-      {/* <ButtonInput 
-        style={styles.noAccountButton}
-        onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
-        text="SIGN UP"
-      /> */}
-
     </Layout>
   );
 };

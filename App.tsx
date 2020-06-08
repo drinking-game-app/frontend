@@ -21,6 +21,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import reducers from "./src/reducers";
+import GameSockConfig from './src/actions/socket'
 
 /**
  * Navigation dependencies & modules
@@ -57,11 +58,11 @@ export default function App() {
     <Provider store={store}>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.dark}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <AppNavigator />
-          </NavigationContainer>
-        </SafeAreaProvider>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <AppNavigator />
+            </NavigationContainer>
+          </SafeAreaProvider>
       </ApplicationProvider>
     </Provider>
   );

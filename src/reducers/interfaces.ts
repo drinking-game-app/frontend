@@ -97,9 +97,10 @@ export interface IGameState {
   timer: number;
   currentQuestionId: number;
   askedQuestions: Question[];
-  hostSeatOptions: HotseatOptions | undefined;
+  hotseatOptions: HotseatOptions | undefined;
   roundOptions: RoundOptions | undefined;
   numOfRounds: number;
+  init: boolean;
 }
 
 /**
