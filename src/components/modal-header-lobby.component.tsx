@@ -12,8 +12,6 @@
  * Copyright 2020 - WebSpace
  */
 
-
-
 import React from "react";
 import {
   Button,
@@ -39,26 +37,53 @@ interface ModalHeaderProps extends ButtonProps {
   buttonText?: string;
   loading?: boolean;
   isLeaderboard?: boolean;
+  lobbyCode: string;
 }
 
-export const ModalHeader = ({
+export const ModalHeaderLobby = ({
   text,
   icon,
   buttonText,
   loading = false,
+  lobbyCode,
+  isLeaderboard = false,
   ...ButtonProps
 }: ModalHeaderProps): ButtonElement => {
+  const spinnerIcon = () => (
+    <View>
+      <Spinner size="small" status="danger" />
+    </View>
+  );
 
-  
   const buttonIcon = (props: IconProps) => {
-    if(!loading) return <Icon {...props} name={icon} size="large" />
+    if (!loading) return <Icon {...props} name={icon} size="large" />;
 
+    return spinnerIcon();
+  };
+
+  const renderTitleAndCode = () => {
+    /**
+     * If it is a leaderboard screen, render only the title
+     */
+    if (isLeaderboard)
+      return (
+        <Text style={[styles.title, styles.leaderboardTitle]} category="h1">
+          {text}
+        </Text>
+      );
+
+    /**
+     * If not, render the title and the lobby code
+     */
     return (
-      <View>
-          <Spinner size="small" status="danger" />
-      </View>
-    )
-  }
+      <React.Fragment>
+        <Text style={styles.title} category="h1">
+          {lobbyCode !== "" ? text : "Loading lobby..."}
+        </Text>
+        <Text style={styles.title}>{lobbyCode}</Text>
+      </React.Fragment>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -67,11 +92,10 @@ export const ModalHeader = ({
         accessoryRight={buttonIcon}
         style={styles.button}
         size="tiny"
-      >{buttonText}</Button>
-      
-      <Text style={styles.title} category="h1">
-        {text}
-      </Text>
+      >
+        {buttonText}
+      </Button>
+      {renderTitleAndCode()}
     </View>
   );
 };

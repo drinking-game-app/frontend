@@ -7,7 +7,7 @@ export default StyleSheet.create({
   container: {
     paddingVertical: 16,
     // paddingHorizontal: 16,
-    flexDirection: "column-reverse",
+    flexDirection: "column",
     justifyContent: 'space-between'
   },
   title: {

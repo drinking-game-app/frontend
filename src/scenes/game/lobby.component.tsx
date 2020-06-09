@@ -20,8 +20,8 @@ import { gameActions } from "../../actions";
 import { LobbyScreenProps } from "../../navigation/game.navigator";
 import { ButtonInput } from "../../components/form-button.component";
 import { AppRoute } from "../../navigation/app-routes";
-import { ModalHeader } from "../../components/modal-header.component";
 import * as GameSockClient from '@rossmacd/gamesock-client'
+import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 
 
 /**
@@ -90,8 +90,9 @@ const LobbyScreen = (props: IProps & IActions) => {
   const readyToPlay = props.players.length > 3;
   return (
     <Layout style={styles.container}>
-      <ModalHeader
-        text={props.roundOver ? `Leaderboard` : `Send this code to your friends: ${props.lobbyName}`}
+      <ModalHeaderLobby
+        text={props.roundOver ? `Leaderboard` : `Send this code to your friends:`}
+        lobbyCode={props.lobbyName}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={false}
         disabled={props.isLoading}
