@@ -58,6 +58,7 @@ interface IProps {
   roundOptions: RoundOptions | undefined;
   user: IPlayer
   canAnswer: boolean;
+  displayAnswer: boolean;
 }
 
 const GameScreen = (props: IProps & IActions) => {
@@ -96,6 +97,19 @@ const GameScreen = (props: IProps & IActions) => {
           </React.Fragment>
         );
       case "Hotseat":
+        if(props.displayAnswer && props.questions.length > 0) {
+          
+          
+          return (
+            <React.Fragment>
+              
+                {props.questions[props.currentQuestionId].answers.map((answer, i) => {
+                  return <Text>{`${props.roundOptions?.hotseatPlayers[i].name} selected ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}</Text>
+                })}
+            </React.Fragment>
+          )
+        }
+
         return (
           <PickedPlayers
             user={props.user}
@@ -138,7 +152,7 @@ const GameScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { user, phase, currentQuestionId, questions, roundOptions, lobbyName, canAnswer } = state.game;
+  const { user, phase, currentQuestionId, questions, roundOptions, lobbyName, canAnswer, displayAnswer } = state.game;
 
   return {
     user,
@@ -147,7 +161,8 @@ const mapStateToProps = (state: IInitialState): IProps => {
     questions,
     roundOptions,
     lobbyName,
-    canAnswer
+    canAnswer,
+    displayAnswer
   };
 };
 

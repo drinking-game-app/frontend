@@ -55,7 +55,8 @@ const initialState: IGameState = {
   roundOptions: undefined,
   numOfRounds: 3,
   init: false,
-  canAnswer: false
+  canAnswer: false,
+  displayAnswer: false
 };
 
 /**
@@ -251,14 +252,16 @@ export default (state = initialState, action: IGameAction) => {
       return {
         ...state,
         questions: [...newQuestions],
-        displayAnswer: true
+        displayAnswer: true,
+        canAnswer: false
       }
 
     case "SET_CURRENT_QUESTION":
       return {
         ...state,
         currentQuestionId: state.currentQuestionId += 1,
-        displayAnswer: false
+        displayAnswer: false,
+        canAnswer: true
       };
 
     case "ANSWER_QUESTION":

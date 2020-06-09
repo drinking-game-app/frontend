@@ -21,7 +21,6 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import reducers from "./src/reducers";
-import GameSockConfig from './src/actions/socket'
 
 /**
  * Navigation dependencies & modules
@@ -37,6 +36,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 
+/**
+ * Custom theming
+ */
+import { default as theme } from './src/assets/custom-theme.json';
 
 /**
  * Initialise redux store
@@ -57,7 +60,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.dark}>
+      <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
           <SafeAreaProvider>
             <NavigationContainer>
               <AppNavigator />
