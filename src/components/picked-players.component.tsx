@@ -77,6 +77,7 @@ const PickedPlayers = (props: IProps & IActions) => {
 
     return (
      <Layout style={styles.container}>
+         <Text>{`Can Answer: ${props.canAnswer}`}</Text>
          {renderTextTitle()}
          
          <View style={styles.pickedPlayerContainer}>

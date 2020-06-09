@@ -56,7 +56,7 @@ const initialState: IGameState = {
   numOfRounds: 3,
   init: false,
   canAnswer: false,
-  displayAnswer: false
+  displayAnswer: false,
 };
 
 /**
@@ -69,8 +69,8 @@ export default (state = initialState, action: IGameAction) => {
     case "INITIALISE_GAMESOCK":
       return {
         ...state,
-        init: true
-      }
+        init: true,
+      };
     /**
      * Toggles the toRegister boolean
      * Determinds whether to display the
@@ -100,7 +100,6 @@ export default (state = initialState, action: IGameAction) => {
      * Update the list of players
      */
     case "PLAYER_LIST_UPDATE":
-      
       return {
         ...state,
         players: [...action.payload],
@@ -132,7 +131,6 @@ export default (state = initialState, action: IGameAction) => {
     //   };
 
     case "HOST_GAME":
-      
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
@@ -143,8 +141,6 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "JOIN_GAME":
-      
-
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
@@ -201,27 +197,32 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "TIMER_UPDATE":
-      if (action.payload === 0 && state.phase === 'Hotseat' &&state.timer!==0) {
-        console.log('shifting questions', state.questions)  
+      if (
+        action.payload === 0 &&
+        state.phase === "Hotseat" &&
+        state.timer !== 0
+      ) {
+        // console.log("shifting questions", state.questions);
         // const shiftedQuestions = state.questions.shift()
-        // console.log('done', shiftedQuestions)  
-        state.questions.shift()
+        // console.log('done', shiftedQuestions)
+        // state.questions.shift();
 
-        console.log('affetare questions', state.questions)  
+        console.log("affetare questions", state.questions);
         return {
-            ...state,
-            timer: action.payload,
-            questions: [...state.questions],
-            currentQuestionId: state.currentQuestionId++,
-            canAnswer: true
-        }
+          ...state,
+          timer: action.payload,
+          // questions: [...state.questions],
+          currentQuestionId: state.currentQuestionId++,
+          canAnswer: true,
+          displayAnswer: true,
+        };
       }
       return {
         ...state,
         timer: action.payload,
       };
     case "SET_PHASE":
-      if (action.payload === "Round Ended") 
+      if (action.payload === "Round Ended")
         return {
           ...state,
           phase: action.payload,
@@ -239,29 +240,43 @@ export default (state = initialState, action: IGameAction) => {
     case "START_HOTSEAT":
       // const allQuestions =  as Question[]
       // const hotseatOptions =  as HotseatOptions
-      console.log('start hotseat reducer', action.payload)
+      console.log("start hotseat reducer", action.payload);
       return {
         ...state,
         questions: [...action.payload.questions],
-        hotseatOptions: action.payload.hotseatOptions
-      }
+        hotseatOptions: action.payload.hotseatOptions,
+        canAnswer: true,
+      };
     case "ON_HOTSEAT_ANSWER":
-      let newQuestions = state.questions
-      newQuestions[action.payload.questionIndex].answers = action.payload.answers
+      let newQuestions = state.questions;
+      const answers =
+        action.payload.answers.length > 0
+          ? action.payload.answers
+          : [null, null];
+      console.log(
+        "finding question and inserting answers!",
+        newQuestions,
+        action.payload.questionIndex,
+        answers
+      );
+      newQuestions[action.payload.questionIndex].answers = [...answers];
 
       return {
         ...state,
         questions: [...newQuestions],
         displayAnswer: true,
-        canAnswer: false
-      }
-
+      };
+    case "ON_NEXT_QUESTION":
+      return {
+        ...state,
+        displayAnswer: false,
+      };
     case "SET_CURRENT_QUESTION":
       return {
         ...state,
         currentQuestionId: state.currentQuestionId += 1,
         displayAnswer: false,
-        canAnswer: true
+        canAnswer: true,
       };
 
     case "ANSWER_QUESTION":

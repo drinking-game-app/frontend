@@ -294,6 +294,12 @@ export const onHotseatAnswer = (
     type: "ON_HOTSEAT_ANSWER",
     payload: { questionIndex, answers },
   });
+
+  setTimeout(() => {
+        dispatch({
+            type: "ON_NEXT_QUESTION"
+        })
+  }, 2000);
 };
 
 /**

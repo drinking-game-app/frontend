@@ -37,7 +37,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 
 /**
- * Custom theming
+ * Custom UI Component theming
  */
 import { default as theme } from './src/assets/custom-theme.json';
 
