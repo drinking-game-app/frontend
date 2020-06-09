@@ -14,11 +14,11 @@ export default StyleSheet.create({
     paddingVertical: 32,
     color: '#D7D98B',
     fontWeight: '400',
-    textAlign: 'left',
-    alignItems: "flex-start",
+    textAlign: 'center',
+    fontSize: 24,
   },
   leaderboardTitle: {
-    color: 'pink',
+    color: 'white',
   },
   button: {
     // alignItems: "flex-end",
