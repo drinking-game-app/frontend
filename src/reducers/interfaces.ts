@@ -101,6 +101,7 @@ export interface IGameState {
   roundOptions: RoundOptions | undefined;
   numOfRounds: number;
   init: boolean;
+  canAnswer: boolean;
 }
 
 /**

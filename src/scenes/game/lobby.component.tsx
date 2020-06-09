@@ -47,6 +47,8 @@ interface IProps {
   isHost: boolean;
   lobbyName: string;
   roundOver: boolean;
+  roundOptions: GameSockClient.RoundOptions | undefined; 
+  numOfRounds: number;
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
@@ -88,10 +90,11 @@ const LobbyScreen = (props: IProps & IActions) => {
   }
 
   const readyToPlay = props.players.length > 3;
+  const gameIsFinished = !props.roundOptions || props.numOfRounds === props.roundOptions?.roundNum
   return (
     <Layout style={styles.container}>
       <ModalHeaderLobby
-        text={props.roundOver ? `Leaderboard` : `Send this code to your friends:`}
+        text={props.roundOver ? `${gameIsFinished ? 'Leaderboard' : `Round ${props.numOfRounds}`}` : `Send this code to your friends:`}
         lobbyCode={props.lobbyName}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={false}
@@ -112,11 +115,11 @@ const LobbyScreen = (props: IProps & IActions) => {
         <ButtonInput
           style={styles.submitButton}
           onPress={startGame}
-          disabled={props.isLoading || !readyToPlay}
+          disabled={props.isLoading || !readyToPlay || !gameIsFinished}
           loading={props.isLoading}
           text={
             readyToPlay
-              ? `Start ${props.roundOver ? 'Round' : 'Game'}`
+              ? props.roundOver ? `${gameIsFinished ? 'Start New Game' : `Get ready for round ${props.numOfRounds}`}` : 'Start Game'
               : `Waiting for ${4 - props.players.length} player${
                     4 - props.players.length > 1 ? "s" : ""
                 }`
@@ -129,7 +132,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           loading={props.isLoading}
           text={
             readyToPlay
-              ? "Waiting for host to start the game"
+              ? props.roundOver ? `${gameIsFinished ? 'Waiting for host to start a new game' : `Get ready for round ${props.numOfRounds}`}` : 'Waiting for host to start the game'
               : `Waiting for ${4 - props.players.length} player${
                 4 - props.players.length > 1 ? "s" : ""
                 }`
@@ -146,14 +149,14 @@ const LobbyScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { players, isLoading, isHost, lobbyName, roundOver } = state.game;
+  const { players, isLoading, isHost, lobbyName, roundOver, roundOptions, numOfRounds } = state.game;
 
   return {
     players,
     isLoading,
     isHost,
     lobbyName,
-    roundOver
+    roundOver,roundOptions, numOfRounds
   };
 };
 

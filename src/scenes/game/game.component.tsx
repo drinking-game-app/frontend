@@ -41,7 +41,7 @@ const styles = require("../../themes")("Game");
 interface IActions extends GameScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
-  answerQuestion: ({ question }: Question) => void;
+  answerQuestion: (lobbyName: string, questionIndex: number, playerId: number) => void;
   setPhase: (phase: string) => void;
   endGame: () => void;
 }
@@ -51,12 +51,13 @@ interface IActions extends GameScreenProps {
  * passed to to the game screen component
  */
 interface IProps {
-  // pickedPlayers: IPlayer[];
+  lobbyName: string;
   phase: string;
   currentQuestionId: number;
   questions: Question[];
   roundOptions: RoundOptions | undefined;
   user: IPlayer
+  canAnswer: boolean;
 }
 
 const GameScreen = (props: IProps & IActions) => {
@@ -78,8 +79,8 @@ const GameScreen = (props: IProps & IActions) => {
     props.navigation.navigate(AppRoute.HOME);
   };
 
-  const answerQuestion = (question: Question) => {
-    props.answerQuestion(question);
+  const answerQuestion = (questionIndex: number, playerId: number) => {
+    props.answerQuestion(props.lobbyName, questionIndex, playerId);
   };
 
   const gamePhaseController = () => {
@@ -100,7 +101,9 @@ const GameScreen = (props: IProps & IActions) => {
             user={props.user}
             players={props.roundOptions?.hotseatPlayers}
             question={props.questions[props.currentQuestionId]}
+            questionIndex={props.currentQuestionId}
             answerQuestion={answerQuestion}
+            canAnswer={props.canAnswer}
           />
         );
       case "Disconnected":
@@ -135,14 +138,16 @@ const GameScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { user, phase, currentQuestionId, questions, roundOptions } = state.game;
+  const { user, phase, currentQuestionId, questions, roundOptions, lobbyName, canAnswer } = state.game;
 
   return {
     user,
     phase,
     currentQuestionId,
     questions,
-    roundOptions
+    roundOptions,
+    lobbyName,
+    canAnswer
   };
 };
 

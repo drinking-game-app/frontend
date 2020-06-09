@@ -75,7 +75,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           style={styles.formControl}
           size='large'
           placeholder="Enter Join Code"
-          autoCapitalize="none"
+          autoCapitalize="characters"
         />
         <FormInput
           id="username"
