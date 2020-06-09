@@ -62,7 +62,7 @@ const Home = (props: IProps & IActions) => {
 
   const renderSignoutAndCogContainer = () => {
     if(props.token && props.token !== "") return (
-      <View style={styles.signoutAndCogContainer}>
+      <View style={styles.signOutAndCogContainer}>
         <SignoutScreen />
         <Button
             style={styles.settingsCog}
@@ -74,7 +74,7 @@ const Home = (props: IProps & IActions) => {
     )
 
     return (
-      <View style={styles.signoutAndCogContainer}>
+      <View style={styles.signOutAndCogContainer}>
         <Button
             style={styles.settingsCog}
             onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
