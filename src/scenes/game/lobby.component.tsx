@@ -61,10 +61,10 @@ const LobbyScreen = (props: IProps & IActions) => {
   )
 
   const renderItem = ({ item }: any) => {
-    if(props.roundOver) return <ListItem style={ styles.listItem } title={item.name} accessoryLeft={renderItemIcon} accessoryRight={() => renderListItemPoints(item.score)} />
+    if(props.roundOver) return <ListItem style={styles.listItem} title={item.name} accessoryLeft={renderItemIcon} accessoryRight={() => renderListItemPoints(item.score)} />
 
 
-    return <ListItem style={ styles.listItem } title={item.name} accessoryLeft={renderItemIcon} />
+    return <ListItem style={styles.listItem} title={item.name} accessoryLeft={renderItemIcon} />
   }
 
   const endGame = () => {

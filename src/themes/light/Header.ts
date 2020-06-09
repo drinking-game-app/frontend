@@ -5,21 +5,33 @@ import {StyleSheet} from 'react-native';
  */
 export default StyleSheet.create({
   container: {
-    paddingVertical: 16,
+    // paddingVertical: 16,
+    paddingBottom: 16,
     // paddingHorizontal: 16,
     flexDirection: "column",
     justifyContent: 'space-between'
   },
+
   title: {
-    paddingVertical: 32,
+    // paddingVertical: 32,
+    paddingTop: 32,
+    color: 'white',
+    fontWeight: '200',
+    textAlign: 'center',
+    fontSize: 18,
+  },
+
+  codeTitle: {
     color: '#D7D98B',
     fontWeight: '400',
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 45,
   },
+
   leaderboardTitle: {
     color: 'white',
   },
+
   button: {
     // alignItems: "flex-end",
     // marginLeft: 'auto'

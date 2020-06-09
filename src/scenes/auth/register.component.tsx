@@ -154,22 +154,25 @@ const RegisterScreen = (props: IProps & IActions) => {
         status="danger"
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
-      <Formik
-        initialValues={{ name, email, password, confirm_password }}
-        validationSchema={SignUpSchema}
-        onSubmit={(values) => submit(values)}
-      >
-        {renderForm}
-      </Formik>
 
-      <View style = {styles.customHrTagReg} />
+      <View style={styles.formContainerReg}>
+        <Formik
+          initialValues={{ name, email, password, confirm_password }}
+          validationSchema={SignUpSchema}
+          onSubmit={(values) => submit(values)}
+        >
+          {renderForm}
+        </Formik>
 
-      <Button
-        style={styles.haveAccountButton}
-        onPress={() => props.navigation.navigate(AppRoute.SIGN_IN)}
-      >
-        Already have an account?
-      </Button>
+        <View style = {styles.customHrTagReg} />
+
+        <Button
+          style={styles.haveAccountButton}
+          onPress={() => props.navigation.navigate(AppRoute.SIGN_IN)}
+        >
+          Already have an account?
+        </Button>
+      </View>
     </Layout>
   );
 };

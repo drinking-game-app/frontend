@@ -13,6 +13,7 @@
  */
 
 import React from "react";
+import { View } from "react-native";
 import { JoinGameScreenProps } from "../../navigation/game.navigator";
 import { Layout, Button, Text } from "@ui-kitten/components";
 import { AppRoute } from "../../navigation/app-routes";
@@ -108,15 +109,17 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
               status="danger"
               onPress={() => props.navigation.navigate(AppRoute.HOME)}
             />
-            <Formik
-                initialValues={{lobbyName,username}}
-                validationSchema={JoinLobbySchema}
-                onSubmit={(values)=>submit(values)}
-            >
 
-                {renderForm}
-            </Formik>
-            
+            <View style={styles.formContainer}>
+              <Formik
+                  initialValues={{lobbyName,username}}
+                  validationSchema={JoinLobbySchema}
+                  onSubmit={(values)=>submit(values)}
+              >
+
+                  {renderForm}
+              </Formik>
+            </View>
         </Layout>
     )
 }
