@@ -38,7 +38,7 @@ export default StyleSheet.create({
   formControlReg: {
     marginVertical: 4,
     backgroundColor: '#AB2364',
-    border: 0,
+    // border: 0,
     fontSize: 16,
   },
 
@@ -72,7 +72,7 @@ export default StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 20,
     backgroundColor: '#AD0D4B',
-    border: 0,
+    // border: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,

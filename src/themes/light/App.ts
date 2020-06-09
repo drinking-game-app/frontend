@@ -17,7 +17,7 @@ export default StyleSheet.create({
   title: {
     // paddingHorizontal: 16,
     // paddingTop: '37%',
-    paddingBottom: 82,
+    // paddingBottom: 82,
     color: '#D7D98B',
     fontSize: 45,
     fontWeight: '400',
@@ -45,7 +45,7 @@ export default StyleSheet.create({
 
   formButton:{
     marginVertical: 10,
-    paddingHorizontal: 150,
+    paddingHorizontal: 100,
     paddingVertical: 50,
     backgroundColor: '#AD0D4B',
     // border: 0,
@@ -54,7 +54,7 @@ export default StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 2, height: 2},
     borderRadius: 5,
-    // width: '100%',
+    // width: '80%',
     // marginHorizontal: 'auto'
   },
 

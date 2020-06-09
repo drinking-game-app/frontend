@@ -26,7 +26,7 @@ export default StyleSheet.create({
     // maxWidth: '30%',
     alignSelf: 'flex-start',
     justifyContent: 'flex-start',
-    border: 0,
+    // border: 0,
     // marginLeft: 50,
   }
 });
