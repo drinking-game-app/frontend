@@ -367,6 +367,7 @@ export const answerQuestion = (
   playerIndex: number
 ) => {
   return (dispatch: Dispatch) => {
+      console.log('new answer!', questionIndex, playerIndex)
     GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex);
     dispatch({
       type: "ANSWER_QUESTION",
