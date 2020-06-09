@@ -340,9 +340,11 @@ export const setPhase = (phase: string, dispatch: Dispatch) => {
 /**
  * Answer a question within a game
  */
-export const answerQuestion = (question: GameSockClient.Question) => {
-    return {
-        type: "ANSWER_QUESTION",
-        payload: question
+export const answerQuestion = (lobbyName: string, questionIndex: number, playerIndex: number) => {
+    return (dispatch: Dispatch) => {
+        GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex)
+        dispatch({
+            type: "ANSWER_QUESTION"
+        })
     }
 }

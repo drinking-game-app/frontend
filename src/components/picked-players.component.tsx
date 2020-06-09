@@ -12,7 +12,7 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IPlayer, IQuestion } from "../reducers/interfaces";
+import { IPlayer } from "../reducers/interfaces";
 import { Layout, Card, Text } from "@ui-kitten/components";
 import React from "react";
 import { View} from "react-native";
@@ -30,7 +30,7 @@ const styles = require("../themes")("Game");
  * for the component
  */
 interface IActions {
-    answerQuestion?: ({ question }: IQuestion) => void;
+    answerQuestion?: (questionIndex: number, playerId: number) => void;
 }
 
  /**
@@ -39,37 +39,55 @@ interface IActions {
  */
 interface IProps {
     players: [Player, Player] | undefined;
-    question?: Question
-    user: Player
+    question?: Question;
+    questionIndex?: number;
+    user: Player;
+    canAnswer?: boolean;
 }
 
 const PickedPlayers = (props: IProps & IActions) => {
-    const canAnser = props.question && props.question.question
+    const canSelectAnswer = props.players?.some(player => player.id === props.user.id)
 
-    const onSelectPlayer = (player: Player, i: number) => {
-        if(canAnser && props.answerQuestion) {
-            let question = props.question
-            // question.answers = i
-            props.answerQuestion(question)
+    /**
+     * When a player selects an answer
+     * 
+     * @param {number} i
+     */
+    const onSelectPlayer = (i: number) => {
+        if(canSelectAnswer && props.canAnswer && props.answerQuestion) {
+            props.answerQuestion(props.questionIndex!, i)
         }
     }
 
-    // const title = props.question && props.question.question
-    // ? props.question.question
-    // : "Picked Players"
+    /**
+     * Renders the text title for ingame picked players
+     */
+    const renderTextTitle = () => {
+        if(props.question?.question) return (
+            <React.Fragment>
+                <Text>{canSelectAnswer ? 'Answer the following question:' : 'Waiting for players to answer:'}</Text>
+                <Text style={styles.title}>{props.canAnswer ? props.question.question : 'Waiting for next question...'}</Text>
+            </React.Fragment>
+        )
+
+        return (
+            <Text style={styles.title}>Picked Players</Text>
+        )
+    }
 
     return (
      <Layout style={styles.container}>
-         <Text style={styles.title}>{canAnser ? props.question?.question : "Picked Players"}</Text>
+         {renderTextTitle()}
          
          <View style={styles.pickedPlayerContainer}>
             {props.players?.map((player, i) => {
+                const isPlayer = player.id === props.user.id
                 return (
                     <View style={styles.pickedPlayer} key={i}>                            
-                            <Card style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]} onPress={() => onSelectPlayer(player, i)}>
+                            <Card style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]} onPress={() => onSelectPlayer(i)}>
                                 <Text style={styles.title}>{player.name}</Text>
                             </Card>
-                    <Text style={[styles.belowCardText, i === 0 ? styles.alignLeft : styles.alignRight ]} appearance='hint'>{player.name} {player.id === props.user.id ? '(You)' : ''}</Text>
+                    <Text style={[styles.belowCardText, i === 0 ? styles.alignLeft : styles.alignRight ]} appearance='hint'>{player.name} {isPlayer ? '(You)' : ''}</Text>
                     </View>
                 )
             })}

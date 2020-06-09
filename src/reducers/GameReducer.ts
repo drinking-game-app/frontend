@@ -54,7 +54,8 @@ const initialState: IGameState = {
   askedQuestions: [],
   roundOptions: undefined,
   numOfRounds: 3,
-  init: false
+  init: false,
+  canAnswer: false
 };
 
 /**
@@ -209,7 +210,8 @@ export default (state = initialState, action: IGameAction) => {
             ...state,
             timer: action.payload,
             questions: [...state.questions],
-            currentQuestionId: state.currentQuestionId++
+            currentQuestionId: state.currentQuestionId++,
+            canAnswer: true
         }
       }
       return {
@@ -256,16 +258,9 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "ANSWER_QUESTION":
-      let stateQuestions = state.questions;
-      const questionI = stateQuestions.findIndex(
-        (question) => question.playerId === action.payload.id
-      );
-
-      stateQuestions[questionI] = action.payload as Question;
-
       return {
         ...state,
-        questions: stateQuestions,
+        canAnswer: false,
       };
 
     case "END_GAME":
