@@ -58,7 +58,7 @@ export default StyleSheet.create({
     // marginHorizontal: 'auto'
   },
 
-  signoutAndCogContainer: {
+  signOutAndCogContainer: {
     position: 'absolute',
     top: 20,
     width: '95%',
@@ -66,5 +66,10 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+
+  signOutBtn: {
+    backgroundColor: '#AD0D4B',
+    borderWidth: 0,
   }
 });

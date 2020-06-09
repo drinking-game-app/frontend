@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native';
  */
 export default StyleSheet.create({
   container: {
-    // paddingVertical: 16,
+    paddingVertical: 32,
     paddingBottom: 16,
     // paddingHorizontal: 16,
     flexDirection: "column",

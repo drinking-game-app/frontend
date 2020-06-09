@@ -26,7 +26,7 @@ import { ButtonInput } from "../../components/form-button.component";
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../themes")("Form");
+const styles = require("../../themes")("App");
 
 /**
  * Interface Props
@@ -69,11 +69,13 @@ const SignoutScreen = (props: IProps & IActions) => {
         <LogoutWithGoogle />
       ) : (
         <ButtonInput
-          style={styles.formButton}
+          style={styles.signOutBtn}
           onPress={submit}
           disabled={false}
           loading={isLoading}
-          text="SIGNOUT"
+          icon="log-out-outline"
+          text=""
+          size="tiny"
         />
       )}
     </SafeAreaView>
