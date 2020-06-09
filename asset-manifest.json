@@ -1,0 +1,21 @@
+{
+  "files": {
+    "app.js": "/frontend/static/js/app.9f988983.chunk.js",
+    "app.js.map": "/frontend/static/js/app.9f988983.chunk.js.map",
+    "runtime~app.js": "/frontend/static/js/runtime~app.718b341f.js",
+    "runtime~app.js.map": "/frontend/static/js/runtime~app.718b341f.js.map",
+    "static/js/2.aa497981.chunk.js": "/frontend/static/js/2.aa497981.chunk.js",
+    "static/js/2.aa497981.chunk.js.map": "/frontend/static/js/2.aa497981.chunk.js.map",
+    "favicon-16.png": "/frontend/favicon-16.png",
+    "favicon-32.png": "/frontend/favicon-32.png",
+    "favicon.ico": "/frontend/favicon.ico",
+    "index.html": "/frontend/index.html",
+    "manifest.json": "/frontend/manifest.json",
+    "serve.json": "/frontend/serve.json"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.718b341f.js",
+    "static/js/2.aa497981.chunk.js",
+    "static/js/app.9f988983.chunk.js"
+  ]
+}
