@@ -26,6 +26,12 @@ export default StyleSheet.create({
     backgroundColor: '#161F26',
   },
 
+  listItem: {
+    paddingVertical: 20, 
+    fontSize: 30, 
+    backgroundColor: '#161F26',
+  },
+
   submitButton: {
     // marginVertical: 24,
     // borderTopLeftRadius: 75,
