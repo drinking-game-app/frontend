@@ -102,6 +102,7 @@ export interface IGameState {
   numOfRounds: number;
   init: boolean;
   canAnswer: boolean;
+  displayAnswer: boolean;
 }
 
 /**
