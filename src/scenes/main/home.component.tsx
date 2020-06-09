@@ -89,8 +89,11 @@ const Home = (props: IProps & IActions) => {
     <Layout style={styles.container}>
       {renderSignoutAndCogContainer()}
       <Text style={styles.title}>
-        WHO IS <Text style={styles.titleRed}>MORE LIKELY</Text>
-        <br/>TO
+        WHO IS 
+      </Text>
+      <Text style={styles.titleRed}>MORE LIKELY</Text>
+      <Text style={styles.title}>
+        TO
       </Text>
 
       <View>

@@ -90,13 +90,14 @@ const GameScreen = (props: IProps & IActions) => {
         return (
           <React.Fragment>
             <Timer serverHasQuestions={serverHasQuestions} />
-            <PickedPlayers players={props.roundOptions?.hotseatPlayers} />
+            <PickedPlayers user={props.user} players={props.roundOptions?.hotseatPlayers} />
             {!userIsInHotseat ? <QuestionInput /> : <Text>Waiting for other players to write some good quesitions...</Text>}
           </React.Fragment>
         );
       case "Hotseat":
         return (
           <PickedPlayers
+            user={props.user}
             players={props.roundOptions?.hotseatPlayers}
             question={props.questions[props.currentQuestionId]}
             answerQuestion={answerQuestion}

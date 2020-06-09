@@ -73,7 +73,6 @@ const LobbyScreen = (props: IProps & IActions) => {
 
   const startGame = () => {
     props.setGameLoading();
-    // props.startHostGame(props.lobbyName);
     GameSockClient.startGame(props.lobbyName)
     props.navigation.navigate(AppRoute.GAME);
   };
@@ -94,7 +93,7 @@ const LobbyScreen = (props: IProps & IActions) => {
       <ModalHeader
         text={props.roundOver ? `Leaderboard` : `Join with this code: ${props.lobbyName}`}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
-        loading={props.isLoading}
+        loading={false}
         disabled={props.isLoading}
         isLeaderboard={props.roundOver}
         icon="close-outline"

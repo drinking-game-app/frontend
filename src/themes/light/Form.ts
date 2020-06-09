@@ -24,7 +24,7 @@ export default StyleSheet.create({
   formControl: {
     marginVertical: 4,
     backgroundColor: '#7B0D37',
-    border: 0,
+    // border: 0,
     fontSize: 16,
   },
 
@@ -32,7 +32,7 @@ export default StyleSheet.create({
     marginVertical: 24,
     paddingVertical: 20,
     backgroundColor: '#00B0FF',
-    border: 0,
+    // border: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -45,7 +45,7 @@ export default StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 20,
     backgroundColor: '#D14688',
-    border: 0,
+    // border: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -56,7 +56,7 @@ export default StyleSheet.create({
   thirdPartyButtonContainer: {
     alignItems: "center",
     paddingVertical: 20,
-    border: 0,
+    // border: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,

@@ -14,6 +14,7 @@
 
 import { IPlayer } from "../reducers/interfaces"
 import * as GameSockClient from '@rossmacd/gamesock-client'
+
 import { GameSocketConfigExport, GameOptions, HotseatOptions } from "./socket"
 import Constants from "expo-constants";
 import { Dispatch } from "redux";
@@ -133,15 +134,11 @@ export const hostGameAction = (body: IHostGame) =>  {
     return (dispatch: Dispatch) => {
         const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
         
-        GameSockClient.createLobby(lobbyName, body.token).then((players) => {
-            
+        GameSockClient.createLobby(lobbyName, body.username, body.token).then((players) => {
             let user = Array.isArray(players)
             ? players[0]
             : players
-            user.name = body.username
             
-            GameSockClient.updateSelf(lobbyName, user)
-
             dispatch({
                 type: 'HOST_GAME',
                 payload: {lobbyName: lobbyName, user: user}
@@ -160,14 +157,11 @@ export const hostGame = (body: IHostGame,dispatch:any) =>  {
         GameSocketConfigExport()
         const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
         
-        GameSockClient.createLobby(lobbyName, body.token).then((players) => {
+        GameSockClient.createLobby(lobbyName, body.username, body.token).then((players) => {
             
             let user = Array.isArray(players)
             ? players[0]
             : players
-            user.name = body.username
-            
-            GameSockClient.updateSelf(lobbyName, user)
 
             dispatch({
                 type: 'HOST_GAME',
@@ -183,14 +177,12 @@ export const hostGame = (body: IHostGame,dispatch:any) =>  {
  */
 export const joinGame = (body: IJoinGame) => {
     return (dispatch: Dispatch) => {
-        GameSockClient.joinLobby(body.lobbyName).then((players) => {
+        GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
             let user = Array.isArray(players)
             ? players[players.length - 1]
             : players
-            user.name = body.username
-            GameSockClient.updateSelf(body.lobbyName, user)
-
-            playerListUpdate(players, dispatch)
+            
+            // playerListUpdate(players, dispatch)
             dispatch({
                 type: 'JOIN_GAME',
                 payload: {lobbyName: body.lobbyName, user: user}
@@ -316,8 +308,11 @@ export const playerUpdate = (player: IPlayer, dispatch: Dispatch) => {
  *  
  */
 export const leaveGame = () => {
-    return {
-        type: 'LEAVE_GAME',
+    return (dispatch: Dispatch) => {
+        
+        dispatch({
+            type: 'LEAVE_GAME'
+        })
     }
 }
 

@@ -48,7 +48,7 @@ export default StyleSheet.create({
     paddingHorizontal: 150,
     paddingVertical: 50,
     backgroundColor: '#AD0D4B',
-    border: 0,
+    // border: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,
