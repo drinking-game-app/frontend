@@ -182,6 +182,7 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         inGame: true,
         isLoading: false,
+        questions: [],
         user: user,
         roundOptions: roundOptions,
       };
@@ -246,15 +247,18 @@ export default (state = initialState, action: IGameAction) => {
     case "ON_HOTSEAT_ANSWER":
       let newQuestions = state.questions
       newQuestions[action.payload.questionIndex].answers = action.payload.answers
+
       return {
         ...state,
-        questions: [...newQuestions]
+        questions: [...newQuestions],
+        displayAnswer: true
       }
 
     case "SET_CURRENT_QUESTION":
       return {
         ...state,
         currentQuestionId: state.currentQuestionId += 1,
+        displayAnswer: false
       };
 
     case "ANSWER_QUESTION":

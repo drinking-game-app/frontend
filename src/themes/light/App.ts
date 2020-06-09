@@ -45,10 +45,10 @@ export default StyleSheet.create({
 
   formButton:{
     marginVertical: 10,
-    paddingHorizontal: 100,
+    paddingHorizontal: 120,
     paddingVertical: 50,
     backgroundColor: '#AD0D4B',
-    // border: 0,
+    borderWidth: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,
