@@ -42,7 +42,7 @@ export default StyleSheet.create({
   formControlReg: {
     marginVertical: 4,
     backgroundColor: '#AB2364',
-    borderWidth: 0,
+    borderColor: '#ffffff00',
     fontSize: 16,
   },
 
