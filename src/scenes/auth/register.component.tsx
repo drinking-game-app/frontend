@@ -13,6 +13,7 @@
  */
 
 import React from "react";
+import { View } from "react-native";
 import { connect } from "react-redux";
 import * as actions from "../../actions/auth";
 import { Button, Layout } from "@ui-kitten/components";
@@ -101,29 +102,33 @@ const RegisterScreen = (props: IProps & IActions) => {
       <React.Fragment>
         <FormInput
           id="name"
-          style={styles.formControl}
+          style={styles.formControlReg}
+          size="large"
           placeholder="Username"
           autoCorrect={false}
           autoCapitalize="none"
         />
         <FormInput
           id="email"
-          style={styles.formControl}
+          style={styles.formControlReg}
+          size="large"
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
         />
         <FormInput
           id="password"
-          style={styles.formControl}
+          style={styles.formControlReg}
+          size="large"
           placeholder="Password"
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
         />
         <FormInput
           id="confirm_password"
-          style={styles.formControl}
-          placeholder="Confirm Passwordd"
+          style={styles.formControlReg}
+          size="large"
+          placeholder="Confirm Password"
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
         />
@@ -134,7 +139,7 @@ const RegisterScreen = (props: IProps & IActions) => {
           disabled={!props.isValid && !props.isValidating}
           onPress={() => props.handleSubmit()}
           loading={loading}
-          text="REGISTER"
+          text="SIGN UP"
         />
       </React.Fragment>
     );
@@ -142,9 +147,9 @@ const RegisterScreen = (props: IProps & IActions) => {
 
   if (props.actionSuccess) navigateSignIn();
   return (
-    <Layout style={styles.formContainer}>
+    <Layout style={styles.formContainerReg}>
       <ModalHeader
-        text="Register"
+        text=""
         icon="close-outline"
         status="danger"
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
@@ -157,10 +162,10 @@ const RegisterScreen = (props: IProps & IActions) => {
         {renderForm}
       </Formik>
 
+      <View style = {styles.customHrTagReg} />
+
       <Button
-        style={styles.noAccountButton}
-        appearance="ghost"
-        status="basic"
+        style={styles.haveAccountButton}
         onPress={() => props.navigation.navigate(AppRoute.SIGN_IN)}
       >
         Already have an account?

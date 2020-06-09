@@ -7,8 +7,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 32,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+    // paddingVertical: 16,
+    // paddingHorizontal: 16,
     backgroundColor: '#161F26',
   },
 
@@ -21,11 +21,21 @@ export default StyleSheet.create({
   },
 
   listContainer: {
-    maxHeight: 500,
+    paddingHorizontal: 16,
+    maxHeight: 700,
+    backgroundColor: '#161F26',
   },
 
   submitButton: {
-    marginVertical: 24,
+    // marginVertical: 24,
+    // borderTopLeftRadius: 75,
+    // borderTopRightRadius: 75,
+    // overflow: 'hidden',
+    height: 150,
+    alignSelf: 'stretch',
+    borderTopStartRadius: 25,
+    borderTopEndRadius: 25,
+    borderRadius: 0.01,
   },
 
   pickedPlayerContainer: {

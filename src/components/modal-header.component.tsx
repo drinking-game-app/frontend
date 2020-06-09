@@ -70,8 +70,8 @@ export const ModalHeader = ({
       <Button
         {...ButtonProps}
         accessoryRight={buttonIcon}
-        appearance="ghost"
         style={styles.button}
+        size="tiny"
       >{buttonText}</Button>
     </View>
   );

@@ -91,7 +91,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   return (
     <Layout style={styles.container}>
       <ModalHeader
-        text={props.roundOver ? `Leaderboard` : `Join with this code: ${props.lobbyName}`}
+        text={props.roundOver ? `Leaderboard` : `Send this code to your friends: ${props.lobbyName}`}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={false}
         disabled={props.isLoading}
@@ -100,6 +100,7 @@ const LobbyScreen = (props: IProps & IActions) => {
         status="danger"
         onPress={() => endGame()}
       />
+
       <List
         style={styles.listContainer}
         data={players}

@@ -11,6 +11,13 @@ export default StyleSheet.create({
     backgroundColor: '#AD0D4B',
   },
 
+  formContainerReg: {
+    flex: 1,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    backgroundColor: '#D14688',
+  },
+
   homeBtn: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -25,6 +32,13 @@ export default StyleSheet.create({
     marginVertical: 4,
     backgroundColor: '#7B0D37',
     // border: 0,
+    fontSize: 16,
+  },
+
+  formControlReg: {
+    marginVertical: 4,
+    backgroundColor: '#AB2364',
+    border: 0,
     fontSize: 16,
   },
 
@@ -46,6 +60,19 @@ export default StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: '#D14688',
     // border: 0,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: { width: 2, height: 2},
+    borderRadius: 5,
+  },
+
+  haveAccountButton: {
+    // alignSelf: 'center',
+    marginVertical: 10,
+    paddingVertical: 20,
+    backgroundColor: '#AD0D4B',
+    border: 0,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -94,5 +121,12 @@ export default StyleSheet.create({
     borderColor: '#D14688',
     marginTop: 25,
     marginBottom: 50,
+  },
+
+  customHrTagReg: {
+    borderWidth: 0.5,
+    borderColor: '#AD0D4B',
+    marginTop: 25,
+    marginBottom: 35,
   }
 });
