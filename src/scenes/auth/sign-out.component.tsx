@@ -73,7 +73,8 @@ const SignoutScreen = (props: IProps & IActions) => {
           onPress={submit}
           disabled={false}
           loading={isLoading}
-          text="SIGN OUT"
+          icon="log-out-outline"
+          text=""
           size="tiny"
         />
       )}
