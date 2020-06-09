@@ -24,8 +24,8 @@ export default StyleSheet.create({
     // alignItems: "flex-end",
     // marginLeft: 'auto'
     // maxWidth: '30%',
-    alignSelf: 'flex-end',
-    justifyContent: 'flex-end',
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start',
     border: 0,
     // marginLeft: 50,
   }
