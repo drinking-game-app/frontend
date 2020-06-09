@@ -147,26 +147,28 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
-      <Formik
-        initialValues={{ email, password }}
-        validationSchema={SignInSchema}
-        onSubmit={(values) => submit(values)}
-      >
-        {renderForm}
-      </Formik>
-      
-      {Platform.OS === "ios" && <LoginWithApple />}
+      <View style={styles.formContainer}>
+        <Formik
+          initialValues={{ email, password }}
+          validationSchema={SignInSchema}
+          onSubmit={(values) => submit(values)}
+        >
+          {renderForm}
+        </Formik>
+        
+        {Platform.OS === "ios" && <LoginWithApple />}
 
-      <View style = {styles.customHrTag} />
+        <View style = {styles.customHrTag} />
 
-      <LoginWithGoogle />
+        <LoginWithGoogle />
 
-      <Button
-        style={styles.noAccountButton}
-        onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
-      >
-        SIGN UP
-      </Button>
+        <Button
+          style={styles.noAccountButton}
+          onPress={() => props.navigation.navigate(AppRoute.SIGN_UP)}
+        >
+          SIGN UP
+        </Button>
+      </View>
     </Layout>
   );
 };

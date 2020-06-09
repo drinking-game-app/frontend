@@ -80,7 +80,7 @@ export const ModalHeaderLobby = ({
         <Text style={styles.title} category="h1">
           {lobbyCode !== "" ? text : "Loading lobby..."}
         </Text>
-        <Text style={styles.title}>{lobbyCode}</Text>
+        <Text style={styles.codeTitle}>{lobbyCode}</Text>
       </React.Fragment>
     );
   };

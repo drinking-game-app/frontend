@@ -9,6 +9,8 @@ export default StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 16,
     backgroundColor: '#AD0D4B',
+    position: 'relative',
+    justifyContent: "center",
   },
 
   formContainerReg: {
@@ -16,6 +18,8 @@ export default StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 16,
     backgroundColor: '#D14688',
+    position: 'relative',
+    justifyContent: "center",
   },
 
   homeBtn: {
