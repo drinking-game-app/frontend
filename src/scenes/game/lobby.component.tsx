@@ -49,6 +49,7 @@ interface IProps {
   roundOver: boolean;
   roundOptions: GameSockClient.RoundOptions | undefined; 
   numOfRounds: number;
+  timer: number
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
@@ -79,6 +80,16 @@ const LobbyScreen = (props: IProps & IActions) => {
     props.navigation.navigate(AppRoute.GAME);
   };
 
+  const gameIsFinished = props.numOfRounds >= (props.roundOptions?.roundNum || 0)
+
+  const renderTimer = () => {
+    if(!gameIsFinished && props.roundOver) {
+      if(props.timer === 0) return <Text>Starting next round</Text>
+      return <Text>Next round starts in {props.timer} seconds</Text>
+    }
+    return <></>
+  }
+
   let players: IPlayer[] = props.players;
   if (players.length < 4)
     players = [
@@ -86,11 +97,10 @@ const LobbyScreen = (props: IProps & IActions) => {
       ...new Array(3).fill({ name: "Waiting for player..." }),
     ];
   if(props.roundOver) {
-    players.sort((a, b) => b.score - a.score)  
+    players.sort((a, b) => b.score - a.score)
   }
 
   const readyToPlay = props.players.length > 3;
-  const gameIsFinished = !props.roundOptions || props.numOfRounds === props.roundOptions?.roundNum
   return (
     <Layout style={styles.container}>
       <ModalHeaderLobby
@@ -104,6 +114,8 @@ const LobbyScreen = (props: IProps & IActions) => {
         status="danger"
         onPress={() => endGame()}
       />
+      <Text>{`Game is finished boolean ${gameIsFinished} Round over bool ${props.roundOver}`}</Text>
+      {renderTimer()}
 
       <List
         style={styles.listContainer}
@@ -115,7 +127,7 @@ const LobbyScreen = (props: IProps & IActions) => {
         <ButtonInput
           style={styles.submitButton}
           onPress={startGame}
-          disabled={props.isLoading || !readyToPlay || !gameIsFinished}
+          disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
           text={
             readyToPlay
@@ -149,14 +161,15 @@ const LobbyScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { players, isLoading, isHost, lobbyName, roundOver, roundOptions, numOfRounds } = state.game;
+  const { players, isLoading, isHost, lobbyName, roundOver, roundOptions, numOfRounds, timer } = state.game;
 
   return {
     players,
     isLoading,
     isHost,
     lobbyName,
-    roundOver,roundOptions, numOfRounds
+    roundOver,roundOptions, numOfRounds,
+    timer
   };
 };
 

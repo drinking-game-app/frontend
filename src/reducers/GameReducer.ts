@@ -14,7 +14,7 @@
 
 import { IGameState, IPlayer } from "./interfaces";
 import { RoundOptions, Question } from "@rossmacd/gamesock-client";
-import { HotseatOptions } from "../actions/socket";
+import { getPlayers } from '@rossmacd/gamesock-client';
 
 interface IGameAction {
   type: string;
@@ -28,7 +28,6 @@ interface IGameAction {
  */
 const initialState: IGameState = {
   lobbyName: "",
-  username: "",
   user: {
     id: "",
     name: "",
@@ -51,7 +50,6 @@ const initialState: IGameState = {
   timer: 0,
   hotseatOptions: undefined,
   currentQuestionId: 0,
-  askedQuestions: [],
   roundOptions: undefined,
   numOfRounds: 3,
   init: false,
@@ -206,13 +204,13 @@ export default (state = initialState, action: IGameAction) => {
         // const shiftedQuestions = state.questions.shift()
         // console.log('done', shiftedQuestions)
         // state.questions.shift();
-
+        const newQuestionId = state.currentQuestionId+=1 
         console.log("affetare questions", state.questions);
         return {
           ...state,
           timer: action.payload,
           // questions: [...state.questions],
-          currentQuestionId: state.currentQuestionId++,
+          currentQuestionId: newQuestionId,
           canAnswer: true,
           displayAnswer: true,
         };
@@ -222,15 +220,21 @@ export default (state = initialState, action: IGameAction) => {
         timer: action.payload,
       };
     case "SET_PHASE":
-      if (action.payload === "Round Ended")
+      if (action.payload === "Round Ended") {
+        
+        if(state.isHost) {
+          getPlayers(state.lobbyName)
+          console.log('Updating players for score')
+        }
         return {
           ...state,
           phase: action.payload,
           roundOver: true,
           currentQuestionId: 0,
+          questions: [],
           inGame: false,
-          askedQuestions: [],
         };
+      }
 
       return {
         ...state,
@@ -271,13 +275,13 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         displayAnswer: false,
       };
-    case "SET_CURRENT_QUESTION":
-      return {
-        ...state,
-        currentQuestionId: state.currentQuestionId += 1,
-        displayAnswer: false,
-        canAnswer: true,
-      };
+    // case "SET_CURRENT_QUESTION":
+    //   return {
+    //     ...state,
+    //     currentQuestionId: state.currentQuestionId += 1,
+    //     displayAnswer: false,
+    //     canAnswer: true,
+    //   };
 
     case "ANSWER_QUESTION":
       return {
@@ -286,6 +290,10 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "END_GAME":
+      // if(state.isHost) {
+      //   getPlayers(state.lobbyName)
+      //   console.log('Updating players for score')
+      // }
       return {
         ...state,
         roundOver: true,

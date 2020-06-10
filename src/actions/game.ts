@@ -64,8 +64,8 @@ export const initGameSock = () => {
     );
 
     GameSockClient.onStartGame((newGameOptions: GameOptions) => {
-      console.log("starting game");
-      startGame(newGameOptions.rounds, dispatch);
+      console.log("starting game", newGameOptions.rounds);
+      startGame(newGameOptions.rounds+=1, dispatch);
     });
 
     GameSockClient.onStartRound((newRoundOptions) => {
@@ -123,6 +123,13 @@ export const initGameSock = () => {
     GameSockClient.onMessage((message) => {
       setMessages(message.msg);
     });
+
+    /**
+     * @todo add error handling here and hook up to state
+     */
+    // GameSockClient.onError((error) => {
+    //   setError(error)
+    // })
 
     dispatch({
       type: "INITIALISE_GAMESOCK",
@@ -290,6 +297,7 @@ export const onHotseatAnswer = (
   answers: number[],
   dispatch: Dispatch
 ) => {
+  console.log('receiving answers!', answers, questionIndex)
   dispatch({
     type: "ON_HOTSEAT_ANSWER",
     payload: { questionIndex, answers },
@@ -367,7 +375,7 @@ export const answerQuestion = (
   playerIndex: number
 ) => {
   return (dispatch: Dispatch) => {
-      console.log('new answer!', questionIndex, playerIndex)
+    console.log('new answer!', questionIndex, playerIndex)
     GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex);
     dispatch({
       type: "ANSWER_QUESTION",

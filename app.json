@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "drinking-game-frontend",
-    "slug": "drinking-game-frontend",
+    "name": "Shcoop",
+    "slug": "shcoop",
     "platforms": [
       "ios",
       "android",

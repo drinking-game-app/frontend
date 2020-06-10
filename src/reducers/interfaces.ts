@@ -64,22 +64,11 @@ export interface IPlayer extends Player {
   inHotseat?:boolean
 }
 
-
-/**
- * Interface for a question
- */
-// export interface IQuestion {
-//   username: string;
-//   question: string;
-//   answer?: number;
-// }
-
 /**
  * Interface for the game state
  */
 export interface IGameState {
   lobbyName: string;
-  username: string;
   user: IPlayer;
   inLobby: boolean;
   inGame: boolean;
@@ -96,7 +85,6 @@ export interface IGameState {
   phase: string;
   timer: number;
   currentQuestionId: number;
-  askedQuestions: Question[];
   hotseatOptions: HotseatOptions | undefined;
   roundOptions: RoundOptions | undefined;
   numOfRounds: number;

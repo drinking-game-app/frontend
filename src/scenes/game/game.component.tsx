@@ -26,6 +26,7 @@ import { View } from "react-native";
 import { onRequestQuestions, Question, RoundOptions } from "@rossmacd/gamesock-client";
 import Timer from "../../components/timer.component";
 import { userInfo } from "os";
+import shuffleQuestion from "../../helpers/shuffle-question.helper";
 
 /**
  * Importing styles
@@ -63,14 +64,24 @@ interface IProps {
 
 const GameScreen = (props: IProps & IActions) => {
   const [serverHasQuestions, setServerHasQuestions] = useState<boolean>(false)
-    
+  const [notEnoughQuestions, setNotEnoughQuestions] = useState<boolean>(false)
+
   useEffect(() => {
+      setNotEnoughQuestions((val) => false)
+
       onRequestQuestions(() => {
         console.log('requesting questions')
         setServerHasQuestions((oldBool) => {
           return true
         })
-        return props.questions.map(question => question.question)
+        const {questions} = props
+        if(questions.length < props.roundOptions!.numQuestions) {
+          setNotEnoughQuestions((val) => true)
+          for(let i=props.roundOptions!.numQuestions -questions.length;i--;){
+            questions.push({playerId: props.user.id, question: shuffleQuestion()})
+          }
+        }
+        return questions.map(question => question.question)
       })
   })
 
@@ -93,18 +104,18 @@ const GameScreen = (props: IProps & IActions) => {
           <React.Fragment>
             <Timer serverHasQuestions={serverHasQuestions} />
             <PickedPlayers user={props.user} players={props.roundOptions?.hotseatPlayers} />
+            {notEnoughQuestions ? <Text>You didn't submit enough questions, generating some for you...</Text> : <></>}
             {!userIsInHotseat ? <QuestionInput /> : <Text>Waiting for other players to write some good quesitions...</Text>}
           </React.Fragment>
         );
       case "Hotseat":
-        if(props.displayAnswer && props.questions.length > 0) {
-          
-          
+        if(props.displayAnswer && props.questions && props.questions.length > 0) {          
           return (
             <React.Fragment>
-              
-                {props.questions[props.currentQuestionId].answers.map((answer, i) => {
-                  return <Text>{`${props.roundOptions?.hotseatPlayers[i].name} selected ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}</Text>
+                <Text>Question: {props.questions[props.currentQuestionId].question}</Text>
+                {props.questions[props.currentQuestionId].answers.map((answer: number, i: number) => {
+                  if(answer !== null) return <Text key={i}>{`${props.roundOptions?.hotseatPlayers[i].name} selected ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}</Text>
+                  return <Text key={i}>{`${props.roundOptions?.hotseatPlayers[i].name} didn't answer`}</Text>
                 })}
             </React.Fragment>
           )
