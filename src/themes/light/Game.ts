@@ -14,7 +14,7 @@ export default StyleSheet.create({
 
   title: {
     paddingHorizontal: 16,
-    paddingVerticle: 8,
+    // paddingVerticle: 8,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center'
