@@ -13,7 +13,7 @@
     "deploy": "gh-pages -d web-build",
     "predeploy": "expo build:web"
   },
-  "homepage": "http://drinking-game-app.github.io/frontend",
+  "homepage": "",
   "dependencies": {
     "@babel/runtime": "^7.10.2",
     "@eva-design/eva": "^2.0.0",

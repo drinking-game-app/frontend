@@ -31,6 +31,10 @@
         }
       }
     },
+    "android": {
+      "package": "ie.wspace.drinkingapp",
+      "versionCode": 1
+    },
     "description": "The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native TypeScript, and compiled using Expo.",
     "githubUrl": "https://github.com/drinking-game-app/frontend"
   }
