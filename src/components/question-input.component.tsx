@@ -654,6 +654,7 @@ const QuesionInput = (props: IProps & IActions) => {
       'try',
       'tug',
       'whistle',
+      'wack\'m',
       'wink',
       'wipe',
       'wish',
