@@ -3,8 +3,8 @@
   "description": "The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native TypeScript, and compiled using Expo.",
   "display": "standalone",
   "lang": "en",
-  "name": "drinking-game-frontend",
-  "short_name": "drinking-game-frontend",
+  "name": "Shcoop",
+  "short_name": "Shcoop",
   "start_url": "/?utm_source=web_app_manifest",
   "orientation": "portrait",
   "related_applications": [
