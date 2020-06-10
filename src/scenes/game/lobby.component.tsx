@@ -22,6 +22,7 @@ import { ButtonInput } from "../../components/form-button.component";
 import { AppRoute } from "../../navigation/app-routes";
 import * as GameSockClient from '@rossmacd/gamesock-client'
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
+import LoadingComponent from "../../components/loading.component";
 
 
 /**
@@ -80,14 +81,24 @@ const LobbyScreen = (props: IProps & IActions) => {
     props.navigation.navigate(AppRoute.GAME);
   };
 
-  const gameIsFinished = props.numOfRounds >= (props.roundOptions?.roundNum || 0)
+  const gameIsFinished = props.roundOptions
+  ? (props.roundOptions.roundNum < props.numOfRounds) 
+  : false
 
-  const renderTimer = () => {
+  const renderModalTitle = () => {
     if(!gameIsFinished && props.roundOver) {
-      if(props.timer === 0) return <Text>Starting next round</Text>
-      return <Text>Next round starts in {props.timer} seconds</Text>
+      if(props.timer <= 0) return 'Starting next round...'
+      return 'Next round starts in'
     }
-    return <></>
+    if(gameIsFinished) return 'LEADERBOARD'
+    return 'Send this code to your friends:'
+  }
+
+  const renderModalCode = () => {
+    if(!gameIsFinished && props.roundOver) {
+      return props.timer <= 0 ? '0' : `${props.timer}` 
+    }
+    return props.lobbyName
   }
 
   let players: IPlayer[] = props.players;
@@ -100,12 +111,15 @@ const LobbyScreen = (props: IProps & IActions) => {
     players.sort((a, b) => b.score - a.score)
   }
 
+
+
   const readyToPlay = props.players.length > 3;
+  if(props.lobbyName === "") return <LoadingComponent text="Loading Lobby..." />
   return (
     <Layout style={styles.container}>
       <ModalHeaderLobby
-        text={props.roundOver ? `${gameIsFinished ? 'LEADERBOARD' : `Round ${props.numOfRounds}`}` : `Send this code to your friends:`}
-        lobbyCode={props.lobbyName}
+        text={renderModalTitle()}
+        lobbyCode={renderModalCode()}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={false}
         disabled={props.isLoading}
@@ -114,8 +128,6 @@ const LobbyScreen = (props: IProps & IActions) => {
         status="danger"
         onPress={() => endGame()}
       />
-      <Text>{`Game is finished boolean ${gameIsFinished} Round over bool ${props.roundOver}`}</Text>
-      {renderTimer()}
 
       <List
         style={styles.listContainer}

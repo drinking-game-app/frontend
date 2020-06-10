@@ -98,10 +98,16 @@ export default StyleSheet.create({
   formButton:{
     marginVertical: 12
   },
-
+  inputTitle: {
+    margin: 20
+  },
+  inputContainer: {
+    padding: 10
+  },
   questionInputContainer: {
     // flex: 1,
     // height:48,
+    padding: 10,
     flexDirection: 'row',
     // width: '100%',
   },

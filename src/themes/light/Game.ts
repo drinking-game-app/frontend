@@ -14,7 +14,7 @@ export default StyleSheet.create({
 
   title: {
     paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingVerticle: 8,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center'
@@ -22,7 +22,7 @@ export default StyleSheet.create({
 
   listContainer: {
     paddingHorizontal: 16,
-    maxHeight: 700,
+    // maxHeight: 700,
     backgroundColor: '#161F26',
   },
 
@@ -43,7 +43,8 @@ export default StyleSheet.create({
 
   submitButtonJoined: {
     alignSelf: 'flex-end',
-    marginVertical: 90, 
+    position: 'absolute',
+    bottom: '10%',
     borderTopStartRadius: 0.001,
     borderBottomStartRadius: 0.001,
     borderRadius: 0.001,
@@ -91,7 +92,9 @@ export default StyleSheet.create({
   gameLoadingSpinner: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 30
+    alignItems: 'center'
+  },
+  loadingSpinner: {
+    marginVertical: 20
   }
 });

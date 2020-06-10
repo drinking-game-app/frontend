@@ -13,7 +13,7 @@
  */
 
 import { IPlayer } from "../reducers/interfaces";
-import { Layout, Card, Text } from "@ui-kitten/components";
+import { Layout, Card, Text, Button } from "@ui-kitten/components";
 import React from "react";
 import { View} from "react-native";
 import { Player, Question } from "@rossmacd/gamesock-client";
@@ -65,8 +65,8 @@ const PickedPlayers = (props: IProps & IActions) => {
     const renderTextTitle = () => {
         if(props.question?.question) return (
             <React.Fragment>
-                <Text>{canSelectAnswer ? 'Answer the following question:' : 'Waiting for players to answer:'}</Text>
-                <Text style={styles.title}>{props.canAnswer ? props.question.question : 'Waiting for next question...'}</Text>
+                <Text>{canSelectAnswer ? props.canAnswer ? 'Answer the following question:' : 'Waiting for next question...' : 'Waiting for players to answer:'}</Text>
+                <Text style={styles.title}>{props.question.question}</Text>
             </React.Fragment>
         )
 
@@ -77,12 +77,19 @@ const PickedPlayers = (props: IProps & IActions) => {
 
     return (
      <Layout style={styles.container}>
-         <Text>{`Can Answer: ${props.canAnswer}`}</Text>
          {renderTextTitle()}
          
          <View style={styles.pickedPlayerContainer}>
             {props.players?.map((player, i) => {
                 const isPlayer = player.id === props.user.id
+                if(canSelectAnswer) return (
+                    <View style={styles.pickedPlayer} key={i}>                               
+                    <Button disabled={!props.canAnswer} style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]} size="giant" onPress={() => onSelectPlayer(i)}>
+                        {player.name}
+                    </Button>
+                    <Text style={[styles.belowCardText, i === 0 ? styles.alignLeft : styles.alignRight ]} appearance='hint'>{player.name} {isPlayer ? '(You)' : ''}</Text>
+                    </View>
+                )
                 return (
                     <View style={styles.pickedPlayer} key={i}>                            
                             <Card style={[styles.pickedPlayerCard, i === 0 ? styles.cardPink : styles.cardPurple]} onPress={() => onSelectPlayer(i)}>

@@ -25,8 +25,9 @@ import { AppRoute } from "../../navigation/app-routes";
 import { View } from "react-native";
 import { onRequestQuestions, Question, RoundOptions } from "@rossmacd/gamesock-client";
 import Timer from "../../components/timer.component";
-import { userInfo } from "os";
 import shuffleQuestion from "../../helpers/shuffle-question.helper";
+import LoadingComponent from "../../components/loading.component";
+import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 
 /**
  * Importing styles
@@ -60,6 +61,7 @@ interface IProps {
   user: IPlayer
   canAnswer: boolean;
   displayAnswer: boolean;
+  timer: number;
 }
 
 const GameScreen = (props: IProps & IActions) => {
@@ -102,7 +104,7 @@ const GameScreen = (props: IProps & IActions) => {
 
         return (
           <React.Fragment>
-            <Timer serverHasQuestions={serverHasQuestions} />
+            {/* <Timer serverHasQuestions={serverHasQuestions} /> */}
             <PickedPlayers user={props.user} players={props.roundOptions?.hotseatPlayers} />
             {notEnoughQuestions ? <Text>You didn't submit enough questions, generating some for you...</Text> : <></>}
             {!userIsInHotseat ? <QuestionInput /> : <Text>Waiting for other players to write some good quesitions...</Text>}
@@ -135,18 +137,15 @@ const GameScreen = (props: IProps & IActions) => {
         return <Text>Disconnected</Text>;
 
       default:
-        return (
-          <View style={styles.gameLoadingSpinner}>
-            <Spinner size="large" />
-          </View>
-        );
+        return <LoadingComponent />
     }
   };
 
   return (
     <Layout style={styles.container}>
-      <ModalHeader
+      <ModalHeaderLobby
         text={props.phase}
+        lobbyCode={props.timer !== 0 ? `${props.timer}` : ""}
         icon="close-outline"
         status="danger"
         onPress={() => endGame()}
@@ -163,9 +162,10 @@ const GameScreen = (props: IProps & IActions) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-  const { user, phase, currentQuestionId, questions, roundOptions, lobbyName, canAnswer, displayAnswer } = state.game;
+  const { timer, user, phase, currentQuestionId, questions, roundOptions, lobbyName, canAnswer, displayAnswer } = state.game;
 
   return {
+    timer,
     user,
     phase,
     currentQuestionId,

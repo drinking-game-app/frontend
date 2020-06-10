@@ -76,7 +76,7 @@ const QuesionInput = (props: IProps & IActions) => {
 
     if (isLoading === false && props.isSubmitting === true) props.setSubmitting(false);
     if(roundOptions.numQuestions <= questions.length) return (
-      <Text>Questions submitted! Waiting for other players...</Text>
+      <Text style={styles.inputTitle}>Questions submitted! Waiting for other players...</Text>
     )
     return (
       <View style={styles.questionInputContainer}>
@@ -101,8 +101,8 @@ const QuesionInput = (props: IProps & IActions) => {
   };
 
   return (
-    <Layout>
-      <Text>
+    <Layout style={styles.inputContainer}>
+      <Text style={styles.inputTitle}>
         Input your questions {props.questions.length} / {props.roundOptions.numQuestions}
       </Text>
       <Formik
