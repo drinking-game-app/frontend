@@ -128,12 +128,14 @@ const LobbyScreen = (props: IProps & IActions) => {
         />
       ) : (
         <ButtonInput
-          style={styles.submitButton}
-          disabled={true}
+          style={styles.submitButtonJoined}
+          status='success'
+          size='small'
+          disabled={props.isLoading || !readyToPlay || !gameIsFinished}
           loading={props.isLoading}
           text={
             readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST' : `GET READY FOR ROUND ${props.numOfRounds}`}` : 'WAITING FOR HOST'
+              ? props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST...' : `GET READY FOR ROUND ${props.numOfRounds}`}` : 'WAITING FOR HOST...'
               : `WAITING FOR ${4 - props.players.length} PLAYER${
                 4 - props.players.length > 1 ? "S" : ""
                 }`
