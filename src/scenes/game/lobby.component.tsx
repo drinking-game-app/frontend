@@ -104,7 +104,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   return (
     <Layout style={styles.container}>
       <ModalHeaderLobby
-        text={props.roundOver ? `${gameIsFinished ? 'Leaderboard' : `Round ${props.numOfRounds}`}` : `Send this code to your friends:`}
+        text={props.roundOver ? `${gameIsFinished ? 'LEADERBOARD' : `Round ${props.numOfRounds}`}` : `Send this code to your friends:`}
         lobbyCode={props.lobbyName}
         buttonText={props.isHost ? "End Game" : "Leave Lobby"}
         loading={false}
@@ -126,27 +126,30 @@ const LobbyScreen = (props: IProps & IActions) => {
       {props.isHost ? (
         <ButtonInput
           style={styles.submitButton}
+          status='success'
           onPress={startGame}
           disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
           text={
             readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'Start New Game' : `Get ready for round ${props.numOfRounds}`}` : 'Start Game'
-              : `Waiting for ${4 - props.players.length} player${
-                    4 - props.players.length > 1 ? "s" : ""
+              ? props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `GET READY FOR ROUND ${props.numOfRounds}`}` : 'PLAY TIME!'
+              : `WAITING FOR ${4 - props.players.length} PLAYER${
+                    4 - props.players.length > 1 ? "S" : ""
                 }`
           }
         />
       ) : (
         <ButtonInput
-          style={styles.submitButton}
-          disabled={true}
+          style={styles.submitButtonJoined}
+          status='success'
+          size='small'
+          disabled={props.isLoading || !readyToPlay || !gameIsFinished}
           loading={props.isLoading}
           text={
             readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'Waiting for host to start a new game' : `Get ready for round ${props.numOfRounds}`}` : 'Waiting for host to start the game'
-              : `Waiting for ${4 - props.players.length} player${
-                4 - props.players.length > 1 ? "s" : ""
+              ? props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST...' : `GET READY FOR ROUND ${props.numOfRounds}`}` : 'WAITING FOR HOST...'
+              : `WAITING FOR ${4 - props.players.length} PLAYER${
+                4 - props.players.length > 1 ? "S" : ""
                 }`
           }
         />

@@ -33,21 +33,28 @@ export default StyleSheet.create({
   },
 
   submitButton: {
-    // marginVertical: 24,
-    // borderTopLeftRadius: 75,
-    // borderTopRightRadius: 75,
-    // overflow: 'hidden',
     height: 150,
     alignSelf: 'stretch',
     borderTopStartRadius: 25,
     borderTopEndRadius: 25,
     borderRadius: 0.01,
+    borderColor: '#ffffff00',
+  },
+
+  submitButtonJoined: {
+    alignSelf: 'flex-end',
+    marginVertical: 90, 
+    borderTopStartRadius: 0.001,
+    borderBottomStartRadius: 0.001,
+    borderRadius: 0.001,
+    borderColor: '#ffffff00',
   },
 
   pickedPlayerContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',  
+    justifyContent: 'space-between',
+    borderRadius: 0.01,  
   },
 
   pickedPlayer: {
