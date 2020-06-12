@@ -1,100 +1,124 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 /**
  * App Stylesheet for the light theme
  */
 export default StyleSheet.create({
+  /**
+   * ------GLOBAL STYLING FOR GAME PAGES------ 
+   */
   container: {
     flex: 1,
     paddingTop: 32,
     // paddingVertical: 16,
     // paddingHorizontal: 16,
-    backgroundColor: '#161F26',
-  },
-
-  title: {
-    paddingHorizontal: 16,
-    // paddingVerticle: 8,
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-
-  listContainer: {
-    paddingHorizontal: 16,
-    // maxHeight: 700,
-    backgroundColor: '#161F26',
-  },
-
-  listItem: {
-    paddingVertical: 20, 
-    fontSize: 30, 
-    backgroundColor: '#161F26',
-  },
-
-  submitButton: {
-    height: 150,
-    alignSelf: 'stretch',
-    borderTopStartRadius: 25,
-    borderTopEndRadius: 25,
-    borderRadius: 0.01,
-    borderColor: '#ffffff00',
-  },
-
-  submitButtonJoined: {
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    bottom: '10%',
-    borderTopStartRadius: 0.001,
-    borderBottomStartRadius: 0.001,
-    borderRadius: 0.001,
-    borderColor: '#ffffff00',
-  },
-
-  pickedPlayerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderRadius: 0.01,  
-  },
-
-  pickedPlayer: {
-    width: '48%',
-  },
-
-  pickedPlayerCard: {
-    height: 150,
-    display: 'flex',
-    justifyContent: 'center'
-  },
-
-  cardPink: {
-    backgroundColor: '#AD0D4B'
-  },
-
-  cardPurple: {
-    backgroundColor: '#9F37DE'
-  },
-
-  belowCardText: {
-    marginVertical: 10
-  },
-
-  alignLeft: {
-    color: '#AD0D4B'
-  },
-
-  alignRight: {
-    color: '#9F37DE',
-    textAlign: 'right'
+    backgroundColor: "#161F26",
   },
 
   gameLoadingSpinner: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
+
   loadingSpinner: {
-    marginVertical: 20
-  }
+    marginVertical: 20,
+  },
+
+  /**
+   * ------LOBBY (GLOBAL)------
+   */
+  listContainer: {
+    paddingHorizontal: 16,
+    // maxHeight: 700,
+    backgroundColor: "#161F26",
+  },
+
+  listItem: {
+    paddingVertical: 20,
+    fontSize: 30,
+    backgroundColor: "#161F26",
+  },
+
+  /**
+   * ------LOBBY (HOST)------
+   */
+  submitButton: {
+    height: 150,
+    alignSelf: "stretch",
+    borderTopStartRadius: 25,
+    borderTopEndRadius: 25,
+    borderRadius: 0.01,
+    borderColor: "#ffffff00",
+  },
+
+  /**
+   * ------LOBBY (JOIN)------
+   */
+  submitButtonJoined: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    bottom: "10%",
+    borderTopStartRadius: 0.001,
+    borderBottomStartRadius: 0.001,
+    borderRadius: 0.001,
+    borderColor: "#ffffff00",
+  },
+
+  /**
+   * ------IN-GAME (GLOBAL)------
+   */
+  title: {
+    paddingHorizontal: 16,
+    // paddingVertical: 8,
+    fontSize: 28,
+    fontWeight: "300",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+
+  /**
+   * ------IN-GAME (CHOSEN)------
+   */
+  pickedPlayerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 0.01,
+  },
+
+  pickedPlayer: {
+    width: "48%",
+  },
+
+  pickedPlayerCard: {
+    height: 250,
+    display: "flex",
+    justifyContent: "center",
+  },
+
+  cardPink: {
+    backgroundColor: "#AD0D4B",
+  },
+
+  cardPurple: {
+    backgroundColor: "#9F37DE",
+  },
+
+  belowCardText: {
+    marginVertical: 10,
+  },
+
+  alignLeft: {
+    color: "#AD0D4B",
+  },
+
+  alignRight: {
+    color: "#9F37DE",
+    textAlign: "right",
+  },
+
+  /**
+   * ------IN-GAME (NOT CHOSEN)------
+   */
 });

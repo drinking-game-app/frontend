@@ -22,14 +22,16 @@ export default StyleSheet.create({
   },
 
   codeTitle: {
-    color: '#D7D98B',
     fontWeight: '400',
     textAlign: 'center',
     fontSize: 45,
+    color: '#D7D98B',
   },
 
   leaderboardTitle: {
-    color: 'white',
+    fontSize: 36,
+    fontWeight: '200',
+    color: '#FFF',
   },
 
   button: {

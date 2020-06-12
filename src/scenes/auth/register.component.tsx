@@ -151,7 +151,7 @@ const RegisterScreen = (props: IProps & IActions) => {
       <ModalHeader
         text=""
         icon="close-outline"
-        status="danger"
+        status="info"
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
