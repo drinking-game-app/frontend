@@ -14,10 +14,25 @@
 
 import { IPlayer } from "../reducers/interfaces";
 import * as GameSockClient from "@rossmacd/gamesock-client";
-
-import { GameSocketConfigExport, GameOptions, HotseatOptions } from "./socket";
 import Constants from "expo-constants";
 import { Dispatch } from "redux";
+
+export interface GameOptions{
+  // The total nuber of rounds
+  rounds:number;
+}
+
+export interface HotseatOptions{
+  // The time to answer the question
+  tta:number;
+}
+/**
+* Interface props for the
+*  gamesock config
+*/
+interface IProps {
+  questions: GameSockClient.Question[]
+}
 
 /**
  * Interface for hosting a game

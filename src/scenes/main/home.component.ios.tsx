@@ -22,6 +22,9 @@ import { gameActions } from "../../actions";
 import { HomeScreenProps } from "../../navigation/main.navigator";
 import { IHostGame } from "../../actions/game";
 import SignoutScreen from "../auth/sign-out.component";
+import Toast from "../../components/toast.component";
+import * as Updates from 'expo-updates';
+import LoadingComponent from "../../components/loading.component";
 
 /**
  * Importing styles
@@ -44,7 +47,56 @@ interface IProps {
  * Rendering the view
  */
 const Home = (props: IProps & IActions) => {
+  const [updateReady, setUpdateReady] = React.useState<boolean>(false)
+  const [checkedForUpdate, setCheckedForUpdate] = React.useState<boolean>(false)
+  const [message, setMessage] = React.useState<string>("helllo")
+  const [updating, setUpdating] = React.useState<boolean>(false)
+
+  const checkForUpdates = async() => {
+    try {
+      const update = await Updates.checkForUpdateAsync()
+
+      if(update.isAvailable) {
+        await Updates.fetchUpdateAsync()
+        setMessage((oldMsg) => {
+          return "🤭 Psst! We got a new update for you, reload the app to see it"
+        })
+        setUpdateReady((old) => true)
+        setCheckedForUpdate((old) => true)
+      }
+    } catch (e) {
+      setMessage((oldMsg) => {
+        return `😨 The system encountered a problem checking for an update: ${e}`
+      })
+      setUpdateReady((old) => false)
+    }
+  }
+
+  if(!checkedForUpdate) checkForUpdates()
+
+  const reloadWithUpdate = async() => {
+    setUpdating((o) => true)
+    try {
+      Updates.reloadAsync()
+      setMessage((o) => "")
+    } catch(e) {
+      setMessage((oldMsg) => {
+        return `😨 The system encountered a problem trying to update: ${e}`
+      })
+      setUpdating((o) => false)
+    }
+
+  }
+
+  const handleToastMessage = (message: string) => {
+    if(!message || message === "") return
+    
+    if(checkedForUpdate && updateReady) <Toast message={message} time={0} actionText="Update now" action={() => reloadWithUpdate()} />
+    return <Toast message={message} time={5000} actionText="Retry" action={() => reloadWithUpdate()} />
+  }
+
   
+
   /**
    * If the user is logged in, start a new game as a host
    *
@@ -85,6 +137,7 @@ const Home = (props: IProps & IActions) => {
       </View>
     )
   }
+  if(updating) return <LoadingComponent text="👀 Running an updating, this might take a few minutes..." />
 
   return (
     <Layout style={styles.container}>
@@ -112,6 +165,7 @@ const Home = (props: IProps & IActions) => {
           JOIN
         </Button>
       </View>
+      {handleToastMessage(message)}
     </Layout>
   );
 };

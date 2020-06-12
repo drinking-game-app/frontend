@@ -13,7 +13,7 @@
  */
 
 import {Player, Question, RoundOptions} from '@rossmacd/gamesock-client'
-import { HotseatOptions } from '../actions/socket';
+import { HotseatOptions } from '../actions/game';
 
 /**
  * Interface for a user
