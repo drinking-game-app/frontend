@@ -372,11 +372,12 @@ export const setPhase = (phase: string, dispatch: Dispatch) => {
 export const answerQuestion = (
   lobbyName: string,
   questionIndex: number,
-  playerIndex: number
+  playerIndex: number,
+  roundNum:number
 ) => {
   return (dispatch: Dispatch) => {
     console.log('new answer!', questionIndex, playerIndex)
-    GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex);
+    GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex,roundNum);
     dispatch({
       type: "ANSWER_QUESTION",
     });

@@ -50,7 +50,8 @@ interface IActions extends GameScreenProps {
   answerQuestion: (
     lobbyName: string,
     questionIndex: number,
-    playerId: number
+    playerId: number,
+    roundNum:number
   ) => void;
   setPhase: (phase: string) => void;
   endGame: () => void;
@@ -70,6 +71,7 @@ interface IProps {
   canAnswer: boolean;
   displayAnswer: boolean;
   timer: number;
+  round:number
 }
 
 const GameScreen = (props: IProps & IActions) => {
@@ -107,7 +109,7 @@ const GameScreen = (props: IProps & IActions) => {
   };
 
   const answerQuestion = (questionIndex: number, playerId: number) => {
-    props.answerQuestion(props.lobbyName, questionIndex, playerId);
+    props.answerQuestion(props.lobbyName, questionIndex, playerId, props.round);
   };
 
   const gamePhaseController = () => {
@@ -156,7 +158,7 @@ const GameScreen = (props: IProps & IActions) => {
                 {props.questions[props.currentQuestionId].question}
               </Text>
               
-              {props.questions[props.currentQuestionId].answers.map(
+              {props.questions[props.currentQuestionId].answers!.map(
                 (answer: number, i: number) => {
                   if (answer !== null)
                     return (
@@ -236,6 +238,7 @@ const mapStateToProps = (state: IInitialState): IProps => {
     lobbyName,
     canAnswer,
     displayAnswer,
+    round
   } = state.game;
 
   return {
@@ -248,6 +251,7 @@ const mapStateToProps = (state: IInitialState): IProps => {
     lobbyName,
     canAnswer,
     displayAnswer,
+    round
   };
 };
 
