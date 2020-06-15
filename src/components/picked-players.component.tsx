@@ -68,21 +68,21 @@ const PickedPlayers = (props: IProps & IActions) => {
     if (props.question?.question)
       return (
         <React.Fragment>
-          <Text style={styles.title}>
+          <Text style={styles.titleNotChosen}>
             {canSelectAnswer
                 ? props.canAnswer
                 ? ""
                 : "Waiting for next question..."
-                : "Waiting for players to answer:"}
+                : "Waiting for players to answer..."}
           </Text>
           
-          <Text style={styles.title}>{props.question.question}</Text>
+          <Text style={styles.question}>{props.question.question}</Text>
         </React.Fragment>
       );
 
     return (
       // <Text style={styles.title}>Picked Players</Text>
-      <Text style={styles.title}>Chosen Victims</Text>
+      <Text style={styles.titleChosenYellow}>CHOSEN <Text style={styles.titleChosenRed}>VICTIMS</Text></Text>
     );
   };
 

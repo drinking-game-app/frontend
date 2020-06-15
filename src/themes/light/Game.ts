@@ -77,6 +77,39 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
 
+  titleChosenYellow: {
+    fontSize: 36,
+    fontWeight: "300",
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#D7D98B",
+  },
+
+  titleChosenRed: {
+    fontSize: 36,
+    fontWeight: "300",
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#AD0D4B",
+  },
+
+  pleadTheFifth: {
+    fontSize: 32,
+    fontWeight: "400",
+    // textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    marginVertical: 30,
+  },
+
+  question: {
+    fontSize: 28,
+    fontWeight: "300",
+    textAlign: "center",
+    marginBottom: 30,
+  },
+
   /**
    * ------IN-GAME (CHOSEN)------
    */
@@ -121,4 +154,11 @@ export default StyleSheet.create({
   /**
    * ------IN-GAME (NOT CHOSEN)------
    */
+  titleNotChosen: {
+    fontSize: 18,
+    textAlign: "center",
+    fontWeight: 300,
+    marginVertical: 30,
+    color: "#D7D98B"
+  },
 });

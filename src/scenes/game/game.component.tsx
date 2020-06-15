@@ -137,7 +137,7 @@ const GameScreen = (props: IProps & IActions) => {
               <QuestionInput />
             ) : (
               // Text for chosen players for when they're waiting for questions:
-              <Text style={styles.title}>
+              <Text style={styles.titleNotChosen}>
                 Waiting to "destroy" your friendships...
               </Text>
             )}
@@ -175,7 +175,10 @@ const GameScreen = (props: IProps & IActions) => {
                     // Text for when chosen players didn't choose a player:
                     <Text
                       key={i}
-                      style={styles.title}
+                      style={[
+                        styles.pleadTheFifth, 
+                        i === 0 ? styles.alignLeft : styles.alignRight
+                      ]}
                     >
                       {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
                     </Text>
