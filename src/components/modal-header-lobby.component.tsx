@@ -38,6 +38,7 @@ interface ModalHeaderProps extends ButtonProps {
   loading?: boolean;
   isLeaderboard?: boolean;
   lobbyCode: string;
+  loadingText?: string;
 }
 
 export const ModalHeaderLobby = ({
@@ -47,6 +48,7 @@ export const ModalHeaderLobby = ({
   loading = false,
   lobbyCode,
   isLeaderboard = false,
+  loadingText = "",
   ...ButtonProps
 }: ModalHeaderProps): ButtonElement => {
   const spinnerIcon = () => (
@@ -78,7 +80,7 @@ export const ModalHeaderLobby = ({
     return (
       <React.Fragment>
         <Text style={styles.title} category="h1">
-          {lobbyCode !== "" ? text : "Loading lobby..."}
+          {lobbyCode !== "" ? text : loadingText !== "" ? loadingText : "Loading lobby..."}
         </Text>
         <Text style={styles.codeTitle}>{lobbyCode}</Text>
       </React.Fragment>

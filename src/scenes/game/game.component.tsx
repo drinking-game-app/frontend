@@ -13,20 +13,19 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Layout, Text, Spinner } from "@ui-kitten/components";
+import { Layout, Text } from "@ui-kitten/components";
 import PickedPlayers from "../../components/picked-players.component";
 import { IPlayer, IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
 import QuestionInput from "../../components/question-input.component";
 import { gameActions } from "../../actions";
-import { ModalHeader } from "../../components/modal-header.component";
 import { GameScreenProps } from "../../navigation/game.navigator";
 import { AppRoute } from "../../navigation/app-routes";
-import { View } from "react-native";
 import {
   onRequestQuestions,
   Question,
   RoundOptions,
+  HotseatOptions,
 } from "@rossmacd/gamesock-client";
 import Timer from "../../components/timer.component";
 import shuffleQuestion from "../../helpers/shuffle-question.helper";
@@ -47,11 +46,12 @@ const styles = require("../../themes")("Game");
 interface IActions extends GameScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
+  onNextQuestion: (time: number) => void;
   answerQuestion: (
     lobbyName: string,
     questionIndex: number,
     playerId: number,
-    roundNum:number
+    roundNum: number
   ) => void;
   setPhase: (phase: string) => void;
   endGame: () => void;
@@ -71,7 +71,7 @@ interface IProps {
   canAnswer: boolean;
   displayAnswer: boolean;
   timer: number;
-  round:number
+  hotseatOptions: HotseatOptions | undefined;
 }
 
 const GameScreen = (props: IProps & IActions) => {
@@ -88,10 +88,14 @@ const GameScreen = (props: IProps & IActions) => {
       });
 
       const { questions } = props;
-      
+
       if (questions.length < props.roundOptions!.numQuestions) {
         setNotEnoughQuestions((val) => true);
-        for (let i = props.roundOptions!.numQuestions - questions.length; i--;) {
+        for (
+          let i = props.roundOptions!.numQuestions - questions.length;
+          i--;
+
+        ) {
           questions.push({
             playerId: props.user.id,
             question: shuffleQuestion(),
@@ -102,6 +106,14 @@ const GameScreen = (props: IProps & IActions) => {
     });
   });
 
+  // useEffect(() => {
+  //   console.log("use effect siadgnewi", props.hotseatOptions);
+  //   if (props.questions && props.questions.length > 0) {
+  //     //@ts-ignore
+  //     props.onNextQuestion(props.hotseatOptions?.delayBetween);
+  //   }
+  // }, [props.canAnswer]);
+
   const endGame = () => {
     props.setGameLoading();
     props.leaveGame();
@@ -109,7 +121,12 @@ const GameScreen = (props: IProps & IActions) => {
   };
 
   const answerQuestion = (questionIndex: number, playerId: number) => {
-    props.answerQuestion(props.lobbyName, questionIndex, playerId, props.round);
+    props.answerQuestion(
+      props.lobbyName,
+      questionIndex,
+      playerId,
+      props.roundOptions?.roundNum as number
+    );
   };
 
   const gamePhaseController = () => {
@@ -126,7 +143,7 @@ const GameScreen = (props: IProps & IActions) => {
               user={props.user}
               players={props.roundOptions?.hotseatPlayers}
             />
-            
+
             {notEnoughQuestions ? (
               <Text style={styles.title}>
                 Can't think of questions? That's okay, we'll help you out!
@@ -146,48 +163,38 @@ const GameScreen = (props: IProps & IActions) => {
           </React.Fragment>
         );
 
-      case "Hotseat":
-        if (
-          props.displayAnswer &&
-          props.questions &&
-          props.questions.length > 0
-        ) {
-          return (
-            <React.Fragment>
-              <Text>
-                {props.questions[props.currentQuestionId].question}
-              </Text>
-              
-              {props.questions[props.currentQuestionId].answers!.map(
-                (answer: number, i: number) => {
-                  if (answer !== null)
-                    return (
-                      <Text key={i}>
-                        {
-                        `${props.roundOptions?.hotseatPlayers[i].name} 
-                        selected 
-                        ${answer === i 
-                          ? "themselves" 
-                          : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`
-                      }
-                      </Text>
-                    );
+      case "Display Answer":
+        return (
+          <React.Fragment>
+            <Text>{props.questions[props.currentQuestionId].question}</Text>
 
+            {props.questions[props.currentQuestionId].answers!.map(
+              (answer: number, i: number) => {
+                if (answer !== null)
                   return (
-                    // Text for when chosen players didn't choose a player:
-                    <Text
-                      key={i}
-                      style={styles.title}
-                    >
-                      {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
+                    <Text key={i}>
+                      {`${props.roundOptions?.hotseatPlayers[i].name} 
+                    selected 
+                    ${
+                      answer === i
+                        ? "themselves"
+                        : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0]
+                            .name
+                    }`}
                     </Text>
                   );
-                }
-              )}
-            </React.Fragment>
-          );
-        }
 
+                return (
+                  // Text for when chosen players didn't choose a player:
+                  <Text key={i} style={styles.title}>
+                    {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
+                  </Text>
+                );
+              }
+            )}
+          </React.Fragment>
+        );
+      case "Hotseat":
         return (
           <PickedPlayers
             user={props.user}
@@ -211,6 +218,7 @@ const GameScreen = (props: IProps & IActions) => {
     <Layout style={styles.container}>
       <ModalHeaderLobby
         text={props.phase}
+        loadingText={props.phase}
         lobbyCode={props.timer !== 0 ? `${props.timer}` : ""}
         icon="close-outline"
         status="danger"
@@ -238,7 +246,7 @@ const mapStateToProps = (state: IInitialState): IProps => {
     lobbyName,
     canAnswer,
     displayAnswer,
-    round
+    hotseatOptions,
   } = state.game;
 
   return {
@@ -251,7 +259,7 @@ const mapStateToProps = (state: IInitialState): IProps => {
     lobbyName,
     canAnswer,
     displayAnswer,
-    round
+    hotseatOptions,
   };
 };
 

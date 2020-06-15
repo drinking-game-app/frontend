@@ -15,6 +15,7 @@
 import { IGameState, IPlayer } from "./interfaces";
 import { RoundOptions, Question } from "@rossmacd/gamesock-client";
 import { getPlayers } from '@rossmacd/gamesock-client';
+import { onNextQuestion } from "../actions/game";
 
 interface IGameAction {
   type: string;
@@ -145,6 +146,7 @@ export default (state = initialState, action: IGameAction) => {
         user: action.payload.user,
         inLobby: true,
         isLoading: false,
+        roundOver: false
       };
 
     case "LEAVE_GAME":
@@ -152,7 +154,7 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         lobbyName: "",
         inGame: false,
-        inLobby: false,
+        inLobby: true,
         isHost: false,
         isLoading: false,
       };
@@ -178,6 +180,7 @@ export default (state = initialState, action: IGameAction) => {
         inGame: true,
         isLoading: false,
         questions: [],
+        currentQuestionId: 0,
         user: user,
         roundOptions: roundOptions,
       };
@@ -195,10 +198,23 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "TIMER_UPDATE":
+      // if(
+      //   state.phase === "Display Answer"
+      //   && action.payload === state.hotseatOptions?.tta as number - 1
+      //   ) {
+      //     return {
+      //       ...state,
+      //       timer: action.payload,
+      //       displayAnswer: false,
+      //       canAnswer: true,
+      //       phase: 'Hotseat'
+      //   }
+      // }
+
       if (
         action.payload === 0 &&
-        state.phase === "Hotseat" &&
-        state.timer !== 0
+        state.phase === "Display Answer" &&
+        state.timer > 0
       ) {
         // console.log("shifting questions", state.questions);
         // const shiftedQuestions = state.questions.shift()
@@ -211,8 +227,9 @@ export default (state = initialState, action: IGameAction) => {
           timer: action.payload,
           // questions: [...state.questions],
           currentQuestionId: newQuestionId,
+          phase: 'Hotseat',
           canAnswer: true,
-          displayAnswer: true,
+          displayAnswer: false,
         };
       }
       return {
@@ -230,8 +247,6 @@ export default (state = initialState, action: IGameAction) => {
           ...state,
           phase: action.payload,
           roundOver: true,
-          currentQuestionId: 0,
-          questions: [],
           inGame: false,
         };
       }
@@ -269,6 +284,8 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         questions: [...newQuestions],
         displayAnswer: true,
+        canAnswer: false,
+        phase: "Display Answer"
       };
     case "ON_NEXT_QUESTION":
       return {
