@@ -226,56 +226,64 @@ export default (state = initialState, action: IGameAction) => {
 
       */
      if(action.payload>state.timer){
-      // New timer - new phase
-      // Move from display answer->hotseat
-      if(state.phase==="Display answer"){
+      // If the phase is display answer we need to increase the question ID, hotseat ready only happens for the first question of the round
+      if( state.phase==="Display Answer"){
         const newQuestionId = state.currentQuestionId+=1 
         return {
           ...state,
           timer: action.payload,
-          // questions: [...state.questions],
           currentQuestionId: newQuestionId,
           phase: 'Hotseat',
           canAnswer: true,
           displayAnswer: false,
         }
-      }
-    } else if (action.payload===0){
-      // Timer is done - new phase
-    }else {
-        // If the value decreases by one should be safe to return
+      }else if(state.phase==="Hotseat ready") {
         return {
           ...state,
           timer: action.payload,
-        }
-      }
-
-
-
-
-
-
-      if (
-        action.payload === 0 &&
-        state.phase === "Hotseat" &&
-        state.timer !== 0
-      ) {
-        // console.log("shifting questions", state.questions);
-        // const shiftedQuestions = state.questions.shift()
-        // console.log('done', shiftedQuestions)
-        // state.questions.shift();
-        const newQuestionId = state.currentQuestionId+=1 
-        console.log("affetare questions", state.questions);
-        return {
-          ...state,
-          timer: action.payload,
-          // questions: [...state.questions],
-          currentQuestionId: newQuestionId,
-          phase: 'Display answer',
+          currentQuestionId: 0,
+          phase: 'Hotseat',
           canAnswer: true,
           displayAnswer: false,
-        };
+        }
       }
+    } 
+    // else if (action.payload===0){
+    //   // Timer is done - new phase
+    // }else {
+    //     // If the value decreases by one should be safe to return
+    //     return {
+    //       ...state,
+    //       timer: action.payload,
+    //     }
+    //   }
+
+
+
+
+
+
+    //   if (
+    //     action.payload === 0 &&
+    //     state.phase === "Hotseat" &&
+    //     state.timer !== 0
+    //   ) {
+    //     // console.log("shifting questions", state.questions);
+    //     // const shiftedQuestions = state.questions.shift()
+    //     // console.log('done', shiftedQuestions)
+    //     // state.questions.shift();
+    //     const newQuestionId = state.currentQuestionId+=1 
+    //     console.log("affetare questions", state.questions);
+    //     return {
+    //       ...state,
+    //       timer: action.payload,
+    //       // questions: [...state.questions],
+    //       currentQuestionId: newQuestionId,
+    //       phase: 'Display answer',
+    //       canAnswer: true,
+    //       displayAnswer: false,
+    //     };
+    //   }
       return {
         ...state,
         timer: action.payload,
@@ -306,7 +314,7 @@ export default (state = initialState, action: IGameAction) => {
       console.log("start hotseat reducer", action.payload);
       return {
         ...state,
-        phase:"Hotseat",
+        phase:"Hotseat ready",
         questions: [...action.payload.questions],
         hotseatOptions: action.payload.hotseatOptions,
         canAnswer: true,
