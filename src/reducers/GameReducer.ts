@@ -224,7 +224,8 @@ export default (state = initialState, action: IGameAction) => {
 
         04--> [ON_HOTSEAT_ANSWER] -> if phase !=="Hotseat" we are out of sync!
         ----> PHASE: "DisplayAnswer" 
-        ----> loop to step 02 or End round
+        ----> if all questions have been proccessed end round
+        ---> else [TIMER_UPDATE] loop to step 02
         
 
       */
