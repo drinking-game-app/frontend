@@ -155,7 +155,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           style={styles.submitButtonJoined}
           status='success'
           size='small'
-          disabled={props.isLoading || !readyToPlay || !gameIsFinished}
+          disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
           text={
             readyToPlay

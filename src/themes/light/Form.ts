@@ -98,33 +98,6 @@ export default StyleSheet.create({
   formButton:{
     marginVertical: 12
   },
-  inputTitle: {
-    margin: 20
-  },
-  inputContainer: {
-    padding: 10
-  },
-  questionInputContainer: {
-    // flex: 1,
-    // height:48,
-    padding: 10,
-    flexDirection: 'row',
-    // width: '100%',
-  },
-
-  questionInput: {
-    flex: 2,
-    height: '100%',
-    overflow: 'hidden'
-  },
-
-  questionInputButton: {
-    // maxHeight: '100%',
-    borderRadius: 50,
-    marginHorizontal: 10,
-    height: 50,
-    width: 50
-  },
 
   customHrTag: {
     borderWidth: 0.5,

@@ -24,10 +24,10 @@ interface IProps {
 
 const Timer = (props: IProps) => {
 
-    if(props.serverHasQuestions) return <Text>Times up! Gathering questions...</Text>
-    if(props.timer === 0) return <Text>Starting a timer...</Text>
+    if(props.serverHasQuestions) return <Text>Time's up. Game Time!</Text>
+    if(props.timer === 0) return <Text>Starting timer...</Text>
     return (
-        <Text>{props.timer} seconds left</Text>
+        <Text>{props.timer} secs left</Text>
     )
 }
 

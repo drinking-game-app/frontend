@@ -138,7 +138,7 @@ const GameScreen = (props: IProps & IActions) => {
             ) : (
               // Text for chosen players for when they're waiting for questions:
               <Text style={styles.titleNotChosen}>
-                Waiting to "destroy" your friendships...
+                Waiting to "destroy" your friendship...
               </Text>
             )}
           </React.Fragment>
@@ -160,7 +160,13 @@ const GameScreen = (props: IProps & IActions) => {
                 (answer: number, i: number) => {
                   if (answer !== null)
                     return (
-                      <Text key={i}>
+                      <Text 
+                        key={i}
+                        style={[
+                          styles.pleadTheFifth, 
+                          i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight
+                        ]}
+                      >
                         {
                         `${props.roundOptions?.hotseatPlayers[i].name} 
                         selected 
@@ -177,7 +183,7 @@ const GameScreen = (props: IProps & IActions) => {
                       key={i}
                       style={[
                         styles.pleadTheFifth, 
-                        i === 0 ? styles.alignLeft : styles.alignRight
+                        i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight
                       ]}
                     >
                       {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}

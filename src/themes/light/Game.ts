@@ -30,7 +30,6 @@ export default StyleSheet.create({
    */
   listContainer: {
     paddingHorizontal: 16,
-    // maxHeight: 700,
     backgroundColor: "#161F26",
   },
 
@@ -70,7 +69,6 @@ export default StyleSheet.create({
    */
   title: {
     paddingHorizontal: 16,
-    // paddingVertical: 8,
     fontSize: 28,
     fontWeight: "300",
     textAlign: "center",
@@ -96,11 +94,33 @@ export default StyleSheet.create({
   pleadTheFifth: {
     fontSize: 32,
     fontWeight: "400",
-    // textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
     marginVertical: 30,
+  },
+
+  pleadAlignLeft: {
+    alignSelf: "flex-start",
+    // position: "absolute",
+    // bottom: "10%",
+    borderTopEndRadius: 0.001,
+    borderBottomEndRadius: 0.001,
+    borderRadius: 0.001,
+    backgroundColor: "#AD0D4B",
+    borderColor: "#ffffff00",
+  },
+
+  pleadAlignRight: {
+    alignSelf: "flex-end",
+    // position: "absolute",
+    // bottom: "10%",
+    textAlign: "right",
+    borderTopStartRadius: 0.001,
+    borderBottomStartRadius: 0.001,
+    borderRadius: 0.001,
+    backgroundColor: "#9F37DE",
+    borderColor: "#ffffff00",
   },
 
   question: {
@@ -160,5 +180,43 @@ export default StyleSheet.create({
     fontWeight: 300,
     marginVertical: 30,
     color: "#D7D98B"
+  },
+
+  inputTitle: {
+    marginVertical: 10,
+  },
+
+  inputContainer: {
+    padding: 10,
+    // alignSelf: 'stretch',
+    textAlign: 'center',
+    // backgroundColor: '#161F26',
+    backgroundColor: '##ffffff00',
+  },
+
+  questionInputContainer: {
+    // flex: 1,
+    // height:48,
+    padding: 10,
+    flexDirection: 'row',
+    // width: '100%',
+    // backgroundColor: '#161F26',
+    backgroundColor: '##ffffff00',
+  },
+
+  questionInput: {
+    flex: 2,
+    height: '100%',
+    overflow: 'hidden',
+    backgroundColor: '#7B0D37',
+    borderColor: '#ffffff00',
+  },
+
+  questionInputButton: {
+    // maxHeight: '100%',
+    borderRadius: 50,
+    marginHorizontal: 10,
+    height: 50,
+    width: 50
   },
 });
