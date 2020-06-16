@@ -198,23 +198,67 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "TIMER_UPDATE":
-      // if(
-      //   state.phase === "Display Answer"
-      //   && action.payload === state.hotseatOptions?.tta as number - 1
-      //   ) {
-      //     return {
-      //       ...state,
-      //       timer: action.payload,
-      //       displayAnswer: false,
-      //       canAnswer: true,
-      //       phase: 'Hotseat'
-      //   }
-      // }
+      /* 
+        ❗ WARNING ❗🧾 READ ME 🧾 
+        This case is confusing and important to get right to stay in sync - hence this massive detailed comment.
+
+        When the timer gets an update 3 things can happen-
+          1. The timer can hit 0 - the timer is done and a new phase should be started
+
+          2. The new timer (action.payload) can increase - meaning a new timer has started (usually will be from 0 to a new value)
+
+          3. The timer can decrease by one - In this case the timer is running (nothing needs to be done, the state is just updated)
+        
+        1 and 2 will cause a change of phase, the game cycle looks something like this:
+
+        00--> [START_HOTSEAT]
+        ----> PHASE: "Hotseat Ready"
+
+        02--> [TIMER_UPDATE]-> (timer > oldTimerValue) -> We know a new timer has started
+        ---->  PHASE: "Hotseat"
+
+        03--> ♻[TIMER_UPDATE]♻-> timer-- -> update display timer
+
+        04--> [ON_HOTSEAT_ANSWER] -> if phase !=="Hotseat" we are out of sync!
+        ----> PHASE: "DisplayAnswer" 
+        ----> loop to step 02 or End round
+        
+
+      */
+     if(action.payload>state.timer){
+      // New timer - new phase
+      // Move from display answer->hotseat
+      if(state.phase==="Display answer"){
+        const newQuestionId = state.currentQuestionId+=1 
+        return {
+          ...state,
+          timer: action.payload,
+          // questions: [...state.questions],
+          currentQuestionId: newQuestionId,
+          phase: 'Hotseat',
+          canAnswer: true,
+          displayAnswer: false,
+        }
+      }
+    } else if (action.payload===0){
+      // Timer is done - new phase
+    }else {
+        // If the value decreases by one should be safe to return
+        return {
+          ...state,
+          timer: action.payload,
+        }
+      }
+
+
+
+
+
 
       if (
         action.payload === 0 &&
-        state.phase === "Display Answer" &&
-        state.timer > 0
+        state.phase === "Hotseat" &&
+        state.timer !== 0
       ) {
         // console.log("shifting questions", state.questions);
         // const shiftedQuestions = state.questions.shift()
@@ -227,7 +271,7 @@ export default (state = initialState, action: IGameAction) => {
           timer: action.payload,
           // questions: [...state.questions],
           currentQuestionId: newQuestionId,
-          phase: 'Hotseat',
+          phase: 'Display answer',
           canAnswer: true,
           displayAnswer: false,
         };
@@ -262,6 +306,7 @@ export default (state = initialState, action: IGameAction) => {
       console.log("start hotseat reducer", action.payload);
       return {
         ...state,
+        phase:"Hotseat",
         questions: [...action.payload.questions],
         hotseatOptions: action.payload.hotseatOptions,
         canAnswer: true,
