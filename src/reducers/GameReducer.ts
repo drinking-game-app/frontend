@@ -203,13 +203,16 @@ export default (state = initialState, action: IGameAction) => {
         This case is confusing and important to get right to stay in sync - hence this massive detailed comment.
 
         When the timer gets an update 3 things can happen-
-          1. The timer can hit 0 - the timer is done and a new phase should be started
+          1. The new timer (action.payload) can increase - meaning a new timer has started (usually will be from 0 to a new value)
 
-          2. The new timer (action.payload) can increase - meaning a new timer has started (usually will be from 0 to a new value)
+          2. The timer can hit 0 - the timer is done
 
           3. The timer can decrease by one - In this case the timer is running (nothing needs to be done, the state is just updated)
         
-        1 and 2 will cause a change of phase, the game cycle looks something like this:
+        Currently only the 1st is important - the timer is purely for display for any **other** purpose
+        When the timer is in "hotseat ready" or "display answer" phase and a new timer starts we know that we should ask the next question
+
+        Below is the cycle of the frontend when the hotseat has been started
 
         00--> [START_HOTSEAT]
         ----> PHASE: "Hotseat Ready"
@@ -257,11 +260,6 @@ export default (state = initialState, action: IGameAction) => {
     //       timer: action.payload,
     //     }
     //   }
-
-
-
-
-
 
     //   if (
     //     action.payload === 0 &&
