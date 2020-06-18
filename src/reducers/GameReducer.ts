@@ -250,6 +250,8 @@ export default (state = initialState, action: IGameAction) => {
           canAnswer: true,
           displayAnswer: false,
         }
+      }else if(state.phase==="Hotseat"){
+        console.error("Hotseat probably out of sync")
       }
     } 
     // else if (action.payload===0){
