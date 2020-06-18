@@ -31,6 +31,8 @@ import Timer from "../../components/timer.component";
 import shuffleQuestion from "../../helpers/shuffle-question.helper";
 import LoadingComponent from "../../components/loading.component";
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
+import {useKeepAwake} from 'expo-keep-awake';
+
 
 /**
  * Importing styles
@@ -77,6 +79,7 @@ interface IProps {
 const GameScreen = (props: IProps & IActions) => {
   const [serverHasQuestions, setServerHasQuestions] = useState<boolean>(false);
   const [notEnoughQuestions, setNotEnoughQuestions] = useState<boolean>(false);
+  useKeepAwake();
 
   useEffect(() => {
     setNotEnoughQuestions((val) => false);
