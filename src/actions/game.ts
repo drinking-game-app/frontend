@@ -188,7 +188,13 @@ export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
     GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
-
+      const oldId=localStorage.getItem('myId');
+      if(oldId){
+        console.log('Attempting to claim with token'+oldId)
+        GameSockClient.claimSocket(body.lobbyName,oldId)
+      }
+        localStorage.setItem('myId', user.id);
+      
       // playerListUpdate(players, dispatch)
       dispatch({
         type: "JOIN_GAME",
