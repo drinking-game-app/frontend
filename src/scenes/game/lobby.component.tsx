@@ -23,6 +23,7 @@ import { AppRoute } from "../../navigation/app-routes";
 import * as GameSockClient from '@rossmacd/gamesock-client'
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import LoadingComponent from "../../components/loading.component";
+import NotificationBar from "../../components/notification-bar.component"
 
 
 /**
@@ -166,6 +167,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           }
         />
       )}
+      <NotificationBar />
     </Layout>
   );
 };

@@ -15,7 +15,7 @@
 import React from "react";
 import { View } from "react-native";
 import { JoinGameScreenProps } from "../../navigation/game.navigator";
-import { Layout, Button, Text } from "@ui-kitten/components";
+import { Layout, Text } from "@ui-kitten/components";
 import { AppRoute } from "../../navigation/app-routes";
 import {gameActions} from "../../actions";
 import { FormikProps, Formik } from "formik";

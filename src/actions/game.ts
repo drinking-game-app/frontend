@@ -47,12 +47,12 @@ export const setGameLoading = () => {
 /**
  * Messages sent from the gamesock library
  */
-export const setMessages = (message: string) => {
+export const setMessages = (message: string, dispatch: Dispatch) => {
   console.log("Socket message: ", message);
-  return {
+  dispatch({
     type: "SET_MESSAGES",
     payload: message,
-  };
+  });
 };
 
 export const initGameSock = () => {
@@ -120,7 +120,7 @@ export const initGameSock = () => {
     });
 
     GameSockClient.onMessage((message) => {
-      setMessages(message.msg);
+      setMessages(message.msg, dispatch);
     });
 
     /**
