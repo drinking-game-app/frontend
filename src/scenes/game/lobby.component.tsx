@@ -82,7 +82,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   };
 
   const gameIsFinished = props.roundOptions
-  ? (props.roundOptions.roundNum < props.numOfRounds) 
+  ? (props.roundOptions.roundNum === props.numOfRounds) 
   : false
 
   const renderModalTitle = () => {

@@ -22,7 +22,7 @@ import {
   Icon,
 } from "@ui-kitten/components";
 import Constants from "expo-constants";
-import { Platform, View } from "react-native";
+import { Platform } from "react-native";
 import { ModalHeader } from "../../components/modal-header.component";
 import { AppRoute } from "../../navigation/app-routes";
 import { DevInfoScreenProps } from "../../navigation/main.navigator";

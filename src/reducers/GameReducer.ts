@@ -15,6 +15,7 @@
 import { IGameState, IPlayer } from "./interfaces";
 import { RoundOptions, Question } from "@rossmacd/gamesock-client";
 import { getPlayers } from '@rossmacd/gamesock-client';
+import { onNextQuestion } from "../actions/game";
 
 interface IGameAction {
   type: string;
@@ -145,6 +146,7 @@ export default (state = initialState, action: IGameAction) => {
         user: action.payload.user,
         inLobby: true,
         isLoading: false,
+        roundOver: false
       };
 
     case "LEAVE_GAME":
@@ -152,7 +154,7 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         lobbyName: "",
         inGame: false,
-        inLobby: false,
+        inLobby: true,
         isHost: false,
         isLoading: false,
       };
@@ -178,6 +180,7 @@ export default (state = initialState, action: IGameAction) => {
         inGame: true,
         isLoading: false,
         questions: [],
+        currentQuestionId: 0,
         user: user,
         roundOptions: roundOptions,
       };
@@ -195,26 +198,93 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "TIMER_UPDATE":
-      if (
-        action.payload === 0 &&
-        state.phase === "Hotseat" &&
-        state.timer !== 0
-      ) {
-        // console.log("shifting questions", state.questions);
-        // const shiftedQuestions = state.questions.shift()
-        // console.log('done', shiftedQuestions)
-        // state.questions.shift();
+      /* 
+        ❗ WARNING ❗🧾 READ ME 🧾 
+        This case is confusing and important to get right to stay in sync - hence this massive detailed comment.
+
+        When the timer gets an update 3 things can happen-
+          1. The new timer (action.payload) can increase - meaning a new timer has started (usually will be from 0 to a new value)
+
+          2. The timer can hit 0 - the timer is done
+
+          3. The timer can decrease by one - In this case the timer is running (nothing needs to be done, the state is just updated)
+        
+        Currently only the 1st is important - the timer is purely for display for any **other** purpose
+        When the timer is in "hotseat ready" or "display answer" phase and a new timer starts we know that we should ask the next question
+
+        Below is the cycle of the frontend when the hotseat has been started
+
+        00--> [START_HOTSEAT]
+        ----> PHASE: "Hotseat Ready"
+
+        02--> [TIMER_UPDATE]-> (timer > oldTimerValue) -> We know a new timer has started
+        ---->  PHASE: "Hotseat"
+
+        03--> ♻[TIMER_UPDATE]♻-> timer-- -> update display timer
+
+        04--> [ON_HOTSEAT_ANSWER] -> if phase !=="Hotseat" we are out of sync!
+        ----> PHASE: "DisplayAnswer" 
+        ----> if all questions have been proccessed end round
+        ---> else [TIMER_UPDATE] loop to step 02
+        
+
+      */
+     if(action.payload>state.timer){
+      // If the phase is display answer we need to increase the question ID, hotseat ready only happens for the first question of the round
+      if( state.phase==="Display Answer"){
         const newQuestionId = state.currentQuestionId+=1 
-        console.log("affetare questions", state.questions);
         return {
           ...state,
           timer: action.payload,
-          // questions: [...state.questions],
           currentQuestionId: newQuestionId,
+          phase: 'Hotseat',
           canAnswer: true,
-          displayAnswer: true,
-        };
+          displayAnswer: false,
+        }
+      }else if(state.phase==="Hotseat ready") {
+        return {
+          ...state,
+          timer: action.payload,
+          currentQuestionId: 0,
+          phase: 'Hotseat',
+          canAnswer: true,
+          displayAnswer: false,
+        }
+      }else if(state.phase==="Hotseat"){
+        console.error("Hotseat probably out of sync")
       }
+    } 
+    // else if (action.payload===0){
+    //   // Timer is done - new phase
+    // }else {
+    //     // If the value decreases by one should be safe to return
+    //     return {
+    //       ...state,
+    //       timer: action.payload,
+    //     }
+    //   }
+
+    //   if (
+    //     action.payload === 0 &&
+    //     state.phase === "Hotseat" &&
+    //     state.timer !== 0
+    //   ) {
+    //     // console.log("shifting questions", state.questions);
+    //     // const shiftedQuestions = state.questions.shift()
+    //     // console.log('done', shiftedQuestions)
+    //     // state.questions.shift();
+    //     const newQuestionId = state.currentQuestionId+=1 
+    //     console.log("affetare questions", state.questions);
+    //     return {
+    //       ...state,
+    //       timer: action.payload,
+    //       // questions: [...state.questions],
+    //       currentQuestionId: newQuestionId,
+    //       phase: 'Display answer',
+    //       canAnswer: true,
+    //       displayAnswer: false,
+    //     };
+    //   }
       return {
         ...state,
         timer: action.payload,
@@ -230,8 +300,6 @@ export default (state = initialState, action: IGameAction) => {
           ...state,
           phase: action.payload,
           roundOver: true,
-          currentQuestionId: 0,
-          questions: [],
           inGame: false,
         };
       }
@@ -247,6 +315,7 @@ export default (state = initialState, action: IGameAction) => {
       console.log("start hotseat reducer", action.payload);
       return {
         ...state,
+        phase:"Hotseat ready",
         questions: [...action.payload.questions],
         hotseatOptions: action.payload.hotseatOptions,
         canAnswer: true,
@@ -269,6 +338,8 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         questions: [...newQuestions],
         displayAnswer: true,
+        canAnswer: false,
+        phase: "Display Answer"
       };
     case "ON_NEXT_QUESTION":
       return {

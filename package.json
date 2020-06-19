@@ -21,7 +21,7 @@
     "@react-native-community/masked-view": "0.1.6",
     "@react-navigation/native": "^5.3.0",
     "@react-navigation/stack": "^5.4.1",
-    "@rossmacd/gamesock-client": "0.0.35",
+    "@rossmacd/gamesock-client": "^0.2.2",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "expo": "~37.0.9",
@@ -45,7 +45,8 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.29.1"
+    "yup": "^0.29.1",
+    "expo-keep-awake": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

@@ -15,7 +15,6 @@
 import { IPlayer } from "../reducers/interfaces";
 import * as GameSockClient from "@rossmacd/gamesock-client";
 
-import { GameSocketConfigExport, GameOptions, HotseatOptions } from "./socket";
 import Constants from "expo-constants";
 import { Dispatch } from "redux";
 
@@ -63,9 +62,9 @@ export const initGameSock = () => {
       `${Constants.manifest.extra.SERVER_URL}/timesync`
     );
 
-    GameSockClient.onStartGame((newGameOptions: GameOptions) => {
+    GameSockClient.onStartGame((newGameOptions: GameSockClient.GameOptions) => {
       console.log("starting game", newGameOptions.rounds);
-      startGame(newGameOptions.rounds+=1, dispatch);
+      startGame(newGameOptions.rounds, dispatch);
     });
 
     GameSockClient.onStartRound((newRoundOptions) => {
@@ -165,7 +164,7 @@ export const hostGameAction = (body: IHostGame) => {
  * @param {IHostGame} body
  */
 export const hostGame = (body: IHostGame, dispatch: any) => {
-  GameSocketConfigExport();
+  // GameSocketConfigExport();
   const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
 
   GameSockClient.createLobby(lobbyName, body.username, body.token).then(
@@ -275,7 +274,7 @@ export const timerUpdate = (time: number, dispatch: Dispatch) => {
  */
 export const startHotseat = (
   questions: GameSockClient.Question[],
-  hotseatOptions: HotseatOptions,
+  hotseatOptions: GameSockClient.HotseatOptions,
   dispatch: Dispatch
 ) => {
   console.log("starting hotseat and setting questions!", questions);
@@ -303,12 +302,23 @@ export const onHotseatAnswer = (
     payload: { questionIndex, answers },
   });
 
-  setTimeout(() => {
-        dispatch({
-            type: "ON_NEXT_QUESTION"
-        })
-  }, 2000);
+  // setTimeout(() => {
+  //       dispatch({
+  //           type: "ON_NEXT_QUESTION"
+  //       })
+  // }, 2000);
 };
+
+export const onNextQuestion = (time: number) => {
+  return (dispatch: Dispatch) => {
+    console.log('next question in ', time, 'seconds')
+    setTimeout(() => {
+      dispatch({
+        type: "ON_NEXT_QUESTION"
+      })
+    }, time);
+  }
+}
 
 /**
  * Update the list of players
@@ -372,11 +382,12 @@ export const setPhase = (phase: string, dispatch: Dispatch) => {
 export const answerQuestion = (
   lobbyName: string,
   questionIndex: number,
-  playerIndex: number
+  playerIndex: number,
+  roundNum:number
 ) => {
   return (dispatch: Dispatch) => {
     console.log('new answer!', questionIndex, playerIndex)
-    GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex);
+    GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex,roundNum);
     dispatch({
       type: "ANSWER_QUESTION",
     });
