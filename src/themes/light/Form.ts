@@ -99,6 +99,7 @@ export default StyleSheet.create({
     marginVertical: 12
   },
 
+  
   customHrTag: {
     borderWidth: 0.5,
     borderColor: '#D14688',
