@@ -20,7 +20,11 @@ import { Dispatch } from 'redux';
 import { log } from 'console';
 // import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { useNavigation } from '@react-navigation/native';
+import { AppRoute } from '../navigation/app-routes';
+// import { NavigationActions } from 'react-navigation'
+import App from '../../App';
+import { StackNavigationProp } from '@react-navigation/stack';
 /**
  * Interface for hosting a game
  */
@@ -28,6 +32,11 @@ export interface IHostGame {
   username: string;
   token: string;
 }
+export interface IRejoinGame {
+  lobbyName: string;
+  id: string;
+}
+
 
 /**
  * Interface for joining a game
@@ -187,7 +196,7 @@ export const hostGame = (body: IHostGame, dispatch: any) => {
  */
 export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
-    GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
+   return GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
       try {
         AsyncStorage.setItem(
@@ -210,17 +219,17 @@ export const joinGame = (body: IJoinGame) => {
   };
 };
 
-export const autoRejoinLobby = (body: IJoinGame) => {
+export const autoRejoinLobby = (body: IRejoinGame) => {
   return (dispatch: Dispatch) => {
-    GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
+    GameSockClient.joinLobby(body.lobbyName, 'Player Rejoining.......').then((players) => {
       console.log(players);
       let orginalUser = Array.isArray(players) ? players[players.length - 1] : players;
       AsyncStorage.getItem('myId').then((myId) => {
         if (myId) {
           const oldId = JSON.parse(myId);
-          console.log('Attempting to claim with token' + oldId);
-          if (oldId.expiry && oldId.id && oldId.lobby && oldId.expiry < Date.now()) {
-            console.log('Claims');
+          console.log('Attempting to claim with token' + oldId.toString(),oldId.expiry > Date.now());
+          if (oldId.expiry && oldId.id && oldId.lobby && oldId.expiry > Date.now()) {
+            console.log('Claims',oldId.lobby, oldId.id);
             GameSockClient.claimSocket(oldId.lobby, oldId.id);
             const user = Array.isArray(players) ? players.find((player) => player.id === oldId.id) : players;
             if (!user) {

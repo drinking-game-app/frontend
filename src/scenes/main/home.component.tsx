@@ -20,10 +20,11 @@ import { IInitialState } from '../../reducers/interfaces';
 import { connect } from 'react-redux';
 import { gameActions } from '../../actions';
 import { HomeScreenProps } from '../../navigation/main.navigator';
-import { IHostGame } from '../../actions/game';
+import { IHostGame, IRejoinGame } from '../../actions/game';
 import SignoutScreen from '../auth/sign-out.component';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Player } from '@rossmacd/gamesock-client';
 /**
  * Importing styles
  * @param theme path
@@ -33,6 +34,7 @@ const styles = require('../../themes')('App');
 const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000';
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
+  autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
 }
 
 interface IProps {
@@ -46,6 +48,7 @@ interface IProps {
  */
 const Home = (props: IProps & IActions) => {
   const [canRejoin, setCanRejoin] = useState<boolean>(false);
+  const [rejoinInfo,setRejoinInfo]=useState<IRejoinGame>({id:'',lobbyName:''})
 
   useEffect(() => {
     // Check if a previous game is in localstorage
@@ -70,6 +73,7 @@ const Home = (props: IProps & IActions) => {
               res.json().then((data) => {
                 if (data && data.active) {
                   console.log('Shes sound let her go', data.active);
+                  setRejoinInfo({id:parsedOldID,lobbyName:parsedOldID.lobby})
                   setCanRejoin(true);
                 }
               });
@@ -114,12 +118,19 @@ const Home = (props: IProps & IActions) => {
       console.log(canRejoin)
       //Show the rejoin button
       return (
-        <Button style={styles.formButtonAlternate} onPress={() => props.navigation.navigate(AppRoute.GAME)}>
-          {'REJOIN GAME'}
+        <Button style={styles.formButtonAlternate} onPress={() => {
+          props.autoRejoinLobby(rejoinInfo)
+          props.navigation.navigate(AppRoute.GAME)
+        }}>
+          {'REJOIN GAME '+rejoinInfo.lobbyName}
         </Button>
       );
     }
   };
+
+
+
+
 
   return (
     <Layout style={styles.container}>
