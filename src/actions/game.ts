@@ -18,6 +18,8 @@ import * as GameSockClient from '@rossmacd/gamesock-client';
 import Constants from 'expo-constants';
 import { Dispatch } from 'redux';
 import { log } from 'console';
+// import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 /**
  * Interface for hosting a game
@@ -187,22 +189,18 @@ export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
     GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
-      // const myId=localStorage.getItem('myId');
-      // if(myId){
-      //   const oldId=JSON.parse(myId)
-      //   console.log('Attempting to claim with token'+oldId)
-      //   if(oldId.expiry &&oldId.id&&oldId.lobby&& oldId.expiry<Date.now())
-      //     console.log('Claims');
-      //     GameSockClient.claimSocket(oldId.lobby,oldId.id)
-      // }
-      localStorage.setItem(
-        'myId',
-        JSON.stringify({
-          id: user.id,
-          expiry: Date.now() + 30 * 60 * 1000,
-          lobby: body.lobbyName,
-        })
-      );
+      try {
+        AsyncStorage.setItem(
+          'myId',
+          JSON.stringify({
+            id: user.id,
+            expiry: Date.now() + 30 * 60 * 1000,
+            lobby: body.lobbyName,
+          })
+        );
+      } catch {
+        (e: any) => console.log(e);
+      }
 
       dispatch({
         type: 'JOIN_GAME',
@@ -217,31 +215,32 @@ export const autoRejoinLobby = (body: IJoinGame) => {
     GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       console.log(players);
       let orginalUser = Array.isArray(players) ? players[players.length - 1] : players;
-      const myId = localStorage.getItem('myId');
-      if (myId) {
-        const oldId = JSON.parse(myId);
-        console.log('Attempting to claim with token' + oldId);
-        if (oldId.expiry && oldId.id && oldId.lobby && oldId.expiry < Date.now()) {
-          console.log('Claims');
-          GameSockClient.claimSocket(oldId.lobby, oldId.id);
-          const user = Array.isArray(players) ? players.find((player) => player.id === oldId.id) : players;
-          if (!user) {
-            return;
+      AsyncStorage.getItem('myId').then((myId) => {
+        if (myId) {
+          const oldId = JSON.parse(myId);
+          console.log('Attempting to claim with token' + oldId);
+          if (oldId.expiry && oldId.id && oldId.lobby && oldId.expiry < Date.now()) {
+            console.log('Claims');
+            GameSockClient.claimSocket(oldId.lobby, oldId.id);
+            const user = Array.isArray(players) ? players.find((player) => player.id === oldId.id) : players;
+            if (!user) {
+              return;
+            }
+            AsyncStorage.setItem(
+              'myId',
+              JSON.stringify({
+                id: user.id,
+                expiry: Date.now() + 30 * 60 * 1000,
+                lobby: body.lobbyName,
+              })
+            );
+            dispatch({
+              type: 'JOIN_GAME',
+              payload: { lobbyName: body.lobbyName, user: { ...user, id: orginalUser.id } },
+            });
           }
-          localStorage.setItem(
-            'myId',
-            JSON.stringify({
-              id: user.id,
-              expiry: Date.now() + 30 * 60 * 1000,
-              lobby: body.lobbyName,
-            })
-          );
-          dispatch({
-            type: 'JOIN_GAME',
-            payload: { lobbyName: body.lobbyName, user: { ...user, id: orginalUser.id } },
-          });
         }
-      }
+      });
     });
   };
 };

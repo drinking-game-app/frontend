@@ -23,6 +23,7 @@ import { HomeScreenProps } from '../../navigation/main.navigator';
 import { IHostGame } from '../../actions/game';
 import SignoutScreen from '../auth/sign-out.component';
 import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-community/async-storage';
 /**
  * Importing styles
  * @param theme path
@@ -48,34 +49,35 @@ const Home = (props: IProps & IActions) => {
 
   useEffect(() => {
     // Check if a previous game is in localstorage
-    const unparsedID = localStorage.getItem('myId');
-    if (unparsedID) {
-      // Parse the object
-      const parsedOldID = JSON.parse(unparsedID);
-      if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
-        fetch(`${baseUrl}/api/gameActive`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            id: parsedOldID.id,
-            lobbyName: parsedOldID.lobby,
-          }),
-        }).then((res) => {
-          console.log('FETCH:RES', res);
-          if (res.ok) {
-            res.json().then((data) => {
-              if (data && data.active) {
-                console.log('Shes sound let her go', data.active);
-                setCanRejoin(true);
-              }
-            });
-          }
-        });
+    AsyncStorage.getItem('myId').then(unparsedID=>{
+      if (unparsedID) {
+        // Parse the object
+        const parsedOldID = JSON.parse(unparsedID);
+        if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
+          fetch(`${baseUrl}/api/gameActive`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              id: parsedOldID.id,
+              lobbyName: parsedOldID.lobby,
+            }),
+          }).then((res) => {
+            console.log('FETCH:RES', res);
+            if (res.ok) {
+              res.json().then((data) => {
+                if (data && data.active) {
+                  console.log('Shes sound let her go', data.active);
+                  setCanRejoin(true);
+                }
+              });
+            }
+          });
+        }
       }
-    }
+    });
   }, []);
   /**
    * If the user is logged in, start a new game as a host
