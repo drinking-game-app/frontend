@@ -105,7 +105,9 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
           keyboardType="email-address"
           autoCapitalize="none"
           value={props.values.email}
-
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         <FormInput
           id="password"
@@ -116,6 +118,9 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
           accessoryRight={renderPasswordIcon}
           autoCapitalize="none"
           value={props.values.password}
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
 
         {error !== "" && <Text>{error}</Text>}

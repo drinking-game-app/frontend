@@ -75,15 +75,23 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           id="lobbyName"
           style={styles.formControl}
           size='large'
+          value={props.values.lobbyName}
           placeholder="Enter Join Code"
           autoCapitalize="characters"
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
 
         <FormInput
           id="username"
           style={styles.formControl}
           size='large'
+          value={props.values.username}
           placeholder="Create a Username"
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         
         {error !== "" && <Text>{error}</Text>}
@@ -110,7 +118,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
 
             <View style={styles.formContainer}>
               <Formik
-                  initialValues={{lobbyName, username: name}}
+                  initialValues={{lobbyName, username: 'name'}}
                   validationSchema={JoinLobbySchema}
                   onSubmit={(values)=>submit(values)}
               >
