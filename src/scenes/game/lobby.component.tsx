@@ -23,6 +23,7 @@ import { AppRoute } from "../../navigation/app-routes";
 import * as GameSockClient from '@rossmacd/gamesock-client'
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import LoadingComponent from "../../components/loading.component";
+import NotificationBar from "../../components/notification-bar.component"
 
 
 /**
@@ -125,7 +126,7 @@ const LobbyScreen = (props: IProps & IActions) => {
         disabled={props.isLoading}
         isLeaderboard={props.roundOver}
         icon="close-outline"
-        status="danger"
+        status="info"
         onPress={() => endGame()}
       />
 
@@ -138,7 +139,7 @@ const LobbyScreen = (props: IProps & IActions) => {
       {props.isHost ? (
         <ButtonInput
           style={styles.submitButton}
-          status='success'
+          status='primary'
           onPress={startGame}
           disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
@@ -166,6 +167,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           }
         />
       )}
+      <NotificationBar />
     </Layout>
   );
 };

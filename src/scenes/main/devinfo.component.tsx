@@ -16,7 +16,6 @@ import React from "react";
 import {
   Layout,
   List,
-  Text,
   ListItem,
   IconProps,
   Icon,
@@ -58,7 +57,7 @@ const DevInfoScreen = (props: DevInfoScreenProps) => {
       <ModalHeader
         text="Developer Information"
         icon="close-outline"
-        status="danger"
+        status="info"
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
       <List style={styles.listContainer} data={data} renderItem={renderData} />

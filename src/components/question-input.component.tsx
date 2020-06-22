@@ -109,6 +109,9 @@ const QuesionInput = (props: IProps & IActions) => {
           size="large"
           placeholder="Insert your question"
           value={props.values.questionInput}
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         <ButtonInput
           icon="checkmark-outline"

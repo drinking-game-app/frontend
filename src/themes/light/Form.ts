@@ -36,7 +36,7 @@ export default StyleSheet.create({
     marginVertical: 4,
     backgroundColor: '#7B0D37',
     borderColor: '#ffffff00',
-    fontSize: 16,
+    fontSize: 16
   },
 
   formControlReg: {

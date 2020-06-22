@@ -89,10 +89,20 @@ export default (state = initialState, action: IGameAction) => {
     case "SET_MESSAGES":
       const messages = state.messages;
       messages.push(action.payload as string);
+      let isLoading = state.isLoading
+      let error = state.error
+      
+      if(isLoading && action.payload.includes('does not exist')) {
+        console.log('ye not the right lobby dumbo')
+        isLoading = false
+        error = action.payload
+      } else error = ''
 
       return {
         ...state,
         messages: messages,
+        isLoading: isLoading,
+        error: error
       };
 
     /**
@@ -137,6 +147,7 @@ export default (state = initialState, action: IGameAction) => {
         inLobby: true,
         isHost: true,
         isLoading: false,
+        error: ''
       };
 
     case "JOIN_GAME":
@@ -146,7 +157,8 @@ export default (state = initialState, action: IGameAction) => {
         user: action.payload.user,
         inLobby: true,
         isLoading: false,
-        roundOver: false
+        roundOver: false,
+        error: ''
       };
 
     case "LEAVE_GAME":
@@ -154,9 +166,10 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         lobbyName: "",
         inGame: false,
-        inLobby: true,
+        inLobby: false,
         isHost: false,
         isLoading: false,
+        error: ''
       };
     case "START_GAME":
       return {

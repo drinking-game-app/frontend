@@ -107,6 +107,10 @@ const RegisterScreen = (props: IProps & IActions) => {
           placeholder="Username"
           autoCorrect={false}
           autoCapitalize="none"
+          value={props.values.name}
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         <FormInput
           id="email"
@@ -115,6 +119,10 @@ const RegisterScreen = (props: IProps & IActions) => {
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
+          value={props.values.email}
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         <FormInput
           id="password"
@@ -123,14 +131,21 @@ const RegisterScreen = (props: IProps & IActions) => {
           placeholder="Password"
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
+          value={props.values.password}
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         <FormInput
-          id="confirm_password"
+          id="password_confirm"
           style={styles.formControlReg}
           size="large"
           placeholder="Confirm Password"
           secureTextEntry={!passwordVisible}
           accessoryRight={renderPasswordIcon}
+          onKeyPress={({nativeEvent}) => {
+            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          }}
         />
         {error !== "" && <Text>{error}</Text>}
 
@@ -157,7 +172,7 @@ const RegisterScreen = (props: IProps & IActions) => {
 
       <View style={styles.formContainerReg}>
         <Formik
-          initialValues={{ name, email, password, confirm_password }}
+          initialValues={{ name, email, password, password_confirm: '' }}
           validationSchema={SignUpSchema}
           onSubmit={(values) => submit(values)}
         >
