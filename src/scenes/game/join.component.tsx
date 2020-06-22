@@ -47,14 +47,14 @@ interface IJoinActions extends JoinGameScreenProps {
     joinGame:(body: IJoinGame) => void;
   }
 interface IJoinProps{
-    username:string;
+    name:string;
     lobbyName:string;
     error: string;
     isLoading: boolean;
 }
 
 const JoinScreen = (props: IJoinActions & IJoinProps) => {
-    const {username,lobbyName,error,isLoading}=props;
+    const {lobbyName,error,isLoading}=props;
     /**
    * If the inputs pass validation,
    * submit the request to the server
@@ -62,8 +62,8 @@ const JoinScreen = (props: IJoinActions & IJoinProps) => {
   const submit = (values: any) => {
     props.setGameLoading();
     const { lobbyName,username } = values;
-
-    props.joinGame({lobbyName,username})
+    
+    props.joinGame({lobbyName: lobbyName.toUpperCase(), username})
 };
 const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
     const loading = isLoading || props.isSubmitting;
@@ -78,6 +78,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           placeholder="Enter Join Code"
           autoCapitalize="characters"
         />
+
         <FormInput
           id="username"
           style={styles.formControl}
@@ -85,10 +86,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           placeholder="Create a Username"
         />
         
-
         {error !== "" && <Text>{error}</Text>}
-
-        
 
         <ButtonInput
           style={styles.submitButton}
@@ -106,13 +104,13 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           <ModalHeader
               text=""
               icon="close-outline"
-              status="danger"
+              status="primary"
               onPress={() => props.navigation.navigate(AppRoute.HOME)}
             />
 
             <View style={styles.formContainer}>
               <Formik
-                  initialValues={{lobbyName,username}}
+                  initialValues={{lobbyName, username: name}}
                   validationSchema={JoinLobbySchema}
                   onSubmit={(values)=>submit(values)}
               >
@@ -125,13 +123,14 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
 }
 
 const mapStateToProps = (state: IInitialState): IJoinProps => {
-    const { lobbyName, username,error,isLoading } = state.game;
-  
+    const { lobbyName,error,isLoading } = state.game;
+    const {name} = state.auth
+
     return {
       lobbyName,
-      username,
       error,
-      isLoading
+      isLoading,
+      name
     };
   };
   

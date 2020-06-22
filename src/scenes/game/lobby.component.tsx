@@ -126,7 +126,7 @@ const LobbyScreen = (props: IProps & IActions) => {
         disabled={props.isLoading}
         isLeaderboard={props.roundOver}
         icon="close-outline"
-        status="danger"
+        status="info"
         onPress={() => endGame()}
       />
 
@@ -139,7 +139,7 @@ const LobbyScreen = (props: IProps & IActions) => {
       {props.isHost ? (
         <ButtonInput
           style={styles.submitButton}
-          status='success'
+          status='primary'
           onPress={startGame}
           disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}

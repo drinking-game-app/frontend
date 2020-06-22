@@ -177,7 +177,7 @@ export default StyleSheet.create({
   titleNotChosen: {
     fontSize: 18,
     textAlign: "center",
-    fontWeight: 300,
+    fontWeight: "300",
     marginVertical: 30,
     color: "#D7D98B"
   },
@@ -191,7 +191,7 @@ export default StyleSheet.create({
     // alignSelf: 'stretch',
     textAlign: 'center',
     // backgroundColor: '#161F26',
-    backgroundColor: '##ffffff00',
+    backgroundColor: '#ffffff00',
   },
 
   questionInputContainer: {
@@ -201,7 +201,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     // width: '100%',
     // backgroundColor: '#161F26',
-    backgroundColor: '##ffffff00',
+    backgroundColor: '#ffffff00',
   },
 
   questionInput: {

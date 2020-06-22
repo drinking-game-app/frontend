@@ -37,6 +37,7 @@ export default StyleSheet.create({
     backgroundColor: '#7B0D37',
     borderColor: '#ffffff00',
     fontSize: 16,
+    textTransform: 'uppercase!important'
   },
 
   formControlReg: {

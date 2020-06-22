@@ -143,7 +143,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         style={styles.homeBtn}
         text=""
         icon="close-outline"
-        status="danger"
+        status="primary"
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
