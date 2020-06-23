@@ -12,13 +12,19 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IPlayer } from "../reducers/interfaces";
-import * as GameSockClient from "@rossmacd/gamesock-client";
+import { IPlayer } from '../reducers/interfaces';
+import * as GameSockClient from '@rossmacd/gamesock-client';
 
-import Constants from "expo-constants";
-import { Dispatch } from "redux";
-import { Platform } from "react-native";
-
+import Constants from 'expo-constants';
+import { Dispatch } from 'redux';
+import { log } from 'console';
+// import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { AppRoute } from '../navigation/app-routes';
+// import { NavigationActions } from 'react-navigation'
+import App from '../../App';
+import { StackNavigationProp } from '@react-navigation/stack';
 /**
  * Interface for hosting a game
  */
@@ -26,6 +32,11 @@ export interface IHostGame {
   username: string;
   token: string;
 }
+export interface IRejoinGame {
+  lobbyName: string;
+  id: string;
+}
+
 
 /**
  * Interface for joining a game
@@ -41,7 +52,7 @@ export interface IJoinGame {
  */
 export const setGameLoading = () => {
   return {
-    type: "IS_LOADING_GAME",
+    type: 'IS_LOADING_GAME',
   };
 };
 
@@ -67,53 +78,50 @@ export const setMessages = (message: string, dispatch: Dispatch) => {
 
 export const initGameSock = () => {
   return (dispatch: Dispatch) => {
-    GameSockClient.setup(
-      Constants.manifest.extra.SERVER_URL,
-      `${Constants.manifest.extra.SERVER_URL}/timesync`
-    );
+    GameSockClient.setup(Constants.manifest.extra.SERVER_URL, `${Constants.manifest.extra.SERVER_URL}/timesync`);
 
     GameSockClient.onStartGame((newGameOptions: GameSockClient.GameOptions) => {
-      console.log("starting game", newGameOptions.rounds);
+      console.log('starting game', newGameOptions.rounds);
       startGame(newGameOptions.rounds, dispatch);
     });
 
     GameSockClient.onStartRound((newRoundOptions) => {
       if (newRoundOptions.roundNum === 1) {
-        setPhase("Starting Game", dispatch);
+        setPhase('Starting Game', dispatch);
       } else {
-        setPhase("Starting Round", dispatch);
+        setPhase('Starting Round', dispatch);
       }
-      console.log("starting round");
+      console.log('starting round');
 
       startRound(newRoundOptions, dispatch);
 
       setTimeout(() => {
-        setPhase("Question Gathering", dispatch);
+        setPhase('Question Gathering', dispatch);
       }, 2 * 1000);
     });
 
     GameSockClient.onStartHotseat((allQuestions, hotseatOptions) => {
-      console.log("starting hotseat");
+      console.log('starting hotseat');
 
-      setPhase("Hotseat", dispatch);
+      setPhase('Hotseat', dispatch);
       startHotseat(allQuestions, hotseatOptions, dispatch);
     });
 
     GameSockClient.onRoundEnd(() => {
-      console.log("ending round");
+      console.log('ending round');
 
-      setPhase("Round Ended", dispatch);
+      setPhase('Round Ended', dispatch);
       endGame();
     });
 
     GameSockClient.onSinglePlayerUpdate((newPlayer) => {
-      console.log("single player update", newPlayer);
+      console.log('single player update', newPlayer);
 
       playerUpdate(newPlayer, dispatch);
     });
 
     GameSockClient.onPlayerListUpdate((players) => {
-      console.log("player list update", players);
+      console.log('player list update', players);
       playerListUpdate(players, dispatch);
     });
 
@@ -141,7 +149,7 @@ export const initGameSock = () => {
     // })
 
     dispatch({
-      type: "INITIALISE_GAMESOCK",
+      type: 'INITIALISE_GAMESOCK',
     });
   };
 };
@@ -155,16 +163,14 @@ export const hostGameAction = (body: IHostGame) => {
   return (dispatch: Dispatch) => {
     const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
 
-    GameSockClient.createLobby(lobbyName, body.username, body.token).then(
-      (players) => {
-        let user = Array.isArray(players) ? players[0] : players;
+    GameSockClient.createLobby(lobbyName, body.username, body.token).then((players) => {
+      let user = Array.isArray(players) ? players[0] : players;
 
-        dispatch({
-          type: "HOST_GAME",
-          payload: { lobbyName: lobbyName, user: user },
-        });
-      }
-    );
+      dispatch({
+        type: 'HOST_GAME',
+        payload: { lobbyName: lobbyName, user: user },
+      });
+    });
   };
 };
 
@@ -177,18 +183,21 @@ export const hostGame = (body: IHostGame, dispatch: any) => {
   // GameSocketConfigExport();
   const lobbyName = Math.random().toString(36).substr(2, 4).toUpperCase();
 
-  GameSockClient.createLobby(lobbyName, body.username, body.token).then(
-    (players) => {
-      let user = Array.isArray(players) ? players[0] : players;
+  GameSockClient.createLobby(lobbyName, body.username, body.token).then((players) => {
+    let user = Array.isArray(players) ? players[0] : players;
 
-      dispatch({
-        type: "HOST_GAME",
-        payload: { lobbyName: lobbyName, user: user },
-      });
-    }
-  );
+    dispatch({
+      type: 'HOST_GAME',
+      payload: { lobbyName: lobbyName, user: user },
+    });
+  });
 };
 
+// interface ID{
+//   id:string
+//   expiry:number;
+//   lobby:string;
+// }
 /**
  * Initilise a lobby as a join
  *
@@ -196,8 +205,9 @@ export const hostGame = (body: IHostGame, dispatch: any) => {
  */
 export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
-    GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
+   return GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
+<<<<<<< HEAD
       let oldId
       if(Platform.OS === 'web') {
         oldId=localStorage.getItem('myId');
@@ -212,14 +222,67 @@ export const joinGame = (body: IJoinGame) => {
         localStorage.setItem('myId', user.id);
       }
       // playerListUpdate(players, dispatch)
+=======
+      try {
+        AsyncStorage.setItem(
+          'myId',
+          JSON.stringify({
+            id: user.id,
+            expiry: Date.now() + 30 * 60 * 1000,
+            lobby: body.lobbyName,
+          })
+        );
+      } catch {
+        (e: any) => console.log(e);
+      }
+
+>>>>>>> 1bfce7cdfaeae7cd9270d81c96ebd04e095ab876
       dispatch({
-        type: "JOIN_GAME",
+        type: 'JOIN_GAME',
         payload: { lobbyName: body.lobbyName, user: user },
       });
     });
   };
 };
 
+export const autoRejoinLobby = (body: IRejoinGame) => {
+  return (dispatch: Dispatch) => {
+    GameSockClient.joinLobby(body.lobbyName, 'Player Rejoining.......').then((players) => {
+      console.log(players);
+      let orginalUser = Array.isArray(players) ? players[players.length - 1] : players;
+      AsyncStorage.getItem('myId').then((myId) => {
+        if (myId) {
+          const oldId = JSON.parse(myId);
+          console.log('Attempting to claim with token' + oldId.toString(),oldId.expiry > Date.now());
+          if (oldId.expiry && oldId.id && oldId.lobby && oldId.expiry > Date.now()) {
+            console.log('Claims',oldId.lobby, oldId.id);
+            GameSockClient.claimSocket(oldId.lobby, oldId.id);
+            const user = Array.isArray(players) ? players.find((player) => player.id === oldId.id) : players;
+            if (!user) {
+              return;
+            }
+            AsyncStorage.setItem(
+              'myId',
+              JSON.stringify({
+                id: user.id,
+                expiry: Date.now() + 30 * 60 * 1000,
+                lobby: body.lobbyName,
+              })
+            );
+            dispatch({
+              type: 'JOIN_GAME',
+              payload: { lobbyName: body.lobbyName, user: { ...user, id: orginalUser.id } },
+            });
+          }
+        }
+      });
+    });
+  };
+};
+
+// export const claimSocket = ()=>{
+
+// }
 /**
  * Start a new game as a host
  *
@@ -245,7 +308,7 @@ export const joinGame = (body: IJoinGame) => {
  */
 export const startGame = (rounds: number, dispatch: Dispatch) => {
   dispatch({
-    type: "START_GAME",
+    type: 'START_GAME',
     payload: rounds,
   });
 };
@@ -254,13 +317,10 @@ export const startGame = (rounds: number, dispatch: Dispatch) => {
  * Start a new round
  *
  */
-export const startRound = (
-  roundOptions: GameSockClient.RoundOptions,
-  dispatch: Dispatch
-) => {
-  console.log("starting round!");
+export const startRound = (roundOptions: GameSockClient.RoundOptions, dispatch: Dispatch) => {
+  console.log('starting round!');
   dispatch({
-    type: "START_ROUND",
+    type: 'START_ROUND',
     payload: roundOptions,
   });
 };
@@ -271,7 +331,7 @@ export const startRound = (
  */
 export const inputQuestion = (question: GameSockClient.Question) => {
   return {
-    type: "INPUT_QUESTION",
+    type: 'INPUT_QUESTION',
     payload: question,
   };
 };
@@ -283,7 +343,7 @@ export const inputQuestion = (question: GameSockClient.Question) => {
  */
 export const timerUpdate = (time: number, dispatch: Dispatch) => {
   dispatch({
-    type: "TIMER_UPDATE",
+    type: 'TIMER_UPDATE',
     payload: time,
   });
 };
@@ -294,33 +354,25 @@ export const timerUpdate = (time: number, dispatch: Dispatch) => {
  * @param {Question[]} questions
  * @param {HotseatOptions} hotseatOptions
  */
-export const startHotseat = (
-  questions: GameSockClient.Question[],
-  hotseatOptions: GameSockClient.HotseatOptions,
-  dispatch: Dispatch
-) => {
-  console.log("starting hotseat and setting questions!", questions);
+export const startHotseat = (questions: GameSockClient.Question[], hotseatOptions: GameSockClient.HotseatOptions, dispatch: Dispatch) => {
+  console.log('starting hotseat and setting questions!', questions);
   dispatch({
-    type: "START_HOTSEAT",
+    type: 'START_HOTSEAT',
     payload: { questions, hotseatOptions },
   });
 };
 
 /**
  * When both hotseat players answer a question
- * 
- * @param {number} questionIndex 
- * @param {number[]} answers 
- * @param {Dispatch} dispatch 
+ *
+ * @param {number} questionIndex
+ * @param {number[]} answers
+ * @param {Dispatch} dispatch
  */
-export const onHotseatAnswer = (
-  questionIndex: number,
-  answers: number[],
-  dispatch: Dispatch
-) => {
-  console.log('receiving answers!', answers, questionIndex)
+export const onHotseatAnswer = (questionIndex: number, answers: number[], dispatch: Dispatch) => {
+  console.log('receiving answers!', answers, questionIndex);
   dispatch({
-    type: "ON_HOTSEAT_ANSWER",
+    type: 'ON_HOTSEAT_ANSWER',
     payload: { questionIndex, answers },
   });
 
@@ -333,14 +385,14 @@ export const onHotseatAnswer = (
 
 export const onNextQuestion = (time: number) => {
   return (dispatch: Dispatch) => {
-    console.log('next question in ', time, 'seconds')
+    console.log('next question in ', time, 'seconds');
     setTimeout(() => {
       dispatch({
-        type: "ON_NEXT_QUESTION"
-      })
+        type: 'ON_NEXT_QUESTION',
+      });
     }, time);
-  }
-}
+  };
+};
 
 /**
  * Update the list of players
@@ -349,7 +401,7 @@ export const onNextQuestion = (time: number) => {
  */
 export const playerListUpdate = (players: IPlayer[], dispatch: Dispatch) => {
   dispatch({
-    type: "PLAYER_LIST_UPDATE",
+    type: 'PLAYER_LIST_UPDATE',
     payload: players,
   });
 };
@@ -361,7 +413,7 @@ export const playerListUpdate = (players: IPlayer[], dispatch: Dispatch) => {
  */
 export const playerUpdate = (player: IPlayer, dispatch: Dispatch) => {
   dispatch({
-    type: "PLAYER_SINGLE_UPDATE",
+    type: 'PLAYER_SINGLE_UPDATE',
     payload: player,
   });
 };
@@ -373,7 +425,7 @@ export const playerUpdate = (player: IPlayer, dispatch: Dispatch) => {
 export const leaveGame = () => {
   return (dispatch: Dispatch) => {
     dispatch({
-      type: "LEAVE_GAME",
+      type: 'LEAVE_GAME',
     });
   };
 };
@@ -384,7 +436,7 @@ export const leaveGame = () => {
  */
 export const endGame = () => {
   return {
-    type: "END_GAME",
+    type: 'END_GAME',
   };
 };
 
@@ -393,7 +445,7 @@ export const endGame = () => {
  */
 export const setPhase = (phase: string, dispatch: Dispatch) => {
   dispatch({
-    type: "SET_PHASE",
+    type: 'SET_PHASE',
     payload: phase,
   });
 };
@@ -401,17 +453,12 @@ export const setPhase = (phase: string, dispatch: Dispatch) => {
 /**
  * Answer a question within a game
  */
-export const answerQuestion = (
-  lobbyName: string,
-  questionIndex: number,
-  playerIndex: number,
-  roundNum:number
-) => {
+export const answerQuestion = (lobbyName: string, questionIndex: number, playerIndex: number, roundNum: number) => {
   return (dispatch: Dispatch) => {
-    console.log('new answer!', questionIndex, playerIndex)
-    GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex,roundNum);
+    console.log('new answer!', questionIndex, playerIndex);
+    GameSockClient.sendAnswer(lobbyName, questionIndex, playerIndex, roundNum);
     dispatch({
-      type: "ANSWER_QUESTION",
+      type: 'ANSWER_QUESTION',
     });
   };
 };

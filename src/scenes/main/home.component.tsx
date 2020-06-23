@@ -12,26 +12,29 @@
  * Copyright 2020 - WebSpace
  */
 
-import React from "react";
-import { View } from "react-native";
-import { Button, Layout, Text, Icon, IconProps } from "@ui-kitten/components";
-import { AppRoute } from "../../navigation/app-routes";
-import { IInitialState } from "../../reducers/interfaces";
-import { connect } from "react-redux";
-import { gameActions } from "../../actions";
-import { HomeScreenProps } from "../../navigation/main.navigator";
-import { IHostGame } from "../../actions/game";
-import SignoutScreen from "../auth/sign-out.component";
-
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { Button, Layout, Text, Icon, IconProps } from '@ui-kitten/components';
+import { AppRoute } from '../../navigation/app-routes';
+import { IInitialState } from '../../reducers/interfaces';
+import { connect } from 'react-redux';
+import { gameActions } from '../../actions';
+import { HomeScreenProps } from '../../navigation/main.navigator';
+import { IHostGame, IRejoinGame } from '../../actions/game';
+import SignoutScreen from '../auth/sign-out.component';
+import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Player } from '@rossmacd/gamesock-client';
 /**
  * Importing styles
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../themes")("App");
-
+const styles = require('../../themes')('App');
+const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000';
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
+  autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
 }
 
 interface IProps {
@@ -44,70 +47,105 @@ interface IProps {
  * Rendering the view
  */
 const Home = (props: IProps & IActions) => {
+  const [canRejoin, setCanRejoin] = useState<boolean>(false);
+  const [rejoinInfo,setRejoinInfo]=useState<IRejoinGame>({id:'',lobbyName:''})
+
+  useEffect(() => {
+    // Check if a previous game is in localstorage
+    AsyncStorage.getItem('myId').then(unparsedID=>{
+      if (unparsedID) {
+        // Parse the object
+        const parsedOldID = JSON.parse(unparsedID);
+        if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
+          fetch(`${baseUrl}/api/gameActive`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              id: parsedOldID.id,
+              lobbyName: parsedOldID.lobby,
+            }),
+          }).then((res) => {
+            console.log('FETCH:RES', res);
+            if (res.ok) {
+              res.json().then((data) => {
+                if (data && data.active) {
+                  console.log('Shes sound let her go', data.active);
+                  setRejoinInfo({id:parsedOldID,lobbyName:parsedOldID.lobby})
+                  setCanRejoin(true);
+                }
+              });
+            }
+          });
+        }
+      }
+    });
+  }, []);
   /**
    * If the user is logged in, start a new game as a host
    *
    * if not redirect them to auth
    */
   const hostOrLogin = () => {
-    if (props.token && props.token !== "") {
+    if (props.token && props.token !== '') {
       props.hostGameAction({ username: props.name, token: props.token });
       props.navigation.navigate(AppRoute.GAME);
     } else props.navigation.navigate(AppRoute.AUTH);
   };
 
-  const settingsIcon = (props: IconProps) => (
-    <Icon {...props} name="settings-2-outline" />
-  )
+  const settingsIcon = (props: IconProps) => <Icon {...props} name="settings-2-outline" />;
 
   const renderSignoutAndCogContainer = () => {
-    if(props.token && props.token !== "") return (
-      <View style={styles.signOutAndCogContainer}>
-        <SignoutScreen />
-        <Button
-            style={styles.settingsCog}
-            onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
-            appearance='ghost' 
-            accessoryRight={settingsIcon}
-        ></Button>
-      </View>
-    )
+    if (props.token && props.token !== '')
+      return (
+        <View style={styles.signOutAndCogContainer}>
+          <SignoutScreen />
+          <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.DEVINFO)} appearance="ghost" accessoryRight={settingsIcon}></Button>
+        </View>
+      );
 
     return (
       <View style={styles.signOutAndCogContainer}>
-        <Button
-            style={styles.settingsCog}
-            onPress={() => props.navigation.navigate(AppRoute.DEVINFO)}
-            appearance='ghost' 
-            accessoryRight={settingsIcon}
-        ></Button>
+        <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.DEVINFO)} appearance="ghost" accessoryRight={settingsIcon}></Button>
       </View>
-    )
-  }
+    );
+  };
+
+  const renderRejoin = () => {
+    if (canRejoin) {
+      console.log(canRejoin)
+      //Show the rejoin button
+      return (
+        <Button style={styles.formButtonAlternate} onPress={() => {
+          props.autoRejoinLobby(rejoinInfo)
+          props.navigation.navigate(AppRoute.GAME)
+        }}>
+          {'REJOIN GAME '+rejoinInfo.lobbyName}
+        </Button>
+      );
+    }
+  };
+
+
+
+
 
   return (
     <Layout style={styles.container}>
       {renderSignoutAndCogContainer()}
-      <Text style={styles.title}>
-        WHO IS 
-      </Text>
+      <Text style={styles.title}>WHO IS</Text>
       <Text style={styles.titleRed}>MORE LIKELY</Text>
-      <Text style={styles.title}>
-        TO
-      </Text>
+      <Text style={styles.title}>TO</Text>
 
       <View>
-        <Button
-          style={styles.formButton}
-          onPress={() => hostOrLogin()}
-        >
+        {renderRejoin()}
+        <Button style={styles.formButton} onPress={() => hostOrLogin()}>
           HOST
         </Button>
 
-        <Button
-          style={styles.formButton}
-          onPress={() => props.navigation.navigate(AppRoute.GAME)}
-        >
+        <Button style={styles.formButton} onPress={() => props.navigation.navigate(AppRoute.GAME)}>
           JOIN
         </Button>
       </View>

@@ -58,6 +58,20 @@ export default StyleSheet.create({
     // marginHorizontal: 'auto'
   },
 
+  formButtonAlternate:{
+    marginVertical: 10,
+    paddingHorizontal: 120,
+    paddingVertical: 50,
+    borderWidth: 0,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: { width: 2, height: 2},
+    borderRadius: 5,
+    backgroundColor:'#00B0FF'
+  },
+
+
   signOutAndCogContainer: {
     position: 'absolute',
     top: 20,
