@@ -169,13 +169,13 @@ const GameScreen = (props: IProps & IActions) => {
       case "Display Answer":
         return (
           <React.Fragment>
-            <Text>{props.questions[props.currentQuestionId].question}</Text>
+            <Text style={styles.questInAnsPhase}>{props.questions[props.currentQuestionId].question}</Text>
 
             {props.questions[props.currentQuestionId].answers!.map(
               (answer: number, i: number) => {
                 if (answer !== null)
                   return (
-                    <Text key={i}>
+                    <Text key={i} style={[styles.pleadTheFifth, i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight]}>
                       {`${props.roundOptions?.hotseatPlayers[i].name} 
                     selected 
                     ${
@@ -189,7 +189,7 @@ const GameScreen = (props: IProps & IActions) => {
 
                 return (
                   // Text for when chosen players didn't choose a player:
-                  <Text key={i} style={styles.title}>
+                  <Text key={i} style={[styles.pleadTheFifth, i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight]}>
                     {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
                   </Text>
                 );
