@@ -207,22 +207,6 @@ export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
    return GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
-<<<<<<< HEAD
-      let oldId
-      if(Platform.OS === 'web') {
-        oldId=localStorage.getItem('myId');
-      }
-      
-      if(oldId){
-        console.log('Attempting to claim with token'+oldId)
-        GameSockClient.claimSocket(body.lobbyName,oldId)
-      }
-
-      if(Platform.OS === 'web') {
-        localStorage.setItem('myId', user.id);
-      }
-      // playerListUpdate(players, dispatch)
-=======
       try {
         AsyncStorage.setItem(
           'myId',
@@ -236,7 +220,6 @@ export const joinGame = (body: IJoinGame) => {
         (e: any) => console.log(e);
       }
 
->>>>>>> 1bfce7cdfaeae7cd9270d81c96ebd04e095ab876
       dispatch({
         type: 'JOIN_GAME',
         payload: { lobbyName: body.lobbyName, user: user },
