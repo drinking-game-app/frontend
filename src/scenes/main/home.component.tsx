@@ -122,8 +122,13 @@ const Home = (props: IProps & IActions) => {
       //Show the rejoin button
       return (
         <Button style={styles.formButtonAlternate} onPress={() => {
-          props.autoRejoinLobby(rejoinInfo)
-          props.navigation.navigate(AppRoute.GAME)
+            props.autoRejoinLobby(rejoinInfo).then(()=>{
+            //TODO make this conditional
+            props.navigation.navigate(AppRoute.GAME)
+          }).catch(e=>{
+            console.log(e)
+            setCanRejoin(false)
+          })
         }}>
           {'REJOIN GAME '+rejoinInfo.lobbyName}
         </Button>

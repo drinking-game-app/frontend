@@ -21,10 +21,11 @@ import { IInitialState, IPlayer } from "../reducers/interfaces";
 import { gameActions } from "../actions";
 import { connect } from "react-redux";
 import { ButtonInput } from "./form-button.component";
-import { View, KeyboardAvoidingView } from "react-native";
+import { View, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Question, RoundOptions } from "@rossmacd/gamesock-client";
 import shuffleQuestion from "../helpers/shuffle-question.helper";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 /**
  * Importing styles
@@ -92,7 +93,7 @@ const QuesionInput = (props: IProps & IActions) => {
             //     contentContainerStyle={styles.questionInputContainer}
             //     // scrollEnabled={false}
             // > */}
-        {/* // <KeyboardAvoidingView behavior='padding' style={styles.questionInputContainer}> */}
+        
 
         <Button
           accessoryLeft={renderShuffleIcon}
@@ -105,10 +106,11 @@ const QuesionInput = (props: IProps & IActions) => {
         />
         <FormInput
           id="questionInput"
-          style={[styles.questionInput]}
+          style={styles.questionInput}
           size="large"
           placeholder="Insert your question"
           value={props.values.questionInput}
+          onSubmitEditing={() => Platform.OS !== 'web' ? props.handleSubmit() : () => {}}
           onKeyPress={({nativeEvent}) => {
             if(nativeEvent.key === 'Enter') props.handleSubmit()
           }}
@@ -130,7 +132,13 @@ const QuesionInput = (props: IProps & IActions) => {
   };
 
   return (
-    <Layout style={styles.inputContainer}>
+    <KeyboardAvoidingView 
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.inputContainer}
+    >
+    <TouchableWithoutFeedback 
+      onPress={Platform.OS !== 'web' ? Keyboard.dismiss : () => {}}
+    >
       <Text style={{color: "#D7D98B"}}>
         No. of your <Text style={{color: '#AD0D4B'}}>Questions</Text>: {props.questions.length} /{" "}
         {props.roundOptions.numQuestions}
@@ -145,7 +153,8 @@ const QuesionInput = (props: IProps & IActions) => {
       >
         {renderForm}
       </Formik>
-    </Layout>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -160,7 +169,7 @@ const mapStateToProps = (state: IInitialState): IProps => {
     questionInput,
     questions,
     user,
-    roundOptions,
+    roundOptions
   } = state.game;
 
   return {

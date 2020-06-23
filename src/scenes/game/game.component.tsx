@@ -32,6 +32,8 @@ import shuffleQuestion from "../../helpers/shuffle-question.helper";
 import LoadingComponent from "../../components/loading.component";
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import {useKeepAwake} from 'expo-keep-awake';
+import { ScrollView } from "react-native-gesture-handler";
+import { View } from "react-native";
 
 
 /**
@@ -92,19 +94,19 @@ const GameScreen = (props: IProps & IActions) => {
 
       const { questions } = props;
 
-      if (questions.length < props.roundOptions!.numQuestions) {
-        setNotEnoughQuestions((val) => true);
-        for (
-          let i = props.roundOptions!.numQuestions - questions.length;
-          i--;
+      // if (questions.length < props.roundOptions!.numQuestions) {
+      //   setNotEnoughQuestions((val) => true);
+      //   for (
+      //     let i = props.roundOptions!.numQuestions - questions.length;
+      //     i--;
 
-        ) {
-          questions.push({
-            playerId: props.user.id,
-            question: shuffleQuestion(),
-          });
-        }
-      }
+      //   ) {
+      //     questions.push({
+      //       playerId: props.user.id,
+      //       question: shuffleQuestion(),
+      //     });
+      //   }
+      // }
       return questions.map((question) => question.question);
     });
   });
@@ -141,12 +143,13 @@ const GameScreen = (props: IProps & IActions) => {
       case "Question Gathering":
         return (
           <React.Fragment>
+          <ScrollView style={{flex: 1}}>
             {/* <Timer serverHasQuestions={serverHasQuestions} /> */}
             <PickedPlayers
               user={props.user}
               players={props.roundOptions?.hotseatPlayers}
             />
-
+          </ScrollView>
             {notEnoughQuestions ? (
               <Text style={styles.title}>
                 Can't think of questions? That's okay, we'll help you out!
@@ -227,7 +230,6 @@ const GameScreen = (props: IProps & IActions) => {
         status="info"
         onPress={() => endGame()}
       />
-
       {gamePhaseController()}
     </Layout>
   );
