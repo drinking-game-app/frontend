@@ -13,7 +13,7 @@
  */
 
 import { Layout, Button, IconProps, Icon, Text } from "@ui-kitten/components";
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, FormikProps } from "formik";
 import { QuestionSchema, QuestionInputData } from "../data/question-input.model";
 import { FormInput } from "./form-input.component";
@@ -56,6 +56,9 @@ interface IProps {
 }
 
 const QuesionInput = (props: IProps & IActions) => {
+
+  
+
   const submit = (values: { questionInput: string }) => {
     console.log("submitting!!!");
     props.setGameLoading();
@@ -77,6 +80,13 @@ const QuesionInput = (props: IProps & IActions) => {
   const renderForm = (
     props: FormikProps<QuestionInputData>
   ): React.ReactFragment => {
+    
+    useEffect(() => {
+      if(!props.values.questionInput.match(/^Who's more likely.*$/)){
+        props.setValues({ questionInput: "Who's more likely" })
+      }
+    }, [props.values.questionInput]);
+
     const loading = isLoading || props.isSubmitting;
 
     if (isLoading === false && props.isSubmitting === true)
