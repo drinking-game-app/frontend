@@ -52,10 +52,11 @@ const Home = (props: IProps & IActions) => {
 
   useEffect(() => {
     // Check if a previous game is in localstorage
-    AsyncStorage.getItem('myId').then(unparsedID=>{
+    AsyncStorage.getItem('myId')
+    .then(unparsedID=>{
       if (unparsedID) {
         // Parse the object
-        const parsedOldID = JSON.parse(unparsedID);
+        const parsedOldID = JSON.parse(unparsedID)
         if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
           fetch(`${baseUrl}/api/gameActive`, {
             method: 'POST',
@@ -81,7 +82,9 @@ const Home = (props: IProps & IActions) => {
           });
         }
       }
-    }).catch(e=>console.error(e));
+    }).catch(err => {
+      console.log('async storage error!', err)
+    })
   }, []);
   /**
    * If the user is logged in, start a new game as a host

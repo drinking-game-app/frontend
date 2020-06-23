@@ -118,7 +118,7 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
 
             <View style={styles.formContainer}>
               <Formik
-                  initialValues={{lobbyName, username: 'name'}}
+                  initialValues={{lobbyName, username: name}}
                   validationSchema={JoinLobbySchema}
                   onSubmit={(values)=>submit(values)}
               >

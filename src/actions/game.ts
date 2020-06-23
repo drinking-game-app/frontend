@@ -65,6 +65,15 @@ export const setMessages = (message: string, dispatch: Dispatch) => {
     type: "SET_MESSAGES",
     payload: message,
   });
+
+
+  setTimeout(() => {
+    dispatch({
+      type: "HIDE_MESSAGE",
+      payload: message
+    })
+}, 8000);
+
 };
 
 export const initGameSock = () => {

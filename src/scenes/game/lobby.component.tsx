@@ -24,6 +24,7 @@ import * as GameSockClient from '@rossmacd/gamesock-client'
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import LoadingComponent from "../../components/loading.component";
 import NotificationBar from "../../components/notification-bar.component"
+import { View } from "react-native";
 
 
 /**
@@ -55,19 +56,30 @@ interface IProps {
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
-  const renderItemIcon = (props: IconProps) => (
-    <Icon {...props} name="person" />
-  );
+  const renderItemIcon = (props: IconProps, item: any) => {
+    return <View style={[styles.playerAvatar, {backgroundColor: item.colour}]} >
+      {
+        item.icon
+        ? <Icon {...props} name={item.icon} />
+        : <Text category='h4'>{getPlayerInitials(item.name)}</Text>
+      }
+    </View>
+  }
+
+  const getPlayerInitials = (name: string) => {
+    const initials = name.match(/\b\w/g) || [];
+    return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+  }
 
   const renderListItemPoints = (score: number) => (
     <Text>{score} points</Text>
   )
 
-  const renderItem = ({ item }: any) => {
-    if(props.roundOver) return <ListItem style={styles.listItem} title={item.name} accessoryLeft={renderItemIcon} accessoryRight={() => renderListItemPoints(item.score)} />
+  const renderItem = ({item}: any) => {
+    if(props.roundOver) return <ListItem style={styles.listItem} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} accessoryRight={() => renderListItemPoints(item.score)} />
 
 
-    return <ListItem style={styles.listItem} title={item.name} accessoryLeft={renderItemIcon} />
+    return <ListItem style={[styles.listItem, {color: 'red'}]} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} />
   }
 
   const endGame = () => {
@@ -106,7 +118,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   if (players.length < 4)
     players = [
       ...players,
-      ...new Array(3).fill({ name: "Waiting for player..." }),
+      ...new Array(3).fill({ name: "Waiting for player...", colour: '#161f26', icon: 'question-mark-outline' }),
     ];
   if(props.roundOver) {
     players.sort((a, b) => b.score - a.score)
@@ -139,7 +151,7 @@ const LobbyScreen = (props: IProps & IActions) => {
       {props.isHost ? (
         <ButtonInput
           style={styles.submitButton}
-          status='primary'
+          status='success'
           onPress={startGame}
           disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
@@ -167,6 +179,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           }
         />
       )}
+
       <NotificationBar />
     </Layout>
   );

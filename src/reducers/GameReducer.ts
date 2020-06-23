@@ -12,15 +12,20 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IGameState, IPlayer } from "./interfaces";
+import { IGameState, IPlayer, IMessage } from "./interfaces";
 import { RoundOptions, Question } from "@rossmacd/gamesock-client";
 import { getPlayers } from '@rossmacd/gamesock-client';
 import { onNextQuestion } from "../actions/game";
+import { stat } from "fs";
 
 interface IGameAction {
   type: string;
   payload: any;
 }
+
+const colours = [
+  "#972852", "#96251C", "#497BB6", "#AF39B2", "#A45EDC", "#D49D6D"
+]
 
 /**
  * Initial state for redux
@@ -88,30 +93,64 @@ export default (state = initialState, action: IGameAction) => {
      */
     case "SET_MESSAGES":
       const messages = state.messages;
-      messages.push(action.payload as string);
+      const message = action.payload as string
+
+      let result: IMessage = {
+        hide: false,
+        message: message
+      }
+
+      /**
+       * Push the new message to the array
+       */
+      messages.push(result);
+      
+      /**
+       * Grab loading and error from the state
+       */
       let isLoading = state.isLoading
       let error = state.error
       
+      /**
+       * If the message is a lobby does not exist error
+       * add the error too
+       */
       if(isLoading && action.payload.includes('does not exist')) {
-        console.log('ye not the right lobby dumbo')
         isLoading = false
         error = action.payload
       } else error = ''
 
       return {
         ...state,
-        messages: messages,
+        messages: [...messages],
         isLoading: isLoading,
         error: error
+      };
+
+    case "HIDE_MESSAGE":
+      let allMessages = state.messages;
+      const i = allMessages.findIndex((dat => dat.message === action.payload))
+      allMessages[i].hide = true
+
+      return {
+        ...state,
+        messages: [...allMessages],
       };
 
     /**
      * Update the list of players
      */
     case "PLAYER_LIST_UPDATE":
+      const newPlayers = action.payload as IPlayer[]
+      newPlayers.map((player, i) => {
+        if(i > colours.length - 1) {
+          return player.colour = colours[i - colours.length]  
+        }
+        return player.colour = colours[i]
+      })
       return {
         ...state,
-        players: [...action.payload],
+        players: [...newPlayers],
       };
     /**
      * Update a single player

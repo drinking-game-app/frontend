@@ -39,6 +39,14 @@ export default StyleSheet.create({
     backgroundColor: "#161F26",
   },
 
+  playerAvatar: {
+    paddingVertical: 8,
+    borderRadius: 1000,
+    width: 50,
+    height: 50,
+    textAlign: 'center'
+  },
+
   /**
    * ------LOBBY (HOST)------
    */
@@ -188,10 +196,13 @@ export default StyleSheet.create({
 
   inputContainer: {
     padding: 10,
-    // alignSelf: 'stretch',
     textAlign: 'center',
-    // backgroundColor: '#161F26',
-    backgroundColor: '#ffffff00',
+    backgroundColor: '#161f26',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    bottom: 0,
+    left: 0,
+    width: '100%'
   },
 
   questionInputContainer: {
@@ -199,9 +210,9 @@ export default StyleSheet.create({
     // height:48,
     padding: 10,
     flexDirection: 'row',
-    // width: '100%',
     // backgroundColor: '#161F26',
     backgroundColor: '#ffffff00',
+
   },
 
   questionInput: {
