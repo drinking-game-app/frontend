@@ -99,9 +99,54 @@ export default StyleSheet.create({
     color: "#AD0D4B",
   },
 
+  // answers: {
+  //   fontSize: 24,
+  //   fontWeight: "300",
+  //   position: "relative",
+  //   marginVertical: 30,
+  // },
+
+  answerLeft: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    position: "relative",
+
+    fontSize: 24,
+    fontWeight: "300",
+    textAlign: "left",
+    marginVertical: 30,
+
+    alignSelf: "flex-start",
+    padding: 10,
+    borderTopEndRadius: 0.001,
+    borderBottomEndRadius: 0.001,
+    borderRadius: 0.001,
+    backgroundColor: "#AD0D4B",
+    borderColor: "#ffffff00",
+  },
+
+  answerRight: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    position: "relative",
+
+    fontSize: 24,
+    fontWeight: "300",
+    textAlign: "right",
+    marginVertical: 30,
+    
+    alignSelf: "flex-end",
+    padding: 10,
+    borderTopStartRadius: 0.001,
+    borderBottomStartRadius: 0.001,
+    borderRadius: 0.001,
+    backgroundColor: "#9F37DE",
+    borderColor: "#ffffff00",
+  },
+
   pleadTheFifth: {
-    fontSize: 32,
-    fontWeight: "400",
+    fontSize: 24,
+    fontWeight: "300",
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
@@ -112,6 +157,7 @@ export default StyleSheet.create({
     alignSelf: "flex-start",
     // position: "absolute",
     // bottom: "10%",
+    padding: 10,
     borderTopEndRadius: 0.001,
     borderBottomEndRadius: 0.001,
     borderRadius: 0.001,
@@ -123,6 +169,7 @@ export default StyleSheet.create({
     alignSelf: "flex-end",
     // position: "absolute",
     // bottom: "10%",
+    padding: 10,
     textAlign: "right",
     borderTopStartRadius: 0.001,
     borderBottomStartRadius: 0.001,
@@ -177,6 +224,7 @@ export default StyleSheet.create({
 
   belowCardText: {
     marginVertical: 10,
+    paddingHorizontal: 16,
   },
 
   alignLeft: {

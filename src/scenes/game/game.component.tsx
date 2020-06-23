@@ -178,15 +178,8 @@ const GameScreen = (props: IProps & IActions) => {
               (answer: number, i: number) => {
                 if (answer !== null)
                   return (
-                    <Text key={i} style={[styles.pleadTheFifth, i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight]}>
-                      {`${props.roundOptions?.hotseatPlayers[i].name} 
-                    selected 
-                    ${
-                      answer === i
-                        ? "themselves"
-                        : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0]
-                            .name
-                    }`}
+                    <Text key={i} style={[i === 0 ? styles.answerLeft : styles.answerRight]}>
+                      {`${props.roundOptions?.hotseatPlayers[i].name} SELECTED ${answer === i ? "THEMSELVES!" : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}
                     </Text>
                   );
 
