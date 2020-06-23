@@ -264,11 +264,12 @@ export const autoRejoinLobby = (body: IRejoinGame) => {
       if (store) {
         const parsedStore = JSON.parse(store);
           console.log('Attempting to claim with token' + parsedStore.toString(),parsedStore.expiry > Date.now());
-          return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id).then(players=>{
+          return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id).then(data=>{
+            const players = data.players
             console.log('CLAIMED!!',players)
-            const user = Array.isArray(players) ? players.find((player) => player.id === parsedStore.id) : players;
+            const user = Array.isArray(players) ? players.find((player) => player.id === data.id) : players;
             if (!user) {
-              throw "Could not find user";
+              throw "Could not find user!";
             }
             AsyncStorage.setItem(
               'myId',
