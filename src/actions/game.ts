@@ -256,6 +256,7 @@ export const autoRejoinLobby = (body: IRejoinGame) => {
         const parsedStore = JSON.parse(store);
           console.log('Attempting to claim with token' + parsedStore.toString(),parsedStore.expiry > Date.now());
           return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id).then(players=>{
+            console.log('CLAIMED!!',players)
             const user = Array.isArray(players) ? players.find((player) => player.id === parsedStore.id) : players;
             if (!user) {
               throw "Could not find user";
@@ -268,6 +269,7 @@ export const autoRejoinLobby = (body: IRejoinGame) => {
                 lobby: body.lobbyName,
               })
             ).catch(e=>console.error(e));
+            console.log('TIME to dispatch')
             dispatch({
               type: 'JOIN_GAME',
               payload: { lobbyName: body.lobbyName, user: { ...user}},

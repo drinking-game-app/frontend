@@ -81,7 +81,7 @@ const Home = (props: IProps & IActions) => {
           });
         }
       }
-    });
+    }).catch(e=>console.error(e));
   }, []);
   /**
    * If the user is logged in, start a new game as a host
