@@ -92,19 +92,19 @@ const GameScreen = (props: IProps & IActions) => {
 
       const { questions } = props;
 
-      if (questions.length < props.roundOptions!.numQuestions) {
-        setNotEnoughQuestions((val) => true);
-        for (
-          let i = props.roundOptions!.numQuestions - questions.length;
-          i--;
+      // if (questions.length < props.roundOptions!.numQuestions) {
+      //   setNotEnoughQuestions((val) => true);
+      //   for (
+      //     let i = props.roundOptions!.numQuestions - questions.length;
+      //     i--;
 
-        ) {
-          questions.push({
-            playerId: props.user.id,
-            question: shuffleQuestion(),
-          });
-        }
-      }
+      //   ) {
+      //     questions.push({
+      //       playerId: props.user.id,
+      //       question: shuffleQuestion(),
+      //     });
+      //   }
+      // }
       return questions.map((question) => question.question);
     });
   });
