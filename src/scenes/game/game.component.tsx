@@ -224,7 +224,7 @@ const GameScreen = (props: IProps & IActions) => {
         loadingText={props.phase}
         lobbyCode={props.timer !== 0 ? `${props.timer}` : ""}
         icon="close-outline"
-        status="danger"
+        status="info"
         onPress={() => endGame()}
       />
 

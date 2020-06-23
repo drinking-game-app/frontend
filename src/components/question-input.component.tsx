@@ -99,7 +99,7 @@ const QuesionInput = (props: IProps & IActions) => {
           onPress={() => {
             props.setValues({ questionInput: shuffleQuestion() });
           }}
-          status="danger"
+          status="info"
           disabled={loading}
           style={styles.questionInputButton}
         />

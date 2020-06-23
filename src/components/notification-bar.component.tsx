@@ -15,82 +15,60 @@
 import React, { useEffect } from "react";
 import { ButtonInput } from "./form-button.component";
 import { connect } from "react-redux";
-import { IInitialState } from "../reducers/interfaces";
+import { Text, Layout } from '@ui-kitten/components'
+import { IInitialState, IMessage, IPlayer } from "../reducers/interfaces";
+import { View } from "react-native";
 
 /**
  * Importing styles
  * @param theme path
  * @param Game Module name
  */
-const styles = require("../themes")("Game");
+const styles = require("../themes")("Notification");
 
 
 interface IProps {
-    messages: string[]
+    messages: IMessage[];
+    players: IPlayer[]
 }
 
-interface IStateMessage {
-    message: string;
-    hide: boolean; 
-}
+const NotificationBar = ({messages, players}: IProps) => {
 
-const NotificationBar = (props: IProps) => {
-    const [messageArr, setMessageArr] = React.useState<IStateMessage[]>([])
-    
-    useEffect(() => {
-        /**
-         * Hide the new message after 5000ms
-         * 
-         * @param {number} i
-         */
-        const hideNewMessage = (i: number) => {
-            setTimeout(() => {
-                setMessageArr((oldMessages) => {
-                    oldMessages[i].hide = true
-
-                    return oldMessages
+    if(messages.some(dat => !dat.hide)) {
+      return (
+            <View style={styles.container}>
+                {messages.filter(message => !message.hide).map((message, i) => {
+                    let messageToDisplay = message.message
+                    let colour = '#972852'
+                    
+                    const playerI = players.findIndex(player => messageToDisplay.includes(player.id))
+                   
+                    /**
+                     * If a player ID is mentioned in the message
+                     * replace it with the players name, and their colour
+                     */
+                    if(playerI >= 0) {
+                        messageToDisplay = messageToDisplay.replace(players[playerI].id, players[playerI].name)
+                        colour = players[playerI].colour ? players[playerI].colour as string : 'red'
+                    }
+                    
+                    return (
+                        <ButtonInput
+                            key={i}
+                            style={[styles.notification, {backgroundColor: colour}]}
+                            status='success'
+                            size='small'
+                            disabled={false}
+                            loading={false}
+                            text={messageToDisplay}
+                        />
+                    )
                 })
-            }, 5000);
-        }
-        console.log('new message!')
-
-        /**
-         * Check if the messages in the state are 
-         * a different length to redux store messages 
-         */
-        if(props.messages.length !== messageArr.length) {
-            console.log('updating array!')
-            //Set the messages within the stat
-            setMessageArr((oldMessages) => {
-                //Hide all other messages
-                oldMessages.map((dat) => dat.hide = true)
-                //Push the new message and show
-                oldMessages.push({
-                    message: props.messages[props.messages.length - 1],
-                    hide: false
-                })
-
-                hideNewMessage(oldMessages.length - 1)
-
-                return oldMessages
-            })
-        }
-    }, [props.messages])
-
-    const messageToDisplay = messageArr.filter(dat => !dat.hide)
-
-    if(messageToDisplay.length > 0) {
-        return (
-            <ButtonInput
-                style={styles.submitButtonJoined}
-                status='success'
-                size='small'
-                disabled={false}
-                loading={false}
-                text={messageToDisplay[0].message}
-            />
+            }
+            </View>
         )
     }
+
     return <></>
 }
 
@@ -100,11 +78,14 @@ const NotificationBar = (props: IProps) => {
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState): IProps => {
-    const { messages } = state.game;
-  
-    return {
-        messages
-    };
-  };
+    const { messages, players } = state.game;
 
-export default connect<IProps>(mapStateToProps, null)(NotificationBar)
+    return {
+        messages,
+        players
+    };
+};
+
+export default connect<IProps>(mapStateToProps)(NotificationBar)
+
+// export default NotificationBar

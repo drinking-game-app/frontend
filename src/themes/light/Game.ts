@@ -39,6 +39,14 @@ export default StyleSheet.create({
     backgroundColor: "#161F26",
   },
 
+  playerAvatar: {
+    paddingVertical: 8,
+    borderRadius: 1000,
+    width: 50,
+    height: 50,
+    textAlign: 'center'
+  },
+
   /**
    * ------LOBBY (HOST)------
    */

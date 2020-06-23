@@ -17,6 +17,7 @@ import * as GameSockClient from "@rossmacd/gamesock-client";
 
 import Constants from "expo-constants";
 import { Dispatch } from "redux";
+import { Platform } from "react-native";
 
 /**
  * Interface for hosting a game
@@ -53,6 +54,15 @@ export const setMessages = (message: string, dispatch: Dispatch) => {
     type: "SET_MESSAGES",
     payload: message,
   });
+
+
+  setTimeout(() => {
+    dispatch({
+      type: "HIDE_MESSAGE",
+      payload: message
+    })
+}, 8000);
+
 };
 
 export const initGameSock = () => {
@@ -188,13 +198,19 @@ export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
     GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
-      const oldId=localStorage.getItem('myId');
+      let oldId
+      if(Platform.OS === 'web') {
+        oldId=localStorage.getItem('myId');
+      }
+      
       if(oldId){
         console.log('Attempting to claim with token'+oldId)
         GameSockClient.claimSocket(body.lobbyName,oldId)
       }
+
+      if(Platform.OS === 'web') {
         localStorage.setItem('myId', user.id);
-      
+      }
       // playerListUpdate(players, dispatch)
       dispatch({
         type: "JOIN_GAME",

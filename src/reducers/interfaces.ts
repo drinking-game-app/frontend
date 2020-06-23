@@ -12,8 +12,7 @@
  * Copyright 2020 - WebSpace
  */
 
-import {Player, Question, RoundOptions} from '@rossmacd/gamesock-client'
-import { HotseatOptions } from '../actions/socket';
+import {Player, Question, RoundOptions, HotseatOptions} from '@rossmacd/gamesock-client'
 
 /**
  * Interface for a user
@@ -62,7 +61,18 @@ export interface IAuthState {
 export interface IPlayer extends Player {
   pIndex?:number
   inHotseat?:boolean
+  colour?: string
 }
+
+/**
+ * Interface for a message
+ */
+export interface IMessage {
+  message: string;
+  hide: boolean;
+  colour?: string
+}
+
 
 /**
  * Interface for the game state
@@ -76,7 +86,7 @@ export interface IGameState {
   players: IPlayer[];
   error:string;
   isLoading:boolean;
-  messages: string[];
+  messages: IMessage[];
   pickedPlayers: IPlayer[];
   questionInput: string;
   questions: Question[]
