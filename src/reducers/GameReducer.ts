@@ -194,6 +194,7 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         lobbyName: action.payload.lobbyName,
         user: action.payload.user,
+        players: [...(action.payload.players||state.players)],
         inLobby: true,
         isLoading: false,
         roundOver: false,
