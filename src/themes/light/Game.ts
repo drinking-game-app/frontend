@@ -138,6 +138,15 @@ export default StyleSheet.create({
     marginBottom: 30,
   },
 
+  questInAnsPhase: {
+    paddingHorizontal: 16,
+    paddingTop: 110,
+    fontSize: 28,
+    fontWeight: "300",
+    textAlign: "center",
+    marginBottom: 30,
+  },
+
   /**
    * ------IN-GAME (CHOSEN)------
    */

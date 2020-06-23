@@ -23,7 +23,7 @@
     "@react-native-community/masked-view": "0.1.6",
     "@react-navigation/native": "^5.3.0",
     "@react-navigation/stack": "^5.4.1",
-    "@rossmacd/gamesock-client": "^0.3.0",
+    "@rossmacd/gamesock-client": "^0.4.1",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "expo": "~37.0.9",
