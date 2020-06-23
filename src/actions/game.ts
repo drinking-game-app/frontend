@@ -230,45 +230,16 @@ export const joinGame = (body: IJoinGame) => {
 
 export const autoRejoinLobby = (body: IRejoinGame) => {
   return (dispatch: Dispatch) => {
-  //  return GameSockClient.joinLobby(body.lobbyName, 'Player Rejoining.......').then((players) => {
-  //     console.log(players);
-  //     let orginalUser = Array.isArray(players) ? players[players.length - 1] : players;
-      // AsyncStorage.getItem('myId').then((myId) => {}
-  //       if (myId) {
-  //         const oldId = JSON.parse(myId);
-  //         console.log('Attempting to claim with token' + oldId.toString(),oldId.expiry > Date.now());
-  //         if (oldId.expiry && oldId.id && oldId.lobby && oldId.expiry > Date.now()) {
-  //           console.log('Claims',oldId.lobby, oldId.id);
-  //           GameSockClient.claimSocket(oldId.lobby, oldId.id);
-  //           const user = Array.isArray(players) ? players.find((player) => player.id === oldId.id) : players;
-  //           if (!user) {
-  //             throw "Could not find user";
-  //           }
-  //           AsyncStorage.setItem(
-  //             'myId',
-  //             JSON.stringify({
-  //               id: user.id,
-  //               expiry: Date.now() + 30 * 60 * 1000,
-  //               lobby: body.lobbyName,
-  //             })
-  //           );
-  //           dispatch({
-  //             type: 'JOIN_GAME',
-  //             payload: { lobbyName: body.lobbyName, user: { ...user, id: orginalUser.id } },
-  //           });
-  //         }
-  //       }
-  //     });
-  //   });
     return AsyncStorage.getItem('myId').then((store) => {
       if (store) {
         const parsedStore = JSON.parse(store);
           console.log('Attempting to claim with token' + parsedStore.toString(),parsedStore.expiry > Date.now());
-          return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id).then(players=>{
+          return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id).then(data=>{
+            const players = data.players
             console.log('CLAIMED!!',players)
-            const user = Array.isArray(players) ? players.find((player) => player.id === parsedStore.id) : players;
+            const user = Array.isArray(players) ? players.find((player) => player.id === data.id) : players;
             if (!user) {
-              throw "Could not find user";
+              throw "Could not find user!";
             }
             AsyncStorage.setItem(
               'myId',
@@ -281,7 +252,7 @@ export const autoRejoinLobby = (body: IRejoinGame) => {
             console.log('TIME to dispatch')
             dispatch({
               type: 'JOIN_GAME',
-              payload: { lobbyName: body.lobbyName, user: { ...user}},
+              payload: { lobbyName: body.lobbyName, user: { ...user},players:players},
             });
           }).catch(e=>console.error(e))
       }

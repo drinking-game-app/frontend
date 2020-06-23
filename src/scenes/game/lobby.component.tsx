@@ -13,7 +13,6 @@
  */
 
 import React from "react";
-import { Icon, ListItem, List, IconProps, Button, Layout, Text } from "@ui-kitten/components";
 import { IPlayer, IInitialState } from "../../reducers/interfaces";
 import { connect } from "react-redux";
 import { gameActions } from "../../actions";
@@ -24,13 +23,14 @@ import * as GameSockClient from '@rossmacd/gamesock-client'
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import LoadingComponent from "../../components/loading.component";
 import NotificationBar from "../../components/notification-bar.component"
-import { View } from "react-native";
+import { Layout } from "@ui-kitten/components";
+import GameTabs from "./game-tabs.component";
 
 
 /**
  * Importing styles
  * @param theme path
- * @param App Module name
+ * @param Game Module name
  */
 const styles = require("../../themes")("Game");
 
@@ -56,31 +56,6 @@ interface IProps {
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
-  const renderItemIcon = (props: IconProps, item: any) => {
-    return <View style={[styles.playerAvatar, {backgroundColor: item.colour}]} >
-      {
-        item.icon
-        ? <Icon {...props} name={item.icon} />
-        : <Text category='h4'>{getPlayerInitials(item.name)}</Text>
-      }
-    </View>
-  }
-
-  const getPlayerInitials = (name: string) => {
-    const initials = name.match(/\b\w/g) || [];
-    return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-  }
-
-  const renderListItemPoints = (score: number) => (
-    <Text>{score} points</Text>
-  )
-
-  const renderItem = ({item}: any) => {
-    if(props.roundOver) return <ListItem style={styles.listItem} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} accessoryRight={() => renderListItemPoints(item.score)} />
-
-
-    return <ListItem style={[styles.listItem, {color: 'red'}]} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} />
-  }
 
   const endGame = () => {
     props.setGameLoading();
@@ -114,15 +89,7 @@ const LobbyScreen = (props: IProps & IActions) => {
     return props.lobbyName
   }
 
-  let players: IPlayer[] = props.players;
-  if (players.length < 4)
-    players = [
-      ...players,
-      ...new Array(3).fill({ name: "Waiting for player...", colour: '#161f26', icon: 'question-mark-outline' }),
-    ];
-  if(props.roundOver) {
-    players.sort((a, b) => b.score - a.score)
-  }
+  
 
 
 
@@ -141,12 +108,8 @@ const LobbyScreen = (props: IProps & IActions) => {
         status="info"
         onPress={() => endGame()}
       />
-
-      <List
-        style={styles.listContainer}
-        data={players}
-        renderItem={renderItem}
-      />
+      
+      <GameTabs showTabs={props.roundOver} />
 
       {props.isHost ? (
         <ButtonInput
