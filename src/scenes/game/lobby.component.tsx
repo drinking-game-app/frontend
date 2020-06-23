@@ -61,7 +61,7 @@ const LobbyScreen = (props: IProps & IActions) => {
       {
         item.icon
         ? <Icon {...props} name={item.icon} />
-        : <Text category='h3'>{getPlayerInitials(item.name)}</Text>
+        : <Text category='h4'>{getPlayerInitials(item.name)}</Text>
       }
     </View>
   }
