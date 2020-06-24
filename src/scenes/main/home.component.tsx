@@ -12,13 +12,13 @@
  * Copyright 2020 - WebSpace
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Dispatch } from 'react';
 import { View } from 'react-native';
 import { Button, Layout, Text, Icon, IconProps } from '@ui-kitten/components';
 import { AppRoute } from '../../navigation/app-routes';
 import { IInitialState } from '../../reducers/interfaces';
 import { connect } from 'react-redux';
-import { gameActions } from '../../actions';
+import * as actions from '../../actions';
 import { HomeScreenProps } from '../../navigation/main.navigator';
 import { IHostGame, IRejoinGame } from '../../actions/game';
 import SignoutScreen from '../auth/sign-out.component';
@@ -26,6 +26,7 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Player } from '@rossmacd/gamesock-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { bindActionCreators } from 'redux';
 
 /**
  * Importing styles
@@ -39,6 +40,7 @@ const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:300
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
   autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
+  getUser: (token: string) => void;
 }
 
 interface IProps {
@@ -99,6 +101,13 @@ const Home = (props: IProps & IActions) => {
         props.navigation.navigate(AppRoute.RULES)
       }
     })
+
+    AsyncStorage.getItem('token')
+      .then(token => {
+        if(token && token !== "") {
+          props.getUser(token)
+        }
+      })
   }, []);
   /**
    * If the user is logged in, start a new game as a host
@@ -185,4 +194,16 @@ const mapStateToProps = (state: IInitialState): IProps => {
   return { token, name, isHost };
 };
 
-export default connect(mapStateToProps, gameActions)(Home);
+function mapDispatchToProps(dispatch: any): any {
+  const {hostGameAction, autoRejoinLobby} = actions.gameActions
+  const {getUser} = actions.authActions
+
+  return {
+    hostGameAction: bindActionCreators(hostGameAction, dispatch),
+    autoRejoinLobby: bindActionCreators(autoRejoinLobby, dispatch),
+    getUser: bindActionCreators(getUser, dispatch)
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

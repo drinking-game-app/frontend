@@ -15,6 +15,8 @@
 import { ICreate, IForm, ILogin, IThirdPartyToken } from "./interfaces"
 import Constants from "expo-constants";
 import { hostGame } from "./game";
+import AsyncStorage from "@react-native-community/async-storage";
+import { Dispatch } from "redux";
 
 /**
  * Prefixes for api endpoints
@@ -83,6 +85,31 @@ export const create  = (body: ICreate) => {
     }
 }
 
+export const getUser = (token: string) => {
+    return (dispatch: any) => {
+        fetch(`${baseUrl}${authPrefix}/user`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(response => response.json())
+        .then((data) => {
+            if(data.error) {
+                return dispatch({ type: 'REQUEST_ERROR', payload: data })
+            }
+            const payload = {
+                token: token,
+                ...data.data
+            }
+            // AsyncStorage.setItem('token', data.data.token)
+            dispatch({ type: 'USER_LOGGED_IN', payload })
+        })
+    }
+}
+
 /**
  * Login
  * 
@@ -103,6 +130,8 @@ export const login  = (body: ILogin) => {
             if(data.error) {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
+
+            AsyncStorage.setItem('token', data.data.token)
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
             // dispatch(hostGame({username: data.data.user.name, token: data.data.token}))
             hostGame({username: data.data.user.name, token: data.data.token},dispatch)
@@ -140,11 +169,12 @@ export const loginWithThirdParty  = (token: IThirdPartyToken) => {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
 
+            AsyncStorage.setItem('token', data.data.token)
+
             if(data.data.user.accessToken) dispatch({ type: 'USER_LOGGED_IN_GOOGLE_MOBILE', payload: data.data })
             else dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
 
-            dispatch({ type: 'HOST_GAME', payload: {userName: data.data.user.name, lobbyName: lobbyName} })
-
+            hostGame({username: data.data.user.name, token: data.data.token}, dispatch)
         })
         .catch((err) => {
             console.log(err)
@@ -178,6 +208,7 @@ export const logout  = (credentials: IThirdPartyToken) => {
             },
         })
         .then(() => {
+            AsyncStorage.removeItem('token')
             dispatch({ type: 'USER_LOGGED_OUT' })
         })
         .catch((err) => {

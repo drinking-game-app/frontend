@@ -14,29 +14,24 @@
 
 import React, { Component } from "react";
 import * as Google from "expo-google-app-auth";
-import { Text, View, Platform } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { logout } from "../../../actions/auth";
+
+/**
+ * Get Google Client ID from environment variables
+ */
+import Constants from "expo-constants";
+
+import { IInitialState } from "../../../reducers/interfaces";
+import { ButtonInput } from "../../../components/form-button.component";
 
 /**
  * Importing styles
  * @param theme path
  * @param App Module name
  */
-const styles = require("../../../themes")("Form");
+const styles = require("../../../themes")("App");
 
-/**
- * Get Google Client ID from environment variables
- */
-import Constants from "expo-constants";
-import { Button } from "@ui-kitten/components";
-import { IInitialState } from "../../../reducers/interfaces";
-const IOS_GOOGLE_CLIENT_ID = __DEV__
-  ? Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID
-  : Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID;
-const ANDROID_GOOGLE_CLIENT_ID =
-  Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID;
 
 /**
  * Interface Props
@@ -45,6 +40,7 @@ const ANDROID_GOOGLE_CLIENT_ID =
 type IProps = {
   token: string;
   accessToken: string;
+  isLoading: boolean;
 };
 
 /**
@@ -111,13 +107,14 @@ class LogoutWithGoogle extends Component<
 
   render() {
     return (
-      <View>
-        <Button onPress={this.logout} style={styles.formButton}>
-          Logout
-        </Button>
-
-        {this.state.error !== "" && <Text>Error: {this.state.error}</Text>}
-      </View>
+        <ButtonInput
+          style={styles.signOutBtn}
+          onPress={this.logout}
+          disabled={false}
+          loading={this.props.isLoading}
+          icon="log-out-outline"
+          text=""
+        />
     );
   }
 }
@@ -128,11 +125,12 @@ class LogoutWithGoogle extends Component<
  * @param {*} state
  */
 const mapStateToProps = (state: IInitialState) => {
-  const { token, accessToken } = state.auth;
+  const { token, accessToken, isLoading } = state.auth;
 
   return {
     token,
     accessToken,
+    isLoading
   };
 };
 
