@@ -20,6 +20,7 @@ import Form from './Form'
 import Game from './Game'
 import Header from './Header'
 import Notification from './Notification'
+import Rules from './Rules'
 
 /**
  * Export these modules to the rest of the application
@@ -29,5 +30,6 @@ export default {
   Form,
   Game,
   Header,
-  Notification
+  Notification,
+  Rules
 };

@@ -4,6 +4,20 @@ import {StyleSheet} from 'react-native';
  * App Stylesheet for the light theme
  */
 export default StyleSheet.create({
+  tab: {
+    // height: 192,
+    flex: 1,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#D14688'
+  },
+  rulesContainer: {
+    flex: 1,
+    // alignItems: "center",
+    justifyContent: "center",
+    textAlign: 'center',
+    backgroundColor: '#D14688'
+  },
   container: {
     flex: 1,
     paddingVertical: 16,
@@ -74,7 +88,7 @@ export default StyleSheet.create({
 
   signOutAndCogContainer: {
     position: 'absolute',
-    top: 20,
+    top: 50,
     width: '95%',
     margin: 'auto',
     display: 'flex',

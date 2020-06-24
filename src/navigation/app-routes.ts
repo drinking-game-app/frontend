@@ -4,6 +4,7 @@ export enum AppRoute {
     SIGN_UP = 'Sign Up',
     SIGN_OUT = 'Sign Out',
     HOME = 'Home',
+    RULES = 'Rules',
     GAME = 'Game',
     HOST = 'Host',
     JOIN = 'Join',

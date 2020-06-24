@@ -76,7 +76,7 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
       render() {
           return (
             <View>
-              <Button onPress={this.signInWithGoogleMobile} style={styles.submitButton} status="basic">
+              <Button onPress={this.signInWithGoogleMobile} style={styles.submitButton} status="danger">
                 Login with Google
               </Button>
               {this.state.error !== ''

@@ -126,7 +126,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         {error !== "" && <Text>{error}</Text>}
 
         <View style={styles.resetPasswordContainer}>
-          <Button appearance="ghost" status="control">
+          <Button appearance="ghost" status='danger'>
             Forgot password?
           </Button>
         </View>
@@ -134,6 +134,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         <ButtonInput
           style={styles.submitButton}
           disabled={!props.isValid && !props.isValidating}
+          status="danger"
           onPress={() => props.handleSubmit()}
           loading={loading}
           text="SIGN IN"

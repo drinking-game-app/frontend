@@ -25,13 +25,17 @@ import SignoutScreen from '../auth/sign-out.component';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Player } from '@rossmacd/gamesock-client';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 /**
  * Importing styles
  * @param theme path
  * @param App Module name
  */
 const styles = require('../../themes')('App');
+
 const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000';
+
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
   autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
@@ -49,6 +53,7 @@ interface IProps {
 const Home = (props: IProps & IActions) => {
   const [canRejoin, setCanRejoin] = useState<boolean>(false);
   const [rejoinInfo,setRejoinInfo]=useState<IRejoinGame>({id:'',lobbyName:''})
+  const [redirectToRules, setredirectToRules] = useState<boolean>(false);
 
   useEffect(() => {
     // Check if a previous game is in localstorage
@@ -85,6 +90,15 @@ const Home = (props: IProps & IActions) => {
     }).catch(err => {
       console.log('async storage error!', err)
     })
+
+    AsyncStorage.getItem('seenRules')
+    .then(bool => {
+      if(!bool || bool !== 'true') {
+        setredirectToRules(true)
+        AsyncStorage.setItem('seenRules', 'true')
+        props.navigation.navigate(AppRoute.RULES)
+      }
+    })
   }, []);
   /**
    * If the user is logged in, start a new game as a host
@@ -99,19 +113,22 @@ const Home = (props: IProps & IActions) => {
   };
 
   const settingsIcon = (props: IconProps) => <Icon {...props} name="settings-2-outline" />;
+  const questionIcon = (props: IconProps) => <Icon {...props} name="question-mark-outline" />;
 
   const renderSignoutAndCogContainer = () => {
     if (props.token && props.token !== '')
       return (
         <View style={styles.signOutAndCogContainer}>
           <SignoutScreen />
-          <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.DEVINFO)} appearance="ghost" accessoryRight={settingsIcon}></Button>
+          <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.DEVINFO)} appearance='ghost' accessoryRight={settingsIcon}></Button>
+          <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.RULES)} status="info" accessoryRight={questionIcon}></Button>
         </View>
       );
 
     return (
       <View style={styles.signOutAndCogContainer}>
-        <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.DEVINFO)} appearance="ghost" accessoryRight={settingsIcon}></Button>
+        <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.DEVINFO)} appearance='ghost' accessoryRight={settingsIcon}></Button>
+        <Button style={styles.settingsCog} onPress={() => props.navigation.navigate(AppRoute.RULES)} status="info" accessoryRight={questionIcon}></Button>
       </View>
     );
   };
