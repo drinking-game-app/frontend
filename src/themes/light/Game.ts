@@ -42,9 +42,12 @@ export default StyleSheet.create({
   playerAvatar: {
     paddingVertical: 8,
     borderRadius: 1000,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 50,
     height: 50,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#fff'
   },
 
   /**

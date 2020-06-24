@@ -4,6 +4,7 @@ import { View } from 'react-native'
 import { IPlayer, IInitialState } from '../reducers/interfaces'
 import { connect } from 'react-redux'
 import { Question, RoundOptions } from '@rossmacd/gamesock-client'
+import { ScrollView } from 'react-native-gesture-handler'
 
 /**
  * Importing styles
@@ -52,51 +53,53 @@ const QuestionList = (props: IProps) => {
 
   if (props.questions.length > 0) {
     return (
-      <Drawer
-        selectedIndex={selectedIndex}
-        onSelect={index => setSelectedIndex(index)}
-        style={styles.listContainer}
-      >
-        {props.questions.map((item, i) => {
-          const player = props.players.find(player => player.id === item.playerId)
-          const pointsToPlayers = item.answers?.length === 2 && (item.answers[0] === item.answers[1])
+      <ScrollView>
+        <Drawer
+          selectedIndex={selectedIndex}
+          onSelect={index => setSelectedIndex(index)}
+          style={styles.listContainer}
+        >
+          {props.questions.map((item, i) => {
+            const player = props.players.find(player => player.id === item.playerId)
+            const pointsToPlayers = item.answers?.length === 2 && (item.answers[0] === item.answers[1])
 
-          return (
-            <DrawerGroup
-              title={item.question}
-              style={[styles.listItem]}
-              key={i}
-              accessoryLeft={(props) => renderItemIcon(props, player)}
-            >
+            return (
+              <DrawerGroup
+                title={item.question}
+                style={[styles.listItem]}
+                key={i}
+                accessoryLeft={(props) => renderItemIcon(props, player)}
+              >
 
 
-              <DrawerItem onPress={() => { }} title={player ? `Asked by: ${player.name}` : 'Shuffled Question'} accessoryLeft={(props) => renderIcon(props, 'question-mark-outline')} />
-              {
-                props.roundOptions?.hotseatPlayers.map((hotseatPlayer, i) => {
-                  const answer = item.answers![i]
-                  const questionAnswer = `${answer ? `answered ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}` : 'Didn\'t answer'}`
+                <DrawerItem onPress={() => { }} title={player ? `Asked by: ${player.name}` : 'Shuffled Question'} accessoryLeft={(props) => renderIcon(props, 'question-mark-outline')} />
+                {
+                  props.roundOptions?.hotseatPlayers.map((hotseatPlayer, i) => {
+                    const answer = item.answers![i]
+                    const questionAnswer = `${answer ? `answered ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}` : 'Didn\'t answer'}`
 
-                  return (
-                    <DrawerItem onPress={() => { }} title={`${hotseatPlayer.name} ${questionAnswer}`} accessoryLeft={(props) => renderIcon(props, 'edit-2-outline')} />
-                  )
-                })
-              }
+                    return (
+                      <DrawerItem key={hotseatPlayer.name} onPress={() => { }} title={`${hotseatPlayer.name} ${questionAnswer}`} accessoryLeft={(props) => renderIcon(props, 'edit-2-outline')} />
+                    )
+                  })
+                }
 
-              <DrawerItem
-                onPress={() => { }}
-                title={pointsToPlayers
-                  ? 'Both players got points!'
-                  : `${player
-                    ? `${player.name} got points!`
-                    : 'Nobody got points!'}`}
-                accessoryLeft={(props) => renderIcon(props, 'star-outline')}
-              />
+                <DrawerItem
+                  onPress={() => { }}
+                  title={pointsToPlayers
+                    ? 'Both players got points!'
+                    : `${player
+                      ? `${player.name} got points!`
+                      : 'Nobody got points!'}`}
+                  accessoryLeft={(props) => renderIcon(props, 'star-outline')}
+                />
 
-            </DrawerGroup>
-          )
-        })}
+              </DrawerGroup>
+            )
+          })}
 
-      </Drawer>
+        </Drawer>
+      </ScrollView>
     )
   }
 

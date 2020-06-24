@@ -27,13 +27,10 @@ import {
   RoundOptions,
   HotseatOptions,
 } from "@rossmacd/gamesock-client";
-import Timer from "../../components/timer.component";
-import shuffleQuestion from "../../helpers/shuffle-question.helper";
 import LoadingComponent from "../../components/loading.component";
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import {useKeepAwake} from 'expo-keep-awake';
 import { ScrollView } from "react-native-gesture-handler";
-import { View } from "react-native";
 
 
 /**
