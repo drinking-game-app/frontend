@@ -135,7 +135,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           loading={props.isLoading}
           text={
             readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST...' : `GET READY FOR ROUND ${props.numOfRounds}`}` : 'WAITING FOR HOST...'
+              ? props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST...' : `HOLD UP! WAIT A MINUTE! (${props.numOfRounds} ROUNDS)`}` : 'WAITING FOR HOST...'
               : `WAITING FOR ${4 - props.players.length} PLAYER${
                 4 - props.players.length > 1 ? "S" : ""
                 }`

@@ -10,7 +10,7 @@ export default StyleSheet.create({
   container: {
     alignSelf: "flex-end",
     position: "absolute",
-    bottom: "14%",
+    bottom: "20%",
   },
 
   notification: {
