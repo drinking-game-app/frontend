@@ -111,7 +111,8 @@ export default StyleSheet.create({
     justifyContent: "flex-start",
     position: "relative",
 
-    fontSize: 24,
+    // fontSize: 24,
+    fontSize: 18,
     fontWeight: "300",
     textAlign: "left",
     marginVertical: 30,
@@ -130,7 +131,8 @@ export default StyleSheet.create({
     justifyContent: "flex-end",
     position: "relative",
 
-    fontSize: 24,
+    // fontSize: 24,
+    fontSize: 18,
     fontWeight: "300",
     textAlign: "right",
     marginVertical: 30,
