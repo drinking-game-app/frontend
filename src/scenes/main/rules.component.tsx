@@ -17,17 +17,17 @@ const icon = Constants.manifest.icon
 
 const contentArr = [
     {
-        imgSrc: '../../assets/img/icon.png',
+        imgSrc: require('./../../assets/img/icon.png'),
         title: 'This is a title',
         description: 'This is a description on how some shit is gonna work I dont know it just needs to fill up some space john doesnt actually have a niece its all a myth to get your money'
     },
     {
-        imgSrc: '../../assets/img/icon.png',
+        imgSrc: require('./../../assets/img/icon.png'),
         title: 'This is a title',
         description: 'This is a description on how some shit is gonna work I dont know it just needs to fill up some space john doesnt actually have a niece its all a myth to get your money'
     },
     {
-        imgSrc: '../../assets/img/icon.png',
+        imgSrc: require('./../../assets/img/icon.png'),
         title: 'This is a title',
         description: 'This is a description on how some shit is gonna work I dont know it just needs to fill up some space john doesnt actually have a niece its all a myth to get your money'
     }
@@ -37,9 +37,9 @@ const Rules = (props: RulesScreenProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const navigate = (i: number) => {
-        if(i >= contentArr.length - 1) return props.navigation.navigate(AppRoute.HOME)
+        if (i >= contentArr.length - 1) return props.navigation.navigate(AppRoute.HOME)
 
-        setSelectedIndex(selectedIndex+1)
+        setSelectedIndex(selectedIndex + 1)
     }
 
     return (
@@ -51,18 +51,19 @@ const Rules = (props: RulesScreenProps) => {
             {contentArr.map((page, i) => {
                 return (
                     <Layout
-                    key={i}
-                    style={styles.tab}
-                    level='2'>
+                        key={i}
+                        style={styles.tab}
+                        level='2'
+                    >
                         <Text category='h1'>{page.title}</Text>
-                        <Image style={styles.rulesImage} source={require('../../assets/img/icon.png')} />
+                        <Image style={styles.rulesImage} source={page.imgSrc} />
                         <Text>{page.description}</Text>
                         <Button status="success" style={styles.rulesBtn} onPress={() => navigate(selectedIndex)}>{selectedIndex >= contentArr.length - 1 ? 'YEEHAW TIME' : 'NEXT'}</Button>
                     </Layout>
                 )
             })}
-      
-        </ViewPager>   
+
+        </ViewPager>
     )
 }
 
