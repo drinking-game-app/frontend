@@ -184,8 +184,7 @@ const GameScreen = (props: IProps & IActions) => {
                     ${
                       answer === i
                         ? "themselves"
-                        : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0]
-                            .name
+                        : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name
                     }`}
                     </Text>
                   );

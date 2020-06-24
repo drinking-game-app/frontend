@@ -97,14 +97,6 @@ const QuesionInput = (props: IProps & IActions) => {
       );
     return (
       <View style={styles.questionInputContainer}>
-        {/* // <KeyboardAwareScrollView
-            //     style={{ backgroundColor: '#4c69a5' }}
-            //     resetScrollToCoords={{ x: 0, y: 0 }}
-            //     contentContainerStyle={styles.questionInputContainer}
-            //     // scrollEnabled={false}
-            // > */}
-        
-
         <Button
           accessoryLeft={renderShuffleIcon}
           onPress={() => {
@@ -134,9 +126,6 @@ const QuesionInput = (props: IProps & IActions) => {
           status="success"
           style={styles.questionInputButton}
         />
-
-        {/* // </KeyboardAvoidingView> */}
-        {/* </KeyboardAwareScrollView> */}
       </View>
     );
   };
