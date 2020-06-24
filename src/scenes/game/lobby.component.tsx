@@ -120,7 +120,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           loading={props.isLoading}
           text={
             readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `GET READY FOR ROUND ${props.numOfRounds}`}` : 'PLAY TIME!'
+              ? props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `BUT WAIT, THERE'S MORE! (${props.numOfRounds} ROUNDS)`}` : 'PLAY TIME!'
               : `WAITING FOR ${4 - props.players.length} PLAYER${
                     4 - props.players.length > 1 ? "S" : ""
                 }`
