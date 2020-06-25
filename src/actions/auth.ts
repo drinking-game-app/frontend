@@ -131,7 +131,7 @@ export const login  = (body: ILogin) => {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
 
-            AsyncStorage.setItem('token', data.data.token)
+            AsyncStorage.setItem('token', data.data.token).catch(e=>console.log(e))
             dispatch({ type: 'USER_LOGGED_IN', payload: data.data })
             // dispatch(hostGame({username: data.data.user.name, token: data.data.token}))
             hostGame({username: data.data.user.name, token: data.data.token},dispatch)
