@@ -98,16 +98,17 @@ const Home = (props: IProps & IActions) => {
       if(!bool || bool !== 'true') {
         setredirectToRules(true)
         AsyncStorage.setItem('seenRules', 'true')
+        .catch(err => console.log('error setting seen rules', err))
         props.navigation.navigate(AppRoute.RULES)
       }
-    })
+    }).catch(err => console.log('error checking rules', err))
 
     AsyncStorage.getItem('token')
       .then(token => {
         if(token && token !== "") {
           props.getUser(token)
         }
-      })
+      }).catch(err => console.log('error getting token', err))
   }, []);
   /**
    * If the user is logged in, start a new game as a host

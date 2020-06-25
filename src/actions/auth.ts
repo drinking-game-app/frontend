@@ -31,8 +31,6 @@ const authPrefix = "/api/auth"
 console.log('server url!!' , Constants.manifest.extra.SERVER_URL)
 const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000'
 
-const lobbyName = "HK4J"
-
 /**
  * Determinds whether to display the login
  * or register view
