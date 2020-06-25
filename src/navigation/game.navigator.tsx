@@ -48,7 +48,7 @@ interface IGameProps {
 }
 
 export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
-  if(!props.init) props.initGameSock()
+  // if(!props.init) props.initGameSock()
   return (
   <Stack.Navigator headerMode='none' screenOptions={{animationEnabled: true}}>
     {
