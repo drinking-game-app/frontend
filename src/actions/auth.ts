@@ -169,7 +169,7 @@ export const loginWithThirdParty  = (token: IThirdPartyToken) => {
                 return dispatch({ type: 'REQUEST_ERROR', payload: data })
             }
 
-            AsyncStorage.setItem('token', data.data.token)
+            AsyncStorage.setItem('token', data.data.token).catch(e=>console.log(e))
 
             if(data.data.user.accessToken) dispatch({ type: 'USER_LOGGED_IN_GOOGLE_MOBILE', payload: data.data })
             else dispatch({ type: 'USER_LOGGED_IN_GOOGLE', payload: data.data })
@@ -208,7 +208,7 @@ export const logout  = (credentials: IThirdPartyToken) => {
             },
         })
         .then(() => {
-            AsyncStorage.removeItem('token')
+            AsyncStorage.removeItem('token').catch(e=>console.log(e))
             dispatch({ type: 'USER_LOGGED_OUT' })
         })
         .catch((err) => {
