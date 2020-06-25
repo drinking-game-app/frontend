@@ -144,9 +144,10 @@ export const initGameSock = () => {
     /**
      * @todo add error handling here and hook up to state
      */
-    // GameSockClient.onError((error) => {
-    //   setError(error)
-    // })
+    GameSockClient.onError((error) => {
+      console.log('error check my structure!!', error)
+      // setMessages(message.msg, dispatch);
+    })
 
     dispatch({
       type: 'INITIALISE_GAMESOCK',
