@@ -167,29 +167,29 @@ const GameScreen = (props: IProps & IActions) => {
         );
 
       case "Display Answer":
-        return (
-          <React.Fragment>
-            <Text style={styles.questInAnsPhase}>{props.questions[props.currentQuestionId].question}</Text>
+        // return (
+        //   <React.Fragment>
+        //     <Text style={styles.questInAnsPhase}>{props.questions[props.currentQuestionId].question}</Text>
 
-            {props.questions[props.currentQuestionId].answers!.map(
-              (answer: number, i: number) => {
-                if (answer !== null)
-                  return (
-                    <Text key={i} style={[i === 0 ? styles.answerLeft : styles.answerRight]}>
-                      {`${props.roundOptions?.hotseatPlayers[i].name} SELECTED ${answer === i ? "THEMSELVES!" : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}
-                    </Text>
-                  );
+        //     {props.questions[props.currentQuestionId].answers!.map(
+        //       (answer: number, i: number) => {
+        //         if (answer !== null)
+        //           return (
+        //             <Text key={i} style={[i === 0 ? styles.answerLeft : styles.answerRight]}>
+        //               {`${props.roundOptions?.hotseatPlayers[i].name} SELECTED ${answer === i ? "THEMSELVES!" : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}
+        //             </Text>
+        //           );
 
-                return (
-                  // Text for when chosen players didn't choose a player:
-                  <Text key={i} style={[styles.pleadTheFifth, i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight]}>
-                    {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
-                  </Text>
-                );
-              }
-            )}
-          </React.Fragment>
-        );
+        //         return (
+        //           // Text for when chosen players didn't choose a player:
+        //           <Text key={i} style={[styles.pleadTheFifth, i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight]}>
+        //             {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
+        //           </Text>
+        //         );
+        //       }
+        //     )}
+        //   </React.Fragment>
+        // );
       case "Hotseat":
         return (
           <PickedPlayers
@@ -199,6 +199,7 @@ const GameScreen = (props: IProps & IActions) => {
             questionIndex={props.currentQuestionId}
             answerQuestion={answerQuestion}
             canAnswer={props.canAnswer}
+            displayAnswer={props.phase === "Display Answer"}
           />
         );
 

@@ -17,13 +17,13 @@ export interface HomeScreenProps {
 }
 
 export interface DevInfoScreenProps {
-  navigation: StackNavigationProp<MainNavigatorParams, AppRoute.HOME>;
-  route: RouteProp<MainNavigatorParams, AppRoute.HOME>;
+  navigation: StackNavigationProp<MainNavigatorParams, AppRoute.DEVINFO>;
+  route: RouteProp<MainNavigatorParams, AppRoute.DEVINFO>;
 }
 
 export interface RulesScreenProps {
-  navigation: StackNavigationProp<MainNavigatorParams, AppRoute.HOME>;
-  route: RouteProp<MainNavigatorParams, AppRoute.HOME>;
+  navigation: StackNavigationProp<MainNavigatorParams, AppRoute.RULES>;
+  route: RouteProp<MainNavigatorParams, AppRoute.RULES>;
 }
 
 const Stack = createStackNavigator<MainNavigatorParams>();

@@ -75,7 +75,6 @@ const SignoutScreen = (props: IProps & IActions) => {
           loading={isLoading}
           icon="log-out-outline"
           text=""
-          size="tiny"
         />
       )}
     </SafeAreaView>

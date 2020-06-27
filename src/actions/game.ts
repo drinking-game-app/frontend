@@ -37,7 +37,6 @@ export interface IRejoinGame {
   id: string;
 }
 
-
 /**
  * Interface for joining a game
  */
@@ -60,20 +59,18 @@ export const setGameLoading = () => {
  * Messages sent from the gamesock library
  */
 export const setMessages = (message: string, dispatch: Dispatch) => {
-  console.log("Socket message: ", message);
+  console.log('Socket message: ', message);
   dispatch({
-    type: "SET_MESSAGES",
+    type: 'SET_MESSAGES',
     payload: message,
   });
 
-
   setTimeout(() => {
     dispatch({
-      type: "HIDE_MESSAGE",
-      payload: message
-    })
-}, 8000);
-
+      type: 'HIDE_MESSAGE',
+      payload: message,
+    });
+  }, 8000);
 };
 
 export const initGameSock = () => {
@@ -144,9 +141,10 @@ export const initGameSock = () => {
     /**
      * @todo add error handling here and hook up to state
      */
-    // GameSockClient.onError((error) => {
-    //   setError(error)
-    // })
+    GameSockClient.onError((error) => {
+      console.log('error check my structure!!', error)
+      // setMessages(message.msg, dispatch);
+    })
 
     dispatch({
       type: 'INITIALISE_GAMESOCK',
@@ -205,20 +203,16 @@ export const hostGame = (body: IHostGame, dispatch: any) => {
  */
 export const joinGame = (body: IJoinGame) => {
   return (dispatch: Dispatch) => {
-   return GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
+    return GameSockClient.joinLobby(body.lobbyName, body.username).then((players) => {
       let user = Array.isArray(players) ? players[players.length - 1] : players;
-      try {
-        AsyncStorage.setItem(
-          'myId',
-          JSON.stringify({
-            id: user.id,
-            expiry: Date.now() + 30 * 60 * 1000,
-            lobby: body.lobbyName,
-          })
-        );
-      } catch {
-        (e: any) => console.log(e);
-      }
+      AsyncStorage.setItem(
+        'myId',
+        JSON.stringify({
+          id: user.id,
+          expiry: Date.now() + 30 * 60 * 1000,
+          lobby: body.lobbyName,
+        })
+      ).catch((e: any) => console.log(e));
 
       dispatch({
         type: 'JOIN_GAME',
@@ -230,35 +224,39 @@ export const joinGame = (body: IJoinGame) => {
 
 export const autoRejoinLobby = (body: IRejoinGame) => {
   return (dispatch: Dispatch) => {
-    return AsyncStorage.getItem('myId').then((store) => {
-      if (store) {
-        const parsedStore = JSON.parse(store);
-          console.log('Attempting to claim with token' + parsedStore.toString(),parsedStore.expiry > Date.now());
-          return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id).then(data=>{
-            const players = data.players
-            console.log('CLAIMED!!',players)
-            const user = Array.isArray(players) ? players.find((player) => player.id === data.id) : players;
-            if (!user) {
-              throw "Could not find user!";
-            }
-            AsyncStorage.setItem(
-              'myId',
-              JSON.stringify({
-                id: user.id,
-                expiry: Date.now() + 30 * 60 * 1000,
-                lobby: body.lobbyName,
-              })
-            ).catch(e=>console.error(e));
-            console.log('TIME to dispatch')
-            dispatch({
-              type: 'JOIN_GAME',
-              payload: { lobbyName: body.lobbyName, user: { ...user},players:players},
-            });
-          }).catch(e=>console.error(e))
-      }
-    }).catch(e=>console.error(e))
+    return AsyncStorage.getItem('myId')
+      .then((store) => {
+        if (store) {
+          const parsedStore = JSON.parse(store);
+          console.log('Attempting to claim with token' + parsedStore.toString(), parsedStore.expiry > Date.now());
+          return GameSockClient.claimSocket(parsedStore.lobby, parsedStore.id)
+            .then((data) => {
+              const players = data.players;
+              console.log('CLAIMED!!', players);
+              const user = Array.isArray(players) ? players.find((player) => player.id === data.id) : players;
+              if (!user) {
+                throw 'Could not find user!';
+              }
+              AsyncStorage.setItem(
+                'myId',
+                JSON.stringify({
+                  id: user.id,
+                  expiry: Date.now() + 30 * 60 * 1000,
+                  lobby: body.lobbyName,
+                })
+              ).catch((e) => console.error(e));
+              console.log('TIME to dispatch');
+              dispatch({
+                type: 'JOIN_GAME',
+                payload: { lobbyName: body.lobbyName, user: { ...user }, players: players },
+              });
+            })
+            .catch((e) => console.error(e));
+        }
+      })
+      .catch((e) => console.error(e));
 
-      // return GameSockClient.claimSocket()
+    // return GameSockClient.claimSocket()
   };
 };
 
