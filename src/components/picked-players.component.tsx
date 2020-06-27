@@ -12,11 +12,11 @@
  * Copyright 2020 - WebSpace
  */
 
-import { IPlayer } from "../reducers/interfaces";
 import { Layout, Card, Text, Button } from "@ui-kitten/components";
 import React from "react";
 import { View } from "react-native";
 import { Player, Question } from "@rossmacd/gamesock-client";
+import Answers from './answers.component'
 
 /**
  * Importing styles
@@ -43,6 +43,7 @@ interface IProps {
   questionIndex?: number;
   user: Player;
   canAnswer?: boolean;
+  displayAnswer?: boolean;
 }
 
 const PickedPlayers = (props: IProps & IActions) => {
@@ -62,6 +63,17 @@ const PickedPlayers = (props: IProps & IActions) => {
   };
 
   /**
+   * Render the question answer
+   */
+  const displayQuestionAnswer = () => {
+    if (props.displayAnswer) {
+      return <Answers />
+    }
+
+    return <></>
+  }
+
+  /**
    * Renders the text title for ingame picked players
    */
   const renderTextTitle = () => {
@@ -70,12 +82,12 @@ const PickedPlayers = (props: IProps & IActions) => {
         <React.Fragment>
           <Text style={styles.titleNotChosen}>
             {canSelectAnswer
-                ? props.canAnswer
+              ? props.canAnswer
                 ? ""
                 : "Waiting for next question..."
-                : "Waiting for players to answer..."}
+              : "Waiting for players to answer..."}
           </Text>
-          
+
           <Text style={styles.question}>{props.question.question}</Text>
         </React.Fragment>
       );
@@ -102,7 +114,9 @@ const PickedPlayers = (props: IProps & IActions) => {
                   disabled={!props.canAnswer}
                   style={[
                     styles.pickedPlayerCard,
-                    i === 0 ? styles.cardPink : styles.cardPurple,
+                    i === 0 
+                      ? (!props.displayAnswer ? styles.cardPink : styles.cardPinkAnswer) 
+                      : (!props.displayAnswer ? styles.cardPurple : styles.cardPurpleAnswer),
                   ]}
                   size="giant"
                   onPress={() => onSelectPlayer(i)}
@@ -128,7 +142,9 @@ const PickedPlayers = (props: IProps & IActions) => {
               <Card
                 style={[
                   styles.pickedPlayerCard,
-                  i === 0 ? styles.cardPink : styles.cardPurple,
+                  i === 0 
+                  ? (!props.displayAnswer ? styles.cardPink : styles.cardPinkAnswer) 
+                  : (!props.displayAnswer ? styles.cardPurple : styles.cardPurpleAnswer),
                 ]}
                 onPress={() => onSelectPlayer(i)}
               >
@@ -147,6 +163,7 @@ const PickedPlayers = (props: IProps & IActions) => {
             </View>
           );
         })}
+        {displayQuestionAnswer()}
       </View>
     </Layout>
   );

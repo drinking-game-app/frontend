@@ -109,10 +109,20 @@ export default StyleSheet.create({
   //   marginVertical: 30,
   // },
 
+  // '@keyframes slideInLeft': {
+  //   from: {width: '0%'},
+  //   to: {width: '100%'}
+  // },
+
   answerLeft: {
+    transition: '.2s ease',
+
+    position: 'absolute',
+    left: 0,
+    top: '20%',
+
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    position: "relative",
 
     // fontSize: 24,
     fontSize: 18,
@@ -130,9 +140,14 @@ export default StyleSheet.create({
   },
 
   answerRight: {
+    transition: '.2s ease',
+
+    position: 'absolute',
+    right: 0,
+    bottom: '20%',
+    
     alignItems: "flex-end",
     justifyContent: "flex-end",
-    position: "relative",
 
     // fontSize: 24,
     fontSize: 18,
@@ -159,6 +174,12 @@ export default StyleSheet.create({
   },
 
   pleadAlignLeft: {
+    transition: '.2s ease',
+
+    position: 'absolute',
+    left: 0,
+    top: '20%',
+
     alignSelf: "flex-start",
     // position: "absolute",
     // bottom: "10%",
@@ -171,6 +192,12 @@ export default StyleSheet.create({
   },
 
   pleadAlignRight: {
+    transition: '.2s ease',
+    
+    position: 'absolute',
+    right: 0,
+    bottom: '20%',
+
     alignSelf: "flex-end",
     // position: "absolute",
     // bottom: "10%",
@@ -203,6 +230,7 @@ export default StyleSheet.create({
    * ------IN-GAME (CHOSEN)------
    */
   pickedPlayerContainer: {
+    position: 'relative',
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -217,10 +245,19 @@ export default StyleSheet.create({
     height: 250,
     display: "flex",
     justifyContent: "center",
+    transition: '.4s ease'
   },
 
   cardPink: {
     backgroundColor: "#AD0D4B",
+  },
+
+  cardPinkAnswer: {
+    backgroundColor: '#ad0d4b80'
+  },
+
+  cardPurpleAnswer: {
+    backgroundColor: '#9f37de80'
   },
 
   cardPurple: {
