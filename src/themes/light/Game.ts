@@ -115,7 +115,7 @@ export default StyleSheet.create({
   // },
 
   answerLeft: {
-    transition: '.2s ease',
+    // transition: '.2s ease',
 
     position: 'absolute',
     left: 0,
@@ -140,7 +140,7 @@ export default StyleSheet.create({
   },
 
   answerRight: {
-    transition: '.2s ease',
+    // transition: '.2s ease',
 
     position: 'absolute',
     right: 0,
@@ -174,11 +174,11 @@ export default StyleSheet.create({
   },
 
   pleadAlignLeft: {
-    transition: '.2s ease',
+    // transition: '.2s ease',
 
     position: 'absolute',
     left: 0,
-    top: '20%',
+    top: '0%',
 
     alignSelf: "flex-start",
     // position: "absolute",
@@ -192,11 +192,11 @@ export default StyleSheet.create({
   },
 
   pleadAlignRight: {
-    transition: '.2s ease',
+    // transition: '.2s ease',
     
     position: 'absolute',
     right: 0,
-    bottom: '20%',
+    bottom: '10%',
 
     alignSelf: "flex-end",
     // position: "absolute",
@@ -245,7 +245,7 @@ export default StyleSheet.create({
     height: 250,
     display: "flex",
     justifyContent: "center",
-    transition: '.4s ease'
+    // transition: '.4s ease'
   },
 
   cardPink: {
