@@ -55,8 +55,7 @@ interface IProps {
 const Home = (props: IProps & IActions) => {
   const [canRejoin, setCanRejoin] = useState<boolean>(false);
   const [rejoinInfo,setRejoinInfo]=useState<IRejoinGame>({id:'',lobbyName:''})
-  const [redirectToRules, setredirectToRules] = useState<boolean>(false);
-
+  
   useEffect(() => {
     // Check if a previous game is in localstorage
     AsyncStorage.getItem('myId')
@@ -96,7 +95,6 @@ const Home = (props: IProps & IActions) => {
     AsyncStorage.getItem('seenRules')
     .then(bool => {
       if(!bool || bool !== 'true') {
-        setredirectToRules(true)
         AsyncStorage.setItem('seenRules', 'true')
         .catch(err => console.log('error setting seen rules', err))
         props.navigation.navigate(AppRoute.RULES)
@@ -205,7 +203,6 @@ function mapDispatchToProps(dispatch: any): any {
     hostGameAction: bindActionCreators(hostGameAction, dispatch),
     autoRejoinLobby: bindActionCreators(autoRejoinLobby, dispatch),
     getUser: bindActionCreators(getUser, dispatch)
-
   }
 }
 
