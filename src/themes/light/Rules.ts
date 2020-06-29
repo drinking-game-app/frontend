@@ -5,16 +5,16 @@ import {StyleSheet} from 'react-native';
  */
 export default StyleSheet.create({
   tab: {
-    // height: 192,
     flex: 1,
     alignItems: 'center',
+    textAlign: 'center',
     justifyContent: 'space-evenly',
     backgroundColor: '#D14688',
     padding: 40
   },
   rulesImage: {
-    width: 200,
-    height: 200
+    width: '80%',
+    height: '20%'
   },
   rulesContainer: {
     flex: 1,
@@ -22,6 +22,13 @@ export default StyleSheet.create({
     justifyContent: "center",
     textAlign: 'center',
     backgroundColor: '#D14688'
+  },
+  ruleHeading: {
+    textAlign: 'center'
+  },
+  ruleDescription: {
+    fontSize: 20,
+    textAlign: 'center'
   },
   rulesBtn: {
     width: '100%'

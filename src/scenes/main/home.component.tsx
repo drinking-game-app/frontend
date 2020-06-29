@@ -40,7 +40,7 @@ const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:300
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
   autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
-  getUser: (token: string) => void;
+  // getUser: (token: string) => void;
 }
 
 interface IProps {
@@ -56,58 +56,58 @@ const Home = (props: IProps & IActions) => {
   const [canRejoin, setCanRejoin] = useState<boolean>(false);
   const [rejoinInfo,setRejoinInfo]=useState<IRejoinGame>({id:'',lobbyName:''})
   
-  useEffect(() => {
-    // Check if a previous game is in localstorage
-    AsyncStorage.getItem('myId')
-    .then(unparsedID=>{
-      if (unparsedID) {
-        // Parse the object
-        const parsedOldID = JSON.parse(unparsedID)
-        if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
-          fetch(`${baseUrl}/api/gameActive`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              id: parsedOldID.id,
-              lobbyName: parsedOldID.lobby,
-            }),
-          }).then((res) => {
-            console.log('FETCH:RES', res);
-            if (res.ok) {
-              res.json().then((data) => {
-                if (data && data.active) {
-                  console.log('Shes sound let her go', data.active);
-                  setRejoinInfo({id:parsedOldID,lobbyName:parsedOldID.lobby})
-                  setCanRejoin(true);
-                }
-              });
-            }
-          });
-        }
-      }
-    }).catch(err => {
-      console.log('async storage error!', err)
-    })
+  // useEffect(() => {
+  //   // Check if a previous game is in localstorage
+  //   AsyncStorage.getItem('myId')
+  //   .then(unparsedID=>{
+  //     if (unparsedID) {
+  //       // Parse the object
+  //       const parsedOldID = JSON.parse(unparsedID)
+  //       if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
+  //         fetch(`${baseUrl}/api/gameActive`, {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             Accept: 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //             id: parsedOldID.id,
+  //             lobbyName: parsedOldID.lobby,
+  //           }),
+  //         }).then((res) => {
+  //           console.log('FETCH:RES', res);
+  //           if (res.ok) {
+  //             res.json().then((data) => {
+  //               if (data && data.active) {
+  //                 console.log('Shes sound let her go', data.active);
+  //                 setRejoinInfo({id:parsedOldID,lobbyName:parsedOldID.lobby})
+  //                 setCanRejoin(true);
+  //               }
+  //             });
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }).catch(err => {
+  //     console.log('async storage error!', err)
+  //   })
 
-    AsyncStorage.getItem('seenRules')
-    .then(bool => {
-      if(!bool || bool !== 'true') {
-        AsyncStorage.setItem('seenRules', 'true')
-        .catch(err => console.log('error setting seen rules', err))
-        props.navigation.navigate(AppRoute.RULES)
-      }
-    }).catch(err => console.log('error checking rules', err))
+  //   AsyncStorage.getItem('seenRules')
+  //   .then(bool => {
+  //     if(!bool || bool !== 'true') {
+  //       AsyncStorage.setItem('seenRules', 'true')
+  //       .catch(err => console.log('error setting seen rules', err))
+  //       props.navigation.navigate(AppRoute.RULES)
+  //     }
+  //   }).catch(err => console.log('error checking rules', err))
 
-    AsyncStorage.getItem('token')
-      .then(token => {
-        if(token && token !== "") {
-          props.getUser(token)
-        }
-      }).catch(err => console.log('error getting token', err))
-  }, []);
+  //   AsyncStorage.getItem('token')
+  //     .then(token => {
+  //       if(token && token !== "") {
+  //         props.getUser(token)
+  //       }
+  //     }).catch(err => console.log('error getting token', err))
+  // }, []);
   /**
    * If the user is logged in, start a new game as a host
    *
@@ -141,27 +141,27 @@ const Home = (props: IProps & IActions) => {
     );
   };
 
-  const renderRejoin = () => {
-    if (canRejoin) {
-      console.log(canRejoin)
-      //Show the rejoin button
-      return (
-        <Button style={styles.formButtonAlternate} onPress={() => {
-            props.autoRejoinLobby(rejoinInfo).then(()=>{
-            //TODO make this conditional
-            props.navigation.navigate(AppRoute.GAME)
-          }).catch(e=>{
-            console.log(e)
-            setCanRejoin(false)
-          })
-        }}>
-          {'REJOIN GAME '+rejoinInfo.lobbyName}
-        </Button>
-      );
-    }
+  // const renderRejoin = () => {
+  //   if (canRejoin) {
+  //     console.log(canRejoin)
+  //     //Show the rejoin button
+  //     return (
+  //       <Button style={styles.formButtonAlternate} onPress={() => {
+  //           props.autoRejoinLobby(rejoinInfo).then(()=>{
+  //           //TODO make this conditional
+  //           props.navigation.navigate(AppRoute.GAME)
+  //         }).catch(e=>{
+  //           console.log(e)
+  //           setCanRejoin(false)
+  //         })
+  //       }}>
+  //         {'REJOIN GAME '+rejoinInfo.lobbyName}
+  //       </Button>
+  //     );
+  //   }
 
-    return <></>
-  };
+  //   return <></>
+  // };
 
 
 
@@ -175,7 +175,7 @@ const Home = (props: IProps & IActions) => {
       <Text style={styles.title}>TO</Text>
 
       <View>
-        {renderRejoin()}
+        {/* {renderRejoin()} */}
         <Button style={styles.formButton} onPress={() => hostOrLogin()}>
           HOST
         </Button>
@@ -195,15 +195,15 @@ const mapStateToProps = (state: IInitialState): IProps => {
   return { token, name, isHost };
 };
 
-function mapDispatchToProps(dispatch: any): any {
-  const {hostGameAction, autoRejoinLobby} = actions.gameActions
-  const {getUser} = actions.authActions
+// function mapDispatchToProps(dispatch: any): any {
+//   const {hostGameAction, autoRejoinLobby} = actions.gameActions
+//   // const {getUser} = actions.authActions
 
-  return {
-    hostGameAction: bindActionCreators(hostGameAction, dispatch),
-    autoRejoinLobby: bindActionCreators(autoRejoinLobby, dispatch),
-    getUser: bindActionCreators(getUser, dispatch)
-  }
-}
+//   return {
+//     hostGameAction: bindActionCreators(hostGameAction, dispatch),
+//     autoRejoinLobby: bindActionCreators(autoRejoinLobby, dispatch),
+//     getUser: bindActionCreators(getUser, dispatch)
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, actions.gameActions)(Home);
