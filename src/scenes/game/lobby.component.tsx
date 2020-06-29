@@ -12,27 +12,26 @@
  * Copyright 2020 - WebSpace
  */
 
-import React from "react";
-import { IPlayer, IInitialState } from "../../reducers/interfaces";
-import { connect } from "react-redux";
-import { gameActions } from "../../actions";
-import { LobbyScreenProps } from "../../navigation/game.navigator";
-import { ButtonInput } from "../../components/form-button.component";
-import { AppRoute } from "../../navigation/app-routes";
-import * as GameSockClient from '@rossmacd/gamesock-client'
-import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
-import LoadingComponent from "../../components/loading.component";
-import NotificationBar from "../../components/notification-bar.component"
-import { Layout } from "@ui-kitten/components";
-import GameTabs from "./game-tabs.component";
-
+import React from 'react';
+import { IPlayer, IInitialState } from '../../reducers/interfaces';
+import { connect } from 'react-redux';
+import { gameActions } from '../../actions';
+import { LobbyScreenProps } from '../../navigation/game.navigator';
+import { ButtonInput } from '../../components/form-button.component';
+import { AppRoute } from '../../navigation/app-routes';
+import * as GameSockClient from '@rossmacd/gamesock-client';
+import { ModalHeaderLobby } from '../../components/modal-header-lobby.component';
+import LoadingComponent from '../../components/loading.component';
+import NotificationBar from '../../components/notification-bar.component';
+import { Layout } from '@ui-kitten/components';
+import GameTabs from './game-tabs.component';
 
 /**
  * Importing styles
  * @param theme path
  * @param Game Module name
  */
-const styles = require("../../themes")("Game");
+const styles = require('../../themes')('Game');
 
 interface IActions extends LobbyScreenProps {
   setGameLoading: () => void;
@@ -50,13 +49,12 @@ interface IProps {
   isHost: boolean;
   lobbyName: string;
   roundOver: boolean;
-  roundOptions: GameSockClient.RoundOptions | undefined; 
+  roundOptions: GameSockClient.RoundOptions | undefined;
   numOfRounds: number;
-  timer: number
+  timer: number;
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
-
   const endGame = () => {
     props.setGameLoading();
     props.leaveGame();
@@ -65,81 +63,59 @@ const LobbyScreen = (props: IProps & IActions) => {
 
   const startGame = () => {
     props.setGameLoading();
-    GameSockClient.startGame(props.lobbyName)
+    if (!gameIsFinished && props.roundOver) {
+      GameSockClient.continueWithGame(props.lobbyName);
+      console.log("Continuing")
+    } else {
+      console.log("Strarting")
+      GameSockClient.startGame(props.lobbyName);
+    }
     props.navigation.navigate(AppRoute.GAME);
   };
 
-  const gameIsFinished = props.roundOptions
-  ? (props.roundOptions.roundNum === props.numOfRounds) 
-  : false
+  const gameIsFinished = props.roundOptions ? props.roundOptions.roundNum === props.numOfRounds : false;
 
   const renderModalTitle = () => {
-    if(!gameIsFinished && props.roundOver) {
-      if(props.timer <= 0) return 'Starting next round...'
-      return 'Next round starts in'
+    if (!gameIsFinished && props.roundOver) {
+      if (props.timer <= 0) return 'Starting next round...';
+      return 'Next round starts in';
     }
-    if(gameIsFinished) return 'LEADERBOARD'
-    return 'Send this code to your friends:'
-  }
+    if (gameIsFinished) return 'LEADERBOARD';
+    return 'Send this code to your friends:';
+  };
 
   const renderModalCode = () => {
-    if(!gameIsFinished && props.roundOver) {
-      return props.timer <= 0 ? '0' : `${props.timer}` 
+    if (!gameIsFinished && props.roundOver) {
+      return props.timer <= 0 ? '0' : `${props.timer}`;
     }
-    return props.lobbyName
-  }
-
-  
-
-
+    return props.lobbyName;
+  };
 
   const readyToPlay = props.players.length > 3;
-  if(props.lobbyName === "") return <LoadingComponent text="Loading Lobby..." />
+  if (props.lobbyName === '') return <LoadingComponent text="Loading Lobby..." />;
   return (
     <Layout style={styles.container}>
-      <ModalHeaderLobby
-        text={renderModalTitle()}
-        lobbyCode={renderModalCode()}
-        buttonText={props.isHost ? "End Game" : "Leave Lobby"}
-        loading={false}
-        disabled={props.isLoading}
-        isLeaderboard={props.roundOver}
-        icon="close-outline"
-        status="info"
-        onPress={() => endGame()}
-      />
-      
+      <ModalHeaderLobby text={renderModalTitle()} lobbyCode={renderModalCode()} buttonText={props.isHost ? 'End Game' : 'Leave Lobby'} loading={false} disabled={props.isLoading} isLeaderboard={props.roundOver} icon="close-outline" status="info" onPress={() => endGame()} />
+
       <GameTabs showTabs={props.roundOver} />
 
       {props.isHost ? (
         <ButtonInput
           style={styles.submitButton}
-          status='success'
+          status="success"
           onPress={startGame}
-          disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
+          disabled={props.isLoading || !readyToPlay || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
-          text={
-            readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `BUT WAIT, THERE'S MORE! (${props.numOfRounds} ROUNDS)`}` : 'PLAY TIME!'
-              : `WAITING FOR ${4 - props.players.length} PLAYER${
-                    4 - props.players.length > 1 ? "S" : ""
-                }`
-          }
+          text={readyToPlay ? (props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `BUT WAIT, THERE'S MORE! (${props.numOfRounds} ROUNDS)`}\nSTART NEXT ROUND` : 'PLAY TIME!') : `WAITING FOR ${4 - props.players.length} PLAYER${4 - props.players.length > 1 ? 'S' : ''}`}
         />
       ) : (
         <ButtonInput
           style={styles.submitButtonJoined}
-          status='success'
-          size='small'
-          disabled={(props.isLoading || !readyToPlay) || (!props.roundOver ? gameIsFinished : false)}
+          status="success"
+          size="small"
+          disabled={props.isLoading || !readyToPlay || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
-          text={
-            readyToPlay
-              ? props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST...' : `HOLD UP! WAIT A MINUTE! (${props.numOfRounds} ROUNDS)`}` : 'WAITING FOR HOST...'
-              : `WAITING FOR ${4 - props.players.length} PLAYER${
-                4 - props.players.length > 1 ? "S" : ""
-                }`
-          }
+          text={readyToPlay ? (props.roundOver ? `${gameIsFinished ? 'WAITING FOR HOST...' : `HOLD UP! WAIT A MINUTE! (${props.numOfRounds} ROUNDS)`}` : 'WAITING FOR HOST...') : `WAITING FOR ${4 - props.players.length} PLAYER${4 - props.players.length > 1 ? 'S' : ''}`}
         />
       )}
 
@@ -161,12 +137,11 @@ const mapStateToProps = (state: IInitialState): IProps => {
     isLoading,
     isHost,
     lobbyName,
-    roundOver,roundOptions, numOfRounds,
-    timer
+    roundOver,
+    roundOptions,
+    numOfRounds,
+    timer,
   };
 };
 
-export default connect<IProps, IActions>(
-  mapStateToProps,
-  gameActions
-)(LobbyScreen);
+export default connect<IProps, IActions>(mapStateToProps, gameActions)(LobbyScreen);
