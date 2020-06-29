@@ -27,6 +27,7 @@ import {
   RoundOptions,
   HotseatOptions,
 } from "@rossmacd/gamesock-client";
+import NotificationBar from '../../components/notification-bar.component';
 import LoadingComponent from "../../components/loading.component";
 import { ModalHeaderLobby } from "../../components/modal-header-lobby.component";
 import {useKeepAwake} from 'expo-keep-awake';
@@ -222,6 +223,7 @@ const GameScreen = (props: IProps & IActions) => {
         onPress={() => endGame()}
       />
       {gamePhaseController()}
+      <NotificationBar />
     </Layout>
   );
 };
