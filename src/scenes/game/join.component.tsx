@@ -116,16 +116,16 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
               onPress={() => props.navigation.navigate(AppRoute.HOME)}
             />
 
-            {/* <View style={styles.formContainer}>
+            <View style={styles.formContainer}>
               <Formik
-                  initialValues={{lobbyName, username: name}}
+                  initialValues={{lobbyName, username: props.name}}
                   validationSchema={JoinLobbySchema}
                   onSubmit={(values)=>submit(values)}
               >
 
                   {renderForm}
               </Formik>
-            </View> */}
+            </View>
         </Layout>
     )
 }

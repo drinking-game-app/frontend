@@ -66,7 +66,6 @@ export const ModalHeader = ({
         {...ButtonProps}
         accessoryRight={buttonIcon}
         style={styles.button}
-        size="tiny"
       >{buttonText}</Button>
       
       <Text style={styles.title} category="h1">
