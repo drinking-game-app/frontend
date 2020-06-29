@@ -35,6 +35,8 @@ export default StyleSheet.create({
   },
 
   button: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     // alignItems: "flex-end",
     // marginLeft: 'auto'
     // maxWidth: '30%',
