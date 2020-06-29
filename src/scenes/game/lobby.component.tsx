@@ -92,7 +92,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   };
 
   const readyToPlay = props.players.length > 3;
-  return <Text style={{color: '#222'}}>lobby screen</Text>
+
   if (props.lobbyName === '') return <LoadingComponent text="Loading Lobby..." />;
   return (
     <Layout style={styles.container}>
