@@ -23,7 +23,7 @@ import * as GameSockClient from '@rossmacd/gamesock-client';
 import { ModalHeaderLobby } from '../../components/modal-header-lobby.component';
 import LoadingComponent from '../../components/loading.component';
 import NotificationBar from '../../components/notification-bar.component';
-import { Layout } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 import GameTabs from './game-tabs.component';
 
 /**
@@ -92,6 +92,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   };
 
   const readyToPlay = props.players.length > 3;
+  return <Text style={{color: '#222'}}>lobby screen</Text>
   if (props.lobbyName === '') return <LoadingComponent text="Loading Lobby..." />;
   return (
     <Layout style={styles.container}>

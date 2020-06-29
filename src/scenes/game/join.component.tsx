@@ -108,25 +108,26 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
   };
 
     return (
-        <Layout style={styles.formContainer}>
-          <ModalHeader
-              text=""
-              icon="close-outline"
-              status="primary"
-              onPress={() => props.navigation.navigate(AppRoute.HOME)}
-            />
+      <Text style={{color: '#222'}}>Join screen</Text>
+        // <Layout style={styles.formContainer}>
+        //   <ModalHeader
+        //       text=""
+        //       icon="close-outline"
+        //       status="primary"
+        //       onPress={() => props.navigation.navigate(AppRoute.HOME)}
+        //     />
 
-            <View style={styles.formContainer}>
-              <Formik
-                  initialValues={{lobbyName, username: name}}
-                  validationSchema={JoinLobbySchema}
-                  onSubmit={(values)=>submit(values)}
-              >
+        //     <View style={styles.formContainer}>
+        //       <Formik
+        //           initialValues={{lobbyName, username: name}}
+        //           validationSchema={JoinLobbySchema}
+        //           onSubmit={(values)=>submit(values)}
+        //       >
 
-                  {renderForm}
-              </Formik>
-            </View>
-        </Layout>
+        //           {renderForm}
+        //       </Formik>
+        //     </View>
+        // </Layout>
     )
 }
 
