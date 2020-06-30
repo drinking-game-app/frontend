@@ -42,16 +42,17 @@ interface IEditActions extends EditUserScreenProps {
   setGameLoading: () => void;
   formUpdate: ({ prop, value }: any) => void;
   updateSinglePlayer: (lobbyName: string, user: IPlayer) => void;
+  toggleRedirect: () => void;
 }
 interface IEditProps {
   user: IPlayer;
   error: string;
   isLoading: boolean;
   lobbyName: string;
+  shouldRedirect: boolean;
 }
 
 const EditUserScreen = (props: IEditActions & IEditProps) => {
-  const [waitForRediect, setWaitForRedirect] = React.useState<boolean>(false)
   const { error, isLoading } = props;
   /**
  * If the inputs pass validation,
@@ -70,7 +71,6 @@ const EditUserScreen = (props: IEditActions & IEditProps) => {
     console.log('sending update!', {lobbyName, user})
 
     props.updateSinglePlayer(lobbyName, user)
-    setWaitForRedirect(true)
   };
 
   const renderForm = (props: FormikProps<EditUserData>): React.ReactFragment => {
@@ -105,7 +105,7 @@ const EditUserScreen = (props: IEditActions & IEditProps) => {
     );
   };
 
-  if (!props.isLoading && waitForRediect) props.navigation.goBack()
+
   return (
     <Layout style={styles.formContainer}>
       <ModalHeader
@@ -117,7 +117,7 @@ const EditUserScreen = (props: IEditActions & IEditProps) => {
 
       <View style={styles.formContainer}>
         <Formik
-          initialValues={{ username: props.user.name }}
+          initialValues={{ username: props.user.name || "" }}
           validationSchema={EditUserSchema}
           onSubmit={(values) => submit(values)}
         >
@@ -130,13 +130,14 @@ const EditUserScreen = (props: IEditActions & IEditProps) => {
 }
 
 const mapStateToProps = (state: IInitialState): IEditProps => {
-  const { error, isLoading, user, lobbyName } = state.game;
+  const { error, isLoading, user, lobbyName, shouldRedirect } = state.game;
 
   return {
     error,
     isLoading,
     user,
-    lobbyName
+    lobbyName,
+    shouldRedirect
   };
 };
 

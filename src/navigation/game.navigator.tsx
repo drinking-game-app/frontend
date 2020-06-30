@@ -51,6 +51,7 @@ interface IGameProps {
   inLobby: boolean;
   inGame: boolean;
   init: boolean;
+  editUser: boolean;
 }
 
 export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
@@ -65,10 +66,10 @@ export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
       : (
         !props.inGame
         ? (
-          <React.Fragment>
-            <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
-            <Stack.Screen name={AppRoute.EDIT_USER} component={game.EditUserScreen}/>
-          </React.Fragment>)
+          !props.editUser
+            ? <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
+            : <Stack.Screen name={AppRoute.EDIT_USER} component={game.EditUserScreen}/>
+          )
         : <Stack.Screen name={AppRoute.INGAME} component={game.GameScreen}/>
       )
     }
@@ -77,9 +78,9 @@ export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
 }
 
 const mapStateToProps = (state: IInitialState): IGameProps => {
-  const { inLobby, inGame, init } = state.game;
+  const { inLobby, inGame, init, editUser } = state.game;
 
-  return { inLobby, inGame, init };
+  return { inLobby, inGame, init, editUser };
 };
 
 const GameNavigator = connect(mapStateToProps, actions)(Game);

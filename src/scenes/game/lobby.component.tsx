@@ -23,7 +23,7 @@ import * as GameSockClient from '@rossmacd/gamesock-client';
 import { ModalHeaderLobby } from '../../components/modal-header-lobby.component';
 import LoadingComponent from '../../components/loading.component';
 import NotificationBar from '../../components/notification-bar.component';
-import { Layout, Text } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import GameTabs from './game-tabs.component';
 
 /**
@@ -37,6 +37,7 @@ interface IActions extends LobbyScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
   startHostGame: (lobbyName: string) => void;
+  toggleRedirect: () => void;
 }
 
 /**
@@ -92,7 +93,7 @@ const LobbyScreen = (props: IProps & IActions) => {
   };
 
   const showEditPage = () => {
-    props.navigation.navigate(AppRoute.EDIT_USER)
+    props.toggleRedirect()
   }
 
   const readyToPlay = props.players.length > 3;

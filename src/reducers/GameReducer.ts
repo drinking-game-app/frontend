@@ -61,6 +61,7 @@ const initialState: IGameState = {
   init: false,
   canAnswer: false,
   displayAnswer: false,
+  editUser: false
 };
 
 /**
@@ -166,8 +167,21 @@ export default (state = initialState, action: IGameAction) => {
       return {
         ...state,
         players: [...players],
-        isLoading: false
+        isLoading: false,
+        editUser: false
       };
+
+    /**
+     * Prepare to redirect the player back to the lobby
+     * on update
+     */
+    case "SINGLE_PLAYER_EDIT":
+      const editUser = state.editUser
+      
+      return {
+        ...state,
+        editUser: !editUser
+      }
     /**
      * When a API request responds with
      * an error, store it in the state

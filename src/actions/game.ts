@@ -407,8 +407,17 @@ export const playerUpdate = (player: IPlayer, dispatch: Dispatch) => {
 export const updateSinglePlayer = (lobbyName: string, user: IPlayer) => {
   return (dispatch: Dispatch) => {
     GameSockClient.updateSelf(lobbyName, user)
+    dispatch({
+      type: 'SINGLE_PLAYER_REDIRECT'
+    })
   }
 }
+
+/**
+ * Toggle the redirect from the update username page
+ */
+export const toggleRedirect = () => (dispatch: Dispatch) => dispatch({type: 'SINGLE_PLAYER_EDIT'})
+
 
 /**
  * Leave a lobby / game

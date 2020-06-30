@@ -101,6 +101,7 @@ export interface IGameState {
   init: boolean;
   canAnswer: boolean;
   displayAnswer: boolean;
+  editUser: boolean;
 }
 
 /**

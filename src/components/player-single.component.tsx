@@ -1,9 +1,8 @@
 import React from 'react'
-import { ListItem, Icon, Text, IconProps, Popover, Button } from '@ui-kitten/components'
+import { ListItem, Icon, Text, IconProps, Button } from '@ui-kitten/components'
 import { View } from 'react-native'
 import { IPlayer, IInitialState } from '../reducers/interfaces'
 import { connect } from 'react-redux';
-import { AppRoute } from '../navigation/app-routes';
 
 /**
  * Importing styles
@@ -31,8 +30,6 @@ interface IReduxProps {
 }
 
 const PlayerSingle = ({ item, roundOver, user, editPage }: IProps & IReduxProps) => {
-  const [editModalOpen, setEditModalOpen] = React.useState<boolean>(false)
-
   const renderItemIcon = (props: IconProps, item: any) => {
     return (<View style={[styles.playerAvatar, { backgroundColor: item.colour }]} >
       {
@@ -47,26 +44,9 @@ const PlayerSingle = ({ item, roundOver, user, editPage }: IProps & IReduxProps)
     <Icon {...props} name={"edit-outline"} />
   )
 
-  const renderEditIconButton = () => (
-    <Button accessoryLeft={renderEditIcon} onPress={() => setEditModalOpen(true)}></Button>
-  )
-
-  const navigateToEditPage = () => {
-    setEditModalOpen(false)
-    editPage()
-  }
-
   const renderEditModal = () => {
     if (user.id === item.id) {
-      return <Popover
-        visible={editModalOpen}
-        anchor={renderEditIconButton}
-        fullWidth={true}
-        onBackdropPress={() => setEditModalOpen(false)}
-      >
-        <Button onPress={navigateToEditPage}>Edit name</Button>
-
-      </Popover>
+      return <Button accessoryLeft={renderEditIcon} onPress={() => editPage()}></Button>
     }
     return <></>
   }
