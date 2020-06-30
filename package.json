@@ -11,7 +11,7 @@
     "debug:windows": "start 'rndebugger://set-debugger-loc?host=localhost&port=19001'",
     "download-debug:windows": "start https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.8/rn-debugger-windows-x64.zip",
     "download-debug:mac": "open 'https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.8/rn-debugger-macos-x64.zip'",
-    "deploy": "gh-pages -d web-build",
+    "deploy": "gh-pages -d web-build && expo publish",
     "predeploy": "expo build:web && echo \"shcoop.wspace.ie\" > web-build/CNAME"
   },
   "homepage": "",
