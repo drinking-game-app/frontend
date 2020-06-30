@@ -15,7 +15,10 @@ const styles = require("../../../themes")("Form");
 /**
  * Get Google Cliennt ID from environment variables
  */
-import Constants from "expo-constants";
+// import Constants from "expo-constants";
+
+import manifest from './../../../variables.json'
+
 import { Button } from "@ui-kitten/components";
 
 /**
@@ -55,8 +58,8 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
      */
     signInWithGoogleMobile = async() => {
       const payload: ILoginWithGooglePayload = {
-        iosClientId: Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID,
-        iosStandaloneAppClientId: Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID
+        iosClientId: manifest.DEV_IOS_GOOGLE_CLIENT_ID,
+        iosStandaloneAppClientId: manifest.PROD_IOS_GOOGLE_CLIENT_ID
       }
 
       try {

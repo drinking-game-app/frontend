@@ -25,6 +25,10 @@ import { AppRoute } from '../navigation/app-routes';
 // import { NavigationActions } from 'react-navigation'
 import App from '../../App';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import manifest from './../variables.json'
+
+
 /**
  * Interface for hosting a game
  */
@@ -75,7 +79,7 @@ export const setMessages = (message: string, dispatch: Dispatch) => {
 
 export const initGameSock = () => {
   return (dispatch: Dispatch) => {
-    GameSockClient.setup(Constants.manifest.extra.SERVER_URL, `${Constants.manifest.extra.SERVER_URL}/timesync`);
+    GameSockClient.setup(manifest.SERVER_URL, `${manifest.SERVER_URL}/timesync`);
 
     GameSockClient.onStartGame((newGameOptions: GameSockClient.GameOptions) => {
       console.log('starting game', newGameOptions.rounds);

@@ -20,7 +20,9 @@ import { logout } from "../../../actions/auth";
 /**
  * Get Google Client ID from environment variables
  */
-import Constants from "expo-constants";
+
+import manifest from './../../../variables.json'
+
 
 import { IInitialState } from "../../../reducers/interfaces";
 import { ButtonInput } from "../../../components/form-button.component";
@@ -87,9 +89,9 @@ class LogoutWithGoogle extends Component<
 
     let payload: ILogoutWithGooglePayload = {
       accessToken,
-      iosClientId: Constants.manifest.extra.DEV_IOS_GOOGLE_CLIENT_ID,
+      iosClientId: manifest.DEV_IOS_GOOGLE_CLIENT_ID,
       iosStandaloneAppClientId:
-        Constants.manifest.extra.PROD_IOS_GOOGLE_CLIENT_ID,
+        manifest.PROD_IOS_GOOGLE_CLIENT_ID,
     };
 
     try {

@@ -29,7 +29,10 @@ const styles = require("../../../themes")("Form");
 /**
  * Get Google Client ID from environment variables
  */
-import Constants from "expo-constants";
+
+
+import manifest from './../../../variables.json'
+
 import { Button } from "@ui-kitten/components";
 
 /**
@@ -85,9 +88,9 @@ class LogoutWithGoogle extends Component<
 
     let payload: ILogoutWithGooglePayload = {
       accessToken,
-      androidClientId: Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID,
-      androidStandaloneAppClientId:
-        Constants.manifest.extra.PROD_ANDROID_GOOGLE_CLIENT_ID,
+      androidClientId: manifest.DEV_ANDROID_GOOGLE_CLIENT_ID,
+      // androidStandaloneAppClientId:
+      //   manifest.PROD_ANDROID_GOOGLE_CLIENT_ID,
     };
 
     try {

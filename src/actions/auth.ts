@@ -18,6 +18,8 @@ import { hostGame } from "./game";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Dispatch } from "redux";
 
+import manifest from './../variables.json'
+
 /**
  * Prefixes for api endpoints
  */
@@ -28,8 +30,10 @@ const authPrefix = "/api/auth"
  * Get the baseURL for the server either from the .env file
  * or use a static IP
  */
-console.log('server url!!' , Constants.manifest.extra.SERVER_URL)
-const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000'
+// console.log('server url!!' , Constants.manifest.extra.SERVER_URL)
+const baseUrl = manifest.SERVER_URL ||
+// Constants.manifest.extra.SERVER_URL || 
+'http://192.168.0.164:3000'
 
 /**
  * Determinds whether to display the login

@@ -21,9 +21,12 @@ import {logout} from "../../../actions/auth";
 /**
  * Get Google Client ID from environment variables
  */
-import Constants from "expo-constants";
+
+import manifest from './../../../variables.json'
+
+
 import { IInitialState } from "../../../reducers/interfaces";
-const WEB_GOOGLE_CLIENT_ID = Constants.manifest.extra.WEB_GOOGLE_CLIENT_ID
+const WEB_GOOGLE_CLIENT_ID = manifest.WEB_GOOGLE_CLIENT_ID
 
 /**
  * Interface actions 

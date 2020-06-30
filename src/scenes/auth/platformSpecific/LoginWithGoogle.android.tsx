@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import { loginWithThirdParty } from "../../../actions/auth";
 import * as Google from 'expo-google-app-auth';
 
+
+import manifest from './../../variables.json'
+
+
 /**
  * Importing styles
  * @param theme path
@@ -15,7 +19,7 @@ const styles = require("../../../themes")("Form");
 /**
  * Get Google Cliennt ID from environment variables
  */
-import Constants from "expo-constants";
+
 
 /**
  * Interface actions 
@@ -54,8 +58,8 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
      */
     signInWithGoogleMobile = async() => {
       const payload: ILoginWithGooglePayload = {
-        androidClientId: Constants.manifest.extra.DEV_ANDROID_GOOGLE_CLIENT_ID,
-        androidStandaloneAppClientId: Constants.manifest.extra.PROD_ANDROID_GOOGLE_CLIENT_ID
+        androidClientId: manifest.DEV_ANDROID_GOOGLE_CLIENT_ID,
+        androidStandaloneAppClientId: manifest.PROD_ANDROID_GOOGLE_CLIENT_ID
       }
           
       try {

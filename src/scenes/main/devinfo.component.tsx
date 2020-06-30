@@ -20,7 +20,6 @@ import {
   IconProps,
   Icon,
 } from "@ui-kitten/components";
-import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { ModalHeader } from "../../components/modal-header.component";
 import { AppRoute } from "../../navigation/app-routes";
@@ -33,10 +32,15 @@ import { DevInfoScreenProps } from "../../navigation/main.navigator";
  */
 const styles = require("../../themes")("Game");
 
+// const manifest = require('./../../../app.config.js')
+
+import manifest from './../../variables.json'
+import app from './../../../app.json'
+
 const data = [
-  { field: "Server URL", value: Constants.manifest.extra.SERVER_URL },
+  { field: "Server URL", value: manifest.SERVER_URL },
   { field: "Build Mode", value: __DEV__ ? "Development" : "Production" },
-  { field: "Version", value: Constants.manifest.version },
+  { field: "Version", value: app.expo.version },
   { field: "Platform", value: Platform.OS },
 ];
 

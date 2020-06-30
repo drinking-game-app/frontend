@@ -27,6 +27,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Player } from '@rossmacd/gamesock-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { bindActionCreators } from 'redux';
+// import { manifest } from 'expo-updates';
+// const manifest = require('./../../../../app.json')
+import manifest from './../../variables.json'
 
 /**
  * Importing styles
@@ -35,7 +38,11 @@ import { bindActionCreators } from 'redux';
  */
 const styles = require('../../themes')('App');
 
-const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000';
+console.log('manifest!!', manifest)
+
+const baseUrl = 
+//Constants.extra.SERVER_URL || 
+'http://192.168.0.164:3000';
 
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
