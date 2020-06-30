@@ -7,6 +7,7 @@ import { StyleSheet, View } from "react-native";
 
 interface IProps {
     showTabs: boolean;
+    editPage: () => void;
 }
 
 const useTabBarState = (initialState = 0) => {
@@ -35,7 +36,7 @@ const GameTabs = (props: IProps) => {
                 <View style={styles.tabContainer}>
                     {
                         topState.selectedIndex === 0
-                            ? <PlayerList />
+                            ? <PlayerList editPage={() => props.editPage()} />
                             : <QuestionList />
                     }
 
@@ -45,7 +46,7 @@ const GameTabs = (props: IProps) => {
     }
 
     return (
-        <PlayerList />
+        <PlayerList editPage={() => props.editPage()} />
     )
 }
 

@@ -160,12 +160,13 @@ export default (state = initialState, action: IGameAction) => {
       const playerI = state.players.findIndex(
         (player: IPlayer) => player.id === action.payload.id
       );
-
-      players[playerI] = action.payload as IPlayer;
+      
+      players[playerI] = {colour: players[playerI].colour, ...action.payload}
 
       return {
         ...state,
         players: [...players],
+        isLoading: false
       };
     /**
      * When a API request responds with

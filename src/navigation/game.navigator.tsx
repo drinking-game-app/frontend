@@ -13,6 +13,7 @@ type GameNavigatorParams = AppNavigatorParams & {
   [AppRoute.JOIN]: undefined;
   [AppRoute.LOBBY]: undefined;
   [AppRoute.INGAME]: undefined;
+  [AppRoute.EDIT_USER]: undefined;
 }
 
 export interface HostGameScreenProps {
@@ -28,6 +29,11 @@ export interface JoinGameScreenProps {
 export interface LobbyScreenProps {
   navigation: StackNavigationProp<GameNavigatorParams, AppRoute.LOBBY>;
   route: RouteProp<GameNavigatorParams, AppRoute.LOBBY>;
+}
+
+export interface EditUserScreenProps {
+  navigation: StackNavigationProp<GameNavigatorParams, AppRoute.EDIT_USER>;
+  route: RouteProp<GameNavigatorParams, AppRoute.EDIT_USER>;
 }
 
 export interface GameScreenProps {
@@ -58,7 +64,11 @@ export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
       )
       : (
         !props.inGame
-        ? <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
+        ? (
+          <React.Fragment>
+            <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
+            <Stack.Screen name={AppRoute.EDIT_USER} component={game.EditUserScreen}/>
+          </React.Fragment>)
         : <Stack.Screen name={AppRoute.INGAME} component={game.GameScreen}/>
       )
     }

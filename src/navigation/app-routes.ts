@@ -9,8 +9,8 @@ export enum AppRoute {
     HOST = 'Host',
     JOIN = 'Join',
     LOBBY = 'Lobby',
+    EDIT_USER = 'Edit User',
     INGAME = 'In Game',
-    IN_GAME = 'In Game',
     END_GAME = 'End Game',
     SETTINGS = 'Settings',
     DEVINFO = "Dev info"

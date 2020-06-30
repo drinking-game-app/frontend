@@ -91,6 +91,10 @@ const LobbyScreen = (props: IProps & IActions) => {
     return props.lobbyName;
   };
 
+  const showEditPage = () => {
+    props.navigation.navigate(AppRoute.EDIT_USER)
+  }
+
   const readyToPlay = props.players.length > 3;
 
   if (props.lobbyName === '') return <LoadingComponent text="Loading Lobby..." />;
@@ -98,7 +102,7 @@ const LobbyScreen = (props: IProps & IActions) => {
     <Layout style={styles.container}>
       <ModalHeaderLobby text={renderModalTitle()} lobbyCode={renderModalCode()} buttonText={props.isHost ? 'End Game' : 'Leave Lobby'} loading={false} disabled={props.isLoading} isLeaderboard={props.roundOver} icon="close-outline" status="info" onPress={() => endGame()} />
 
-      <GameTabs showTabs={props.roundOver} />
+      <GameTabs editPage={() => showEditPage()} showTabs={props.roundOver} />
 
       {props.isHost ? (
         <ButtonInput

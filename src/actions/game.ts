@@ -399,6 +399,18 @@ export const playerUpdate = (player: IPlayer, dispatch: Dispatch) => {
 };
 
 /**
+ * Update a player by ID
+ * 
+ * @param {string} lobbyName
+ * @param {IPlayer} user
+ */
+export const updateSinglePlayer = (lobbyName: string, user: IPlayer) => {
+  return (dispatch: Dispatch) => {
+    GameSockClient.updateSelf(lobbyName, user)
+  }
+}
+
+/**
  * Leave a lobby / game
  *
  */

@@ -1,8 +1,8 @@
 import React from 'react'
-import { ListItem, Icon, Text, IconProps, List } from '@ui-kitten/components'
-import { View } from 'react-native'
+import { List } from '@ui-kitten/components'
 import { IPlayer, IInitialState } from '../reducers/interfaces'
 import { connect } from 'react-redux'
+import PlayerSingle from './player-single.component'
 
 /**
  * Importing styles
@@ -16,56 +16,44 @@ const styles = require("../themes")("Game");
  * passed to to the player list component
  */
 interface IProps {
-    players: IPlayer[];
-    roundOver: boolean;
+  editPage: () => void
 }
 
-const PlayerList = (props: IProps) => {
+/**
+ * Interface for props
+ * being passed from the redux store
+ */
+interface IReduxProps {
+  players: IPlayer[];
+  roundOver: boolean;
+}
 
-    const renderItemIcon = (props: IconProps, item: any) => {
-        return (<View style={[styles.playerAvatar, {backgroundColor: item.colour}]} >
-          {
-            item.icon
-            ? <Icon {...props} name={item.icon} />
-            : <Text category='h4'>{getPlayerInitials(item.name)}</Text>
-          }
-        </View>)
-      }
-    
-      const getPlayerInitials = (name: string) => {
-        const initials = name.match(/\b\w/g) || [];
-        return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-      }
-    
-      const renderListItemPoints = (score: number) => (
-        <Text>{score} points</Text>
-      )
-    
-      const renderItem = ({item}: any) => {
-        if(props.roundOver) return <ListItem style={styles.listItem} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} accessoryRight={() => renderListItemPoints(item.score)} />
-    
-    
-        return <ListItem style={[styles.listItem, {color: 'red'}]} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} />
-      }
+const PlayerList = (props: IProps & IReduxProps) => {
 
-    let players: IPlayer[] = props.players;
-    if (players.length < 4)
-      players = [
-        ...players,
-        ...new Array(3).fill({ name: "Waiting for player...", colour: '#161f26', icon: 'question-mark-outline' }),
-      ];
-    if(props.roundOver) {
-      players.sort((a, b) => b.score - a.score)
-    }
+  const renderItem = ({ item }: any) => (
+    <PlayerSingle item={item} roundOver={props.roundOver} editPage={() => props.editPage()} />
+  )
+
+  let players: IPlayer[] = props.players;
+  if (players.length < 4) {
+    const length = 4 - players.length
+    players = [
+      ...players,
+      ...new Array(length).fill({ name: "Waiting for player...", colour: '#161f26', icon: 'question-mark-outline' }),
+    ];
+  }
+  if (props.roundOver) {
+    players.sort((a, b) => b.score - a.score)
+  }
 
 
-    return (
-        <List
-            style={styles.listContainer}
-            data={players}
-            renderItem={renderItem}
-        />
-    )
+  return (
+    <List
+      style={styles.listContainer}
+      data={players}
+      renderItem={renderItem}
+    />
+  )
 }
 
 /**
@@ -73,16 +61,16 @@ const PlayerList = (props: IProps) => {
  *
  * @param {*} state
  */
-const mapStateToProps = (state: IInitialState): IProps => {
-    const { players, roundOver } = state.game;
-  
-    return {
-      players,
-      roundOver
-    };
+const mapStateToProps = (state: IInitialState): IReduxProps => {
+  const { players, roundOver } = state.game;
+
+  return {
+    players,
+    roundOver
   };
-  
-  export default connect<IProps>(
-    mapStateToProps
-  )(PlayerList);
-  
+};
+
+export default connect<IReduxProps>(
+  mapStateToProps
+)(PlayerList);
+
