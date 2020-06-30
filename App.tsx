@@ -67,7 +67,9 @@ export default function App() {
     // Tag that it is a client and tag the server that crashed - this can be used to seperate prod and dev
     rg4js('withTags', ['React-Native', Constants.manifest.extra.SERVER_URL]);
     //@ts-ignore This is a real function but its not in the types 🤷‍♂️
-    // rg4js('boot'); // This call must be made last to start the provider
+    rg4js('setVersion', Constants.manifest.version)
+    rg4js('options', { ignore3rdPartyErrors: true });
+    // rg4js('boot'); // This call must be made last to start the provider for mobile?
   }, [])
   return (
     <Provider store={store}>
