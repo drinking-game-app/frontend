@@ -30,12 +30,12 @@ const contentArr = [
         description: 'Simple. Enter the lobby code and your own username (can literally be anything) and hit join.'
     },
     {
-        imgSrc: require('../../../assets/ChosenorNotChosen.png'),
+        imgSrc: require('../../../assets/Hosting1.png'),
         title: 'IN-GAME: CHOSEN',
         description: 'So you got chosen? Poor bastard. Here is what you do: The non-chosen players will make up questions for you chosen players and once the time is up, you answer those questions by either tapping/clicking your avatar or your opponents.'
     },
     {
-        imgSrc: require('../../../assets/Hosting1.png'),
+        imgSrc: require('../../../assets/ChosenorNotChosen.png'),
         title: 'IN-GAME: NOT CHOSEN',
         description: 'Ah yes, the lucky one. Your job is to make questions for the chosen players within a time limit. Cannot think of any? Do not worry, boo boo, we got you! Hit the randomise button on the bottom left, let us make the question for you. Questions good? Let em have it!'
     },

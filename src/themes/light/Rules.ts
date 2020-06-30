@@ -10,7 +10,8 @@ export default StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'space-evenly',
     backgroundColor: '#D14688',
-    padding: 40
+    padding: 40,
+    position: 'relative'
   },
   rulesImage: {
     width: '80%',
@@ -31,6 +32,8 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   rulesBtn: {
-    width: '100%'
+    width: '80%',
+    position: 'absolute',
+    bottom: 25
   }
 });
