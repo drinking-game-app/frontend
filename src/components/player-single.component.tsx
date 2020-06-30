@@ -70,16 +70,20 @@ const PlayerSingle = ({ item, roundOver, user, editPage }: IProps & IReduxProps)
     }
     return <></>
   }
-  //<Text>{user.id === item.id ? 'Edit Username' : 'buy something'}</Text>
+
   const getPlayerInitials = (name: string) => {
     const initials = name.match(/\b\w/g) || [];
     return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
   }
 
-  const renderListItemPoints = (score: number) => (
-    <Text>{score} points</Text>
-  )
-
+  const renderListItemPoints = (score: number) => {
+    return (
+      <React.Fragment>
+        {renderEditModal()}
+        <Text>{score} points</Text>
+      </React.Fragment>
+    )
+  }
 
   if (roundOver) return <ListItem style={styles.listItem} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} accessoryRight={() => renderListItemPoints(item.score)} />
 
@@ -99,7 +103,6 @@ const mapStateToProps = (state: IInitialState): IReduxProps => {
   };
 };
 
-// export default PlayerSingle
 export default connect<IReduxProps>(
   mapStateToProps
 )(PlayerSingle);

@@ -161,7 +161,7 @@ export default (state = initialState, action: IGameAction) => {
         (player: IPlayer) => player.id === action.payload.id
       );
       
-      players[playerI] = {colour: players[playerI].colour, ...action.payload}
+      players[playerI] = {score: players[playerI].score, colour: players[playerI].colour, ...action.payload}
 
       return {
         ...state,
