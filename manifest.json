@@ -1,5 +1,4 @@
 {
-  "background_color": "#ffffff",
   "description": "The react native frontend built in expo, which will be the face of the drinking game application. Written in React Native TypeScript, and compiled using Expo.",
   "display": "standalone",
   "lang": "en",
