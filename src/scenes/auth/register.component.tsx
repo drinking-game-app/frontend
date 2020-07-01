@@ -170,7 +170,7 @@ const RegisterScreen = (props: IProps & IActions) => {
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
-      <ScrollView style={styles.formContainerReg}>
+      <ScrollView style={styles.scrollContainer}>
         <Formik
           initialValues={{ name, email, password, password_confirm: '' }}
           validationSchema={SignUpSchema}

@@ -13,6 +13,10 @@ export default StyleSheet.create({
     // justifyContent: "center",
   },
 
+  scrollContainer: {
+    marginBottom: 50
+  },
+
   formContainerReg: {
     flex: 1,
     paddingVertical: 16,

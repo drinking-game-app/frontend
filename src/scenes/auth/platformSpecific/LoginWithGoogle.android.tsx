@@ -16,6 +16,7 @@ const styles = require("../../../themes")("Form");
  * Get Google Cliennt ID from environment variables
  */
 import Constants from "expo-constants";
+import { Button } from "@ui-kitten/components";
 
 /**
  * Interface actions 
@@ -73,14 +74,14 @@ class LoginWithGoogle extends Component <ILoginWithGoogleActions, ILoginWithGoog
 
       render() {
           return (
-            <View>
-              <RectButton onPress={this.signInWithGoogleMobile} style={styles.formButton}>
-                <Text>Login with Google android</Text>
-              </RectButton>
+            <React.Fragment>
+              <Button onPress={this.signInWithGoogleMobile} style={styles.noAccountButton}>
+                Login with Google
+              </Button>
               {this.state.error !== ''
                     && <Text>Error: {this.state.error}</Text>
                 }
-            </View>
+            </React.Fragment>
           )
       }
 }

@@ -154,7 +154,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
-      <ScrollView style={styles.formContainer}>
+      <ScrollView style={styles.scrollContainer}>
         <Formik
           initialValues={{ email, password }}
           validationSchema={SignInSchema}

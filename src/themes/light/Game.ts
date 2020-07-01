@@ -33,6 +33,7 @@ export default StyleSheet.create({
   listContainer: {
     paddingHorizontal: 16,
     backgroundColor: "#161F26",
+    zIndex: 0
   },
 
   listItem: {
