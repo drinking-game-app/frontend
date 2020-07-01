@@ -26,6 +26,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [Stripe setDefaultPublishableKey:@"pk_test_51H012ZAidJhy4saAQp5nMqmE6huvQAULc31tRy9e9TYRJR6FifEStYFYFqPBIN0AdWxqb2C2Mia5YnVafRzgokI500GkYp5lhn"];
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
 

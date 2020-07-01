@@ -18,18 +18,10 @@ const styles = require("../themes")("Game");
 interface IProps {
   item: IPlayer;
   roundOver: boolean;
-  editPage: () => void;
+  editPage: (id: string) => void;
 }
 
-/**
- * Interface for props
- * being passed from the redux store
- */
-interface IReduxProps {
-  user: IPlayer
-}
-
-const PlayerSingle = ({ item, roundOver, user, editPage }: IProps & IReduxProps) => {
+const PlayerSingle = ({ item, roundOver, editPage }: IProps & IReduxProps) => {
   const renderItemIcon = (props: IconProps, item: any) => {
     return (<View style={[styles.playerAvatar, { backgroundColor: item.colour }]} >
       {
@@ -45,8 +37,8 @@ const PlayerSingle = ({ item, roundOver, user, editPage }: IProps & IReduxProps)
   )
 
   const renderEditModal = () => {
-    if (user.id === item.id) {
-      return <Button accessoryLeft={renderEditIcon} onPress={() => editPage()}></Button>
+    if (item.id) {
+      return <Button accessoryLeft={renderEditIcon} onPress={() => editPage(item.id)}></Button>
     }
     return <></>
   }
@@ -70,19 +62,5 @@ const PlayerSingle = ({ item, roundOver, user, editPage }: IProps & IReduxProps)
   return <ListItem style={[styles.listItem, { color: 'red' }]} title={item.name} accessoryLeft={(props) => renderItemIcon(props, item)} accessoryRight={() => renderEditModal()} />
 }
 
-/**
- * Return a list of people from our redux state
- *
- * @param {*} state
- */
-const mapStateToProps = (state: IInitialState): IReduxProps => {
-  const { user } = state.game;
 
-  return {
-    user
-  };
-};
-
-export default connect<IReduxProps>(
-  mapStateToProps
-)(PlayerSingle);
+export default PlayerSingle

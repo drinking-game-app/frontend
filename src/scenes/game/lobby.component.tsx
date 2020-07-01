@@ -37,7 +37,7 @@ interface IActions extends LobbyScreenProps {
   setGameLoading: () => void;
   leaveGame: () => void;
   startHostGame: (lobbyName: string) => void;
-  toggleRedirect: () => void;
+  toggleRedirect: (id: string) => void;
 }
 
 /**
@@ -92,8 +92,8 @@ const LobbyScreen = (props: IProps & IActions) => {
     return props.lobbyName;
   };
 
-  const showEditPage = () => {
-    props.toggleRedirect()
+  const showEditPage = (id: string) => {
+    props.toggleRedirect(id)
   }
 
   const readyToPlay = props.players.length > 3;
@@ -103,7 +103,7 @@ const LobbyScreen = (props: IProps & IActions) => {
     <Layout style={styles.container}>
       <ModalHeaderLobby text={renderModalTitle()} lobbyCode={renderModalCode()} buttonText={props.isHost ? 'End Game' : 'Leave Lobby'} loading={false} disabled={props.isLoading} isLeaderboard={props.roundOver} icon="close-outline" status="info" onPress={() => endGame()} />
 
-      <GameTabs editPage={() => showEditPage()} showTabs={props.roundOver} />
+      <GameTabs editPage={(id: string) => showEditPage(id)} showTabs={props.roundOver} />
 
       {props.isHost ? (
         <ButtonInput

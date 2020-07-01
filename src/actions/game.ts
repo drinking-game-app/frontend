@@ -420,7 +420,7 @@ export const updateSinglePlayer = (lobbyName: string, user: IPlayer) => {
 /**
  * Toggle the redirect from the update username page
  */
-export const toggleRedirect = () => (dispatch: Dispatch) => dispatch({type: 'SINGLE_PLAYER_EDIT'})
+export const toggleRedirect = (id: string = '') => (dispatch: Dispatch) => dispatch({type: 'SINGLE_PLAYER_EDIT', payload: id})
 
 
 /**

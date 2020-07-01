@@ -102,6 +102,7 @@ export interface IGameState {
   canAnswer: boolean;
   displayAnswer: boolean;
   editUser: boolean;
+  userToEditIndex: number;
 }
 
 /**

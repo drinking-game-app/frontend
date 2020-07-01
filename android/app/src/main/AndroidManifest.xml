@@ -32,6 +32,19 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+      <activity
+          android:exported="true"
+          android:launchMode="singleTask"
+          android:name="expo.modules.payments.stripe.RedirectUriReceiver"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+          <intent-filter>
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+
+              <data android:scheme="drinking-app.wspace.ie" />
+          </intent-filter>
+      </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
   </application>
 </manifest>

@@ -13,6 +13,9 @@
  */
 
 import React from "react";
+import { Image, View } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { Asset } from 'expo-asset';
 
 /**
  * Redux dependencies
@@ -56,18 +59,59 @@ const store = createStore(
 /**
  * Entry point for the application
  */
-export default function App() {
-  return (
-    <Provider store={store}>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
-          <SafeAreaProvider>
-            <NavigationContainer>
-              <AppNavigator />
-            </NavigationContainer>
-          </SafeAreaProvider>
-      </ApplicationProvider>
-    </Provider>
-  );
+export default class App extends React.Component {
+  state = {
+    showApp: false
+  };
+
+  componentDidMount() {
+    SplashScreen.preventAutoHideAsync();
+  }
+
+  render() {
+    if(!this.state.showApp) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Image 
+            style={{ width: '100%', height: '20%'}}
+            source={require('./assets/splash.gif')} 
+            onLoad={this._cacheResourcesAsync}
+          />
+        </View>
+      );
+    }
+    
+    return (
+      <Provider store={store}>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+            <SafeAreaProvider>
+              <NavigationContainer>
+                <AppNavigator />
+              </NavigationContainer>
+            </SafeAreaProvider>
+        </ApplicationProvider>
+      </Provider>
+    );
+  }
+
+  _cacheSplashResourcesAsync = async () => {
+    const gif = require('./assets/splash.gif');
+    return Asset.fromModule(gif).downloadAsync();
+  };
+
+  _cacheResourcesAsync = async () => {
+    SplashScreen.hideAsync();
+   
+    const gif = await require('./assets/splash.gif');
+
+    await Asset.fromModule(gif).downloadAsync();    
+
+    setTimeout(() => {
+      
+      this.setState({ showApp: true });
+    }, 3500);
+  };
+
 }
 

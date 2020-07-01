@@ -56,6 +56,7 @@ interface IGameProps {
 
 export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
   if(!props.init) props.initGameSock()
+  // if(props.editUser === false) console.log('big fat dumb')
   return (
   <Stack.Navigator {...props} headerMode='none' screenOptions={{animationEnabled: true}}>
     {
@@ -66,7 +67,7 @@ export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
       : (
         !props.inGame
         ? (
-          !props.editUser
+          props.editUser === false
             ? <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
             : <Stack.Screen name={AppRoute.EDIT_USER} component={game.EditUserScreen}/>
           )

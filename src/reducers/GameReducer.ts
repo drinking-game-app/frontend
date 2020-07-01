@@ -15,8 +15,6 @@
 import { IGameState, IPlayer, IMessage } from "./interfaces";
 import { RoundOptions, Question } from "@rossmacd/gamesock-client";
 import { getPlayers } from '@rossmacd/gamesock-client';
-import { onNextQuestion } from "../actions/game";
-import { stat } from "fs";
 
 interface IGameAction {
   type: string;
@@ -61,7 +59,8 @@ const initialState: IGameState = {
   init: false,
   canAnswer: false,
   displayAnswer: false,
-  editUser: false
+  editUser: false,
+  userToEditIndex: 0
 };
 
 /**
@@ -177,11 +176,23 @@ export default (state = initialState, action: IGameAction) => {
      */
     case "SINGLE_PLAYER_EDIT":
       const editUser = state.editUser
-      
+      if(action.payload !== "") {
+
+        const playerI = state.players.findIndex(
+          (player: IPlayer) => player.id === action.payload
+        );
+        
+        return {
+          ...state,
+          editUser: !editUser,
+          userToEditIndex:  playerI
+        }
+      }
       return {
         ...state,
         editUser: !editUser
       }
+
     /**
      * When a API request responds with
      * an error, store it in the state
