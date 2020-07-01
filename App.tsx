@@ -94,8 +94,7 @@ export default class App extends React.Component {
     rg4js('options', { ignore3rdPartyErrors: true });
     // rg4js('boot'); // This call must be made last to start the provider for mobile?
     
-    if(Platform.OS === 'web') SplashScreen.preventAutoHideAsync();
-    else this.setState({showApp: true})
+    SplashScreen.preventAutoHideAsync();
   }
 
   render() {
