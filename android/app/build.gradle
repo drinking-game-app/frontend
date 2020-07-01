@@ -184,7 +184,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     addUnimodulesDependencies()
-
+    compile project(':unimodules-react-native-adapter')
+    
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

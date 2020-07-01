@@ -28,9 +28,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 public class MainApplication extends Application implements ReactApplication {
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
-    new BasePackageList().getPackageList()
-  );
+  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(Arrays.<Package>asList(
+      new ReactAdapterPackage()
+      // more packages, like
+      // new CameraPackage(), if you use expo-camera
+      // etc.
+  ), /* singletonModules */ null);
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override

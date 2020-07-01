@@ -30,6 +30,7 @@
     "expo-constants": "~9.0.0",
     "expo-google-app-auth": "^8.1.0",
     "expo-keep-awake": "~8.1.0",
+    "expo-payments-stripe": "~8.1.0",
     "expo-splash-screen": "^0.2.3",
     "expo-updates": "~0.2.0",
     "formik": "^2.1.4",
@@ -50,8 +51,7 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.29.1",
-    "expo-payments-stripe": "~8.1.0"
+    "yup": "^0.29.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

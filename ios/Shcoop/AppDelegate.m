@@ -14,9 +14,10 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <RCTBridgeDelegate>
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
+@property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
 
 @end
 

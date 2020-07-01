@@ -73,7 +73,7 @@ export default class App extends React.Component {
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Image 
-            style={{ width: '100%', height: '20%'}}
+            style={{ width: '100%', height: '20%', maxHeight: 400}}
             source={require('./assets/splash.gif')} 
             onLoad={this._cacheResourcesAsync}
           />
