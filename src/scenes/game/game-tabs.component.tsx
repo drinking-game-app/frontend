@@ -36,7 +36,7 @@ const GameTabs = (props: IProps) => {
                 <View style={styles.tabContainer}>
                     {
                         topState.selectedIndex === 0
-                            ? <PlayerList editPage={() => props.editPage()} />
+                            ? <PlayerList editPage={(id: string) => props.editPage(id)} />
                             : <QuestionList />
                     }
 
@@ -46,7 +46,7 @@ const GameTabs = (props: IProps) => {
     }
 
     return (
-        <PlayerList editPage={() => props.editPage()} />
+        <PlayerList editPage={(id: string) => props.editPage(id)} />
     )
 }
 

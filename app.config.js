@@ -19,6 +19,7 @@ export default ({ config }) => {
       DEV_IOS_GOOGLE_CLIENT_ID: "588944987607-afp8alav7caepo0auaua06lhtbip9s15.apps.googleusercontent.com",
       PROD_IOS_GOOGLE_CLIENT_ID: "588944987607-7sg3jt6grf38dog7ohplceg6f56vq44b.apps.googleusercontent.com",
       DEV_ANDROID_GOOGLE_CLIENT_ID: "588944987607-klvj304qhfhd7g7ah8d19tl125muj183.apps.googleusercontent.com",
+      STRIPE_PUBLISHABLE_TEST: "pk_test_51H012ZAidJhy4saAQp5nMqmE6huvQAULc31tRy9e9TYRJR6FifEStYFYFqPBIN0AdWxqb2C2Mia5YnVafRzgokI500GkYp5lhn",
     },
   };
 };

@@ -12,7 +12,10 @@
  * Copyright 2020 - WebSpace
  */
 
-import React, { useEffect } from "react";
+import React from "react";
+import { Image, View, Platform } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { Asset } from 'expo-asset';
 
 /**
  * Redux dependencies
@@ -59,8 +62,28 @@ const store = createStore(
 /**
  * Entry point for the application
  */
-export default function App() {
-  useEffect(() => {
+// export default function App() {
+//   useEffect(() => {
+   
+//   }, [])
+//   return (
+//     <Provider store={store}>
+//       <IconRegistry icons={EvaIconsPack} />
+//       <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+//           <SafeAreaProvider>
+//             <NavigationContainer>
+//               <AppNavigator />
+//             </NavigationContainer>
+//           </SafeAreaProvider>
+//       </ApplicationProvider>
+//     </Provider>
+//   );
+export default class App extends React.Component {
+  state = {
+    showApp: false
+  };
+
+  componentDidMount() {
     rg4js('enableCrashReporting', true);
     rg4js('apiKey', 'bFCdvDJJcwGct6nwxT3EQ');
     // rg4js('enablePulse', true); // This will enable user monitoring on web only does not work with react native
@@ -70,18 +93,50 @@ export default function App() {
     rg4js('setVersion', Constants.manifest.version)
     rg4js('options', { ignore3rdPartyErrors: true });
     // rg4js('boot'); // This call must be made last to start the provider for mobile?
-  }, [])
-  return (
-    <Provider store={store}>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
-          <SafeAreaProvider>
-            <NavigationContainer>
-              <AppNavigator />
-            </NavigationContainer>
-          </SafeAreaProvider>
-      </ApplicationProvider>
-    </Provider>
-  );
+    
+    if(Platform.OS === 'web') SplashScreen.preventAutoHideAsync();
+    else this.setState({showApp: true})
+  }
+
+  render() {
+    if(!this.state.showApp) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Image 
+            style={{ width: '100%', height: '20%', maxHeight: 400, maxWidth: 400}}
+            source={require('./assets/splash.gif')} 
+            onLoad={this._cacheResourcesAsync}
+          />
+        </View>
+      );
+    }
+    
+    return (
+      <Provider store={store}>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+            <SafeAreaProvider>
+              <NavigationContainer>
+                <AppNavigator />
+              </NavigationContainer>
+            </SafeAreaProvider>
+        </ApplicationProvider>
+      </Provider>
+    );
+  }
+
+  _cacheResourcesAsync = async () => {
+    SplashScreen.hideAsync();
+   
+    const gif = await require('./assets/splash.gif');
+
+    await Asset.fromModule(gif).downloadAsync();    
+
+    setTimeout(() => {
+      
+      this.setState({ showApp: true });
+    }, 3500);
+  };
+
 }
 

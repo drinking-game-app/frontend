@@ -22,11 +22,11 @@ import * as actions from '../../actions';
 import { HomeScreenProps } from '../../navigation/main.navigator';
 import { IHostGame, IRejoinGame } from '../../actions/game';
 import SignoutScreen from '../auth/sign-out.component';
-import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Player } from '@rossmacd/gamesock-client';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { bindActionCreators } from 'redux';
+
+import Constants from "expo-constants";
 
 /**
  * Importing styles
@@ -35,7 +35,7 @@ import { bindActionCreators } from 'redux';
  */
 const styles = require('../../themes')('App');
 
-const baseUrl = Constants.manifest.extra.SERVER_URL || 'http://192.168.0.164:3000';
+const baseUrl = Constants.manifest.extra.SERVER_URL
 
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
@@ -116,7 +116,7 @@ const Home = (props: IProps & IActions) => {
   const hostOrLogin = () => {
     if (props.token && props.token !== '') {
       props.hostGameAction({ username: props.name, token: props.token });
-      props.navigation.navigate(AppRoute.GAME);
+      props.navigation.navigate(AppRoute.AUTH);
     } else props.navigation.navigate(AppRoute.AUTH);
   };
 
@@ -163,10 +163,6 @@ const Home = (props: IProps & IActions) => {
     return <></>
   };
 
-
-
-
-
   return (
     <Layout style={styles.container}>
       {renderSignoutAndCogContainer()}
@@ -175,7 +171,7 @@ const Home = (props: IProps & IActions) => {
       <Text style={styles.title}>TO</Text>
 
       <View>
-        {/* {renderRejoin()} */}
+        {renderRejoin()}
         <Button style={styles.formButton} onPress={() => hostOrLogin()}>
           HOST
         </Button>

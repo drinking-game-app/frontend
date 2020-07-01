@@ -16,7 +16,7 @@ const styles = require("../themes")("Game");
  * passed to to the player list component
  */
 interface IProps {
-  editPage: () => void
+  editPage: (id: string) => void
 }
 
 /**
@@ -31,7 +31,7 @@ interface IReduxProps {
 const PlayerList = (props: IProps & IReduxProps) => {
 
   const renderItem = ({ item }: any) => (
-    <PlayerSingle item={item} roundOver={props.roundOver} editPage={() => props.editPage()} />
+    <PlayerSingle item={item} roundOver={props.roundOver} editPage={(id: string) => props.editPage(id)} />
   )
 
   let players: IPlayer[] = props.players;

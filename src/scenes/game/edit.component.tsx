@@ -24,8 +24,7 @@ import { connect } from "react-redux";
 import { FormInput } from "../../components/form-input.component";
 import { ButtonInput } from "../../components/form-button.component";
 import { ModalHeader } from "../../components/modal-header.component";
-
-
+import PaymentComponent from "../../components/payment.component";
 
 /**
  * Importing styles
@@ -45,15 +44,17 @@ interface IEditActions extends EditUserScreenProps {
   toggleRedirect: () => void;
 }
 interface IEditProps {
-  user: IPlayer;
+  userToEditIndex: number;
+  players: IPlayer[];
   error: string;
   isLoading: boolean;
   lobbyName: string;
-  shouldRedirect: boolean;
+  user: IPlayer
 }
 
 const EditUserScreen = (props: IEditActions & IEditProps) => {
   const { error, isLoading } = props;
+  const [hasPaid, setHasPaid] = React.useState<boolean>(false)
   /**
  * If the inputs pass validation,
  * submit the request to the server
@@ -63,7 +64,7 @@ const EditUserScreen = (props: IEditActions & IEditProps) => {
     // setWaitForRedirect(true)
 
     const { lobbyName } = props
-    let { user } = props
+    let user = props.players[props.userToEditIndex]
     const { username } = values;
 
     user.name = username
@@ -112,32 +113,43 @@ const EditUserScreen = (props: IEditActions & IEditProps) => {
         text=""
         icon="close-outline"
         status="primary"
-        onPress={() => props.navigation.goBack()}
+        onPress={() => props.toggleRedirect()}
       />
+      {
+        (props.players[props.userToEditIndex].id !== props.user.id && !hasPaid)
+        ? (
+        <React.Fragment>
+        <Text>Time to Cough it up</Text>
+        <PaymentComponent />
+        </React.Fragment>
+        )
+        : (
+          <View style={styles.formContainer}>
+            <Formik
+              initialValues={{ username: props.players[props.userToEditIndex].name || "" }}
+              validationSchema={EditUserSchema}
+              onSubmit={(values) => submit(values)}
+            >
 
-      <View style={styles.formContainer}>
-        <Formik
-          initialValues={{ username: props.user.name || "" }}
-          validationSchema={EditUserSchema}
-          onSubmit={(values) => submit(values)}
-        >
-
-          {renderForm}
-        </Formik>
-      </View>
+              {renderForm}
+            </Formik>
+          </View>
+        )
+      }
     </Layout>
   )
 }
 
 const mapStateToProps = (state: IInitialState): IEditProps => {
-  const { error, isLoading, user, lobbyName, shouldRedirect } = state.game;
+  const { error, isLoading, players, lobbyName, userToEditIndex, user } = state.game;
 
   return {
     error,
     isLoading,
-    user,
+    players,
     lobbyName,
-    shouldRedirect
+    userToEditIndex,
+    user
   };
 };
 

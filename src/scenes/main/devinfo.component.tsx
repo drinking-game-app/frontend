@@ -20,7 +20,6 @@ import {
   IconProps,
   Icon,
 } from "@ui-kitten/components";
-import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { ModalHeader } from "../../components/modal-header.component";
 import { AppRoute } from "../../navigation/app-routes";
@@ -32,6 +31,9 @@ import { DevInfoScreenProps } from "../../navigation/main.navigator";
  * @param App Module name
  */
 const styles = require("../../themes")("Game");
+
+import Constants from "expo-constants";
+
 
 const data = [
   { field: "Server URL", value: Constants.manifest.extra.SERVER_URL },
