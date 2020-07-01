@@ -17,7 +17,7 @@ import { View } from "react-native";
 import { JoinGameScreenProps } from "../../navigation/game.navigator";
 import { Layout, Text } from "@ui-kitten/components";
 import { AppRoute } from "../../navigation/app-routes";
-import {gameActions} from "../../actions";
+import { gameActions } from "../../actions";
 import { FormikProps, Formik } from "formik";
 import { JoinLobbyData, JoinLobbySchema } from "../../data/join-lobby.model";
 import { IInitialState } from "../../reducers/interfaces";
@@ -26,6 +26,7 @@ import { FormInput } from "../../components/form-input.component";
 import { ButtonInput } from "../../components/form-button.component";
 import { IJoinGame } from "../../actions/game";
 import { ModalHeader } from "../../components/modal-header.component";
+import LoadingComponent from "../../components/loading.component";
 
 
 
@@ -42,33 +43,34 @@ const styles = require("../../themes")("Form");
  * for the component
  */
 interface IJoinActions extends JoinGameScreenProps {
-    setGameLoading: () => void;
-    formUpdate: ({ prop, value }: any) => void;
-    joinGame:(body: IJoinGame) => void;
-  }
-interface IJoinProps{
-    name:string;
-    lobbyName:string;
-    error: string;
-    isLoading: boolean;
+  setGameLoading: () => void;
+  formUpdate: ({ prop, value }: any) => void;
+  joinGame: (body: IJoinGame) => void;
+}
+interface IJoinProps {
+  name: string;
+  lobbyName: string;
+  error: string;
+  isLoading: boolean;
+  isHost: boolean;
 }
 
 const JoinScreen = (props: IJoinActions & IJoinProps) => {
-    const {lobbyName,error,isLoading}=props;
-    /**
-   * If the inputs pass validation,
-   * submit the request to the server
-   */
+  const { lobbyName, error, isLoading } = props;
+  /**
+ * If the inputs pass validation,
+ * submit the request to the server
+ */
   const submit = (values: any) => {
     props.setGameLoading();
-    const { lobbyName,username } = values;
-    
-    props.joinGame({lobbyName: lobbyName.toUpperCase(), username})
-};
-const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
+    const { lobbyName, username } = values;
+
+    props.joinGame({ lobbyName: lobbyName.toUpperCase(), username })
+  };
+  const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
     const loading = isLoading || props.isSubmitting;
 
-    if(isLoading === false && props.isSubmitting === true) props.setSubmitting(false)
+    if (isLoading === false && props.isSubmitting === true) props.setSubmitting(false)
     return (
       <React.Fragment>
         <FormInput
@@ -78,8 +80,8 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           value={props.values.lobbyName}
           placeholder="Enter Join Code"
           autoCapitalize="characters"
-          onKeyPress={({nativeEvent}) => {
-            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Enter') props.handleSubmit()
           }}
         />
 
@@ -89,11 +91,11 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
           size='large'
           value={props.values.username}
           placeholder="Create a Username"
-          onKeyPress={({nativeEvent}) => {
-            if(nativeEvent.key === 'Enter') props.handleSubmit()
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Enter') props.handleSubmit()
           }}
         />
-        
+
         {error !== "" && <Text>{error}</Text>}
 
         <ButtonInput
@@ -106,43 +108,46 @@ const renderForm = (props: FormikProps<JoinLobbyData>): React.ReactFragment => {
       </React.Fragment>
     );
   };
+  if (props.isHost) return <LoadingComponent text="Creating lobby..." />
+  return (
+    <Layout style={styles.formContainer}>
+      <ModalHeader
+        text=""
+        icon="close-outline"
+        status="primary"
+        onPress={() => props.navigation.navigate(AppRoute.HOME)}
+      />
 
-    return (
-        <Layout style={styles.formContainer}>
-          <ModalHeader
-              text=""
-              icon="close-outline"
-              status="primary"
-              onPress={() => props.navigation.navigate(AppRoute.HOME)}
-            />
+      <View style={styles.formContainer}>
+        <Formik
+          initialValues={{ lobbyName, username: props.name }}
+          validationSchema={JoinLobbySchema}
+          onSubmit={(values) => submit(values)}
+        >
 
-            <View style={styles.formContainer}>
-              <Formik
-                  initialValues={{lobbyName, username: props.name}}
-                  validationSchema={JoinLobbySchema}
-                  onSubmit={(values)=>submit(values)}
-              >
+          {renderForm}
+        </Formik>
+      </View>
 
-                  {renderForm}
-              </Formik>
-            </View>
-        </Layout>
-    )
+
+    </Layout>
+  )
 }
 
 const mapStateToProps = (state: IInitialState): IJoinProps => {
-    const { lobbyName,error,isLoading } = state.game;
-    const {name} = state.auth
+  const { lobbyName, error, isLoading, isHost } = state.game;
+  const { name } = state.auth
 
-    return {
-      lobbyName,
-      error,
-      isLoading,
-      name
-    };
+  return {
+    lobbyName,
+    isHost,
+    error,
+    isLoading,
+    name
   };
-  
-  export default connect<IJoinProps, IJoinActions, {}>(
-    mapStateToProps,
-    gameActions
-  )(JoinScreen);
+};
+
+export default connect<IJoinProps, IJoinActions, {}>(
+  mapStateToProps,
+  gameActions
+)(JoinScreen);

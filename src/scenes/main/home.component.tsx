@@ -35,8 +35,6 @@ import manifest from './../../variables.json'
  */
 const styles = require('../../themes')('App');
 
-console.log('manifest!!', manifest)
-
 const baseUrl = manifest.SERVER_URL
 
 interface IActions extends HomeScreenProps {
