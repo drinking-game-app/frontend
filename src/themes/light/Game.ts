@@ -63,6 +63,7 @@ export default StyleSheet.create({
     borderRadius: 0.01,
     borderColor: "#ffffff00",
     position: 'absolute',
+    zIndex: 10,
     bottom: 0,
     left: 0,
     width: '100%'

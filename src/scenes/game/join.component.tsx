@@ -13,7 +13,7 @@
  */
 
 import React from "react";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import { JoinGameScreenProps } from "../../navigation/game.navigator";
 import { Layout, Text } from "@ui-kitten/components";
 import { AppRoute } from "../../navigation/app-routes";
@@ -91,6 +91,7 @@ const JoinScreen = (props: IJoinActions & IJoinProps) => {
           size='large'
           value={props.values.username}
           placeholder="Create a Username"
+          onSubmitEditing={() => Platform.OS !== 'web' ? props.handleSubmit() : () => {}}
           onKeyPress={({ nativeEvent }) => {
             if (nativeEvent.key === 'Enter') props.handleSubmit()
           }}

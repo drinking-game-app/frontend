@@ -25,6 +25,8 @@ import LoadingComponent from '../../components/loading.component';
 import NotificationBar from '../../components/notification-bar.component';
 import { Layout } from '@ui-kitten/components';
 import GameTabs from './game-tabs.component';
+import {useKeepAwake} from 'expo-keep-awake';
+
 
 /**
  * Importing styles
@@ -56,6 +58,8 @@ interface IProps {
 }
 
 const LobbyScreen = (props: IProps & IActions) => {
+  useKeepAwake();
+
   const endGame = () => {
     props.setGameLoading();
     props.leaveGame();

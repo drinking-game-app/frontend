@@ -118,6 +118,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
           accessoryRight={renderPasswordIcon}
           autoCapitalize="none"
           value={props.values.password}
+          onSubmitEditing={() => Platform.OS !== 'web' ? props.handleSubmit() : () => {}}
           onKeyPress={({nativeEvent}) => {
             if(nativeEvent.key === 'Enter') props.handleSubmit()
           }}
