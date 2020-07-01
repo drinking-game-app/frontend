@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.js": "/static/js/app.dc8924f1.chunk.js",
-    "app.js.map": "/static/js/app.dc8924f1.chunk.js.map",
+    "app.js": "/static/js/app.b7ac9b62.chunk.js",
+    "app.js.map": "/static/js/app.b7ac9b62.chunk.js.map",
     "runtime~app.js": "/static/js/runtime~app.0dd01ab9.js",
     "runtime~app.js.map": "/static/js/runtime~app.0dd01ab9.js.map",
-    "static/js/2.1404ba85.chunk.js": "/static/js/2.1404ba85.chunk.js",
-    "static/js/2.1404ba85.chunk.js.map": "/static/js/2.1404ba85.chunk.js.map",
+    "static/js/2.8c9a05b6.chunk.js": "/static/js/2.8c9a05b6.chunk.js",
+    "static/js/2.8c9a05b6.chunk.js.map": "/static/js/2.8c9a05b6.chunk.js.map",
     "favicon-16.png": "/favicon-16.png",
     "favicon-32.png": "/favicon-32.png",
     "favicon.ico": "/favicon.ico",
@@ -16,11 +16,12 @@
     "static/media/Extra.png": "/static/media/Extra.6b5f0cb8.png",
     "static/media/Hosting.png": "/static/media/Hosting.02713dfd.png",
     "static/media/Hosting1.png": "/static/media/Hosting1.dd0c4ffc.png",
-    "static/media/Joining1.png": "/static/media/Joining1.15008588.png"
+    "static/media/Joining1.png": "/static/media/Joining1.15008588.png",
+    "static/media/splash.gif": "/static/media/splash.69ca51ff.gif"
   },
   "entrypoints": [
     "static/js/runtime~app.0dd01ab9.js",
-    "static/js/2.1404ba85.chunk.js",
-    "static/js/app.dc8924f1.chunk.js"
+    "static/js/2.8c9a05b6.chunk.js",
+    "static/js/app.b7ac9b62.chunk.js"
   ]
 }
