@@ -92,30 +92,10 @@ const GameScreen = (props: IProps & IActions) => {
 
       const { questions } = props;
 
-      // if (questions.length < props.roundOptions!.numQuestions) {
-      //   setNotEnoughQuestions((val) => true);
-      //   for (
-      //     let i = props.roundOptions!.numQuestions - questions.length;
-      //     i--;
-
-      //   ) {
-      //     questions.push({
-      //       playerId: props.user.id,
-      //       question: shuffleQuestion(),
-      //     });
-      //   }
-      // }
       return questions.map((question) => question.question);
     });
   });
 
-  // useEffect(() => {
-  //   console.log("use effect siadgnewi", props.hotseatOptions);
-  //   if (props.questions && props.questions.length > 0) {
-  //     //@ts-ignore
-  //     props.onNextQuestion(props.hotseatOptions?.delayBetween);
-  //   }
-  // }, [props.canAnswer]);
 
   const endGame = () => {
     props.setGameLoading();
@@ -142,7 +122,6 @@ const GameScreen = (props: IProps & IActions) => {
         return (
           <React.Fragment>
           <ScrollView style={{flex: 1}}>
-            {/* <Timer serverHasQuestions={serverHasQuestions} /> */}
             <PickedPlayers
               user={props.user}
               players={props.roundOptions?.hotseatPlayers}
@@ -168,29 +147,6 @@ const GameScreen = (props: IProps & IActions) => {
         );
 
       case "Display Answer":
-        // return (
-        //   <React.Fragment>
-        //     <Text style={styles.questInAnsPhase}>{props.questions[props.currentQuestionId].question}</Text>
-
-        //     {props.questions[props.currentQuestionId].answers!.map(
-        //       (answer: number, i: number) => {
-        //         if (answer !== null)
-        //           return (
-        //             <Text key={i} style={[i === 0 ? styles.answerLeft : styles.answerRight]}>
-        //               {`${props.roundOptions?.hotseatPlayers[i].name} SELECTED ${answer === i ? "THEMSELVES!" : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}`}
-        //             </Text>
-        //           );
-
-        //         return (
-        //           // Text for when chosen players didn't choose a player:
-        //           <Text key={i} style={[styles.pleadTheFifth, i === 0 ? styles.pleadAlignLeft : styles.pleadAlignRight]}>
-        //             {`${props.roundOptions?.hotseatPlayers[i].name} pleaded the 5th`}
-        //           </Text>
-        //         );
-        //       }
-        //     )}
-        //   </React.Fragment>
-        // );
       case "Hotseat":
         return (
           <PickedPlayers

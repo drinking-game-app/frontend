@@ -84,7 +84,7 @@ const PickedPlayers = (props: IProps & IActions) => {
             {canSelectAnswer
               ? props.canAnswer
                 ? ""
-                : "Waiting for next question..."
+                : "Waiting for to show answer..."
               : "Waiting for players to answer..."}
           </Text>
 
