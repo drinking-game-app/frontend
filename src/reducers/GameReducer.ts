@@ -216,11 +216,19 @@ export default (state = initialState, action: IGameAction) => {
       };
 
     case "JOIN_GAME":
+      const joinedPlayers: IPlayer[] = (action.payload.players||state.players)
+      joinedPlayers.map((player, i) => {
+        if(i > colours.length - 1) {
+          return player.colour = colours[i - colours.length]  
+        }
+        return player.colour = colours[i]
+      })
+
       return {
         ...state,
         lobbyName: action.payload.lobbyName,
         user: action.payload.user,
-        players: [...(action.payload.players||state.players)],
+        players: [...joinedPlayers],
         inLobby: true,
         isLoading: false,
         roundOver: false,
@@ -235,6 +243,7 @@ export default (state = initialState, action: IGameAction) => {
         inLobby: false,
         isHost: false,
         isLoading: false,
+        questions: [],
         error: ''
       };
     case "START_GAME":

@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { IInitialState } from "../reducers/interfaces";
 import game from "../scenes/game";
 import * as actions from "../actions/game";
+import { LobbyNavigator } from "./lobby.navigator";
 
 type AuthNavigatorParams = AppNavigatorParams & {
   [AppRoute.SIGN_IN]: undefined;
@@ -61,9 +62,7 @@ const Auth = (props: IAuthProps & IGameActions): React.ReactElement => {
           />
         </>
       ) : (
-        <>
-          <Stack.Screen name={AppRoute.HOST} component={game.LobbyScreen} />
-        </>
+          <Stack.Screen name={AppRoute.HOST} component={LobbyNavigator} />
       )}
     </Stack.Navigator>
   );

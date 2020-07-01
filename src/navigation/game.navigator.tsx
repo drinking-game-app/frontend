@@ -7,6 +7,7 @@ import game from '../scenes/game'
 import { IInitialState } from '../reducers/interfaces';
 import { connect } from 'react-redux';
 import * as actions from "../actions/game";
+import { LobbyNavigator } from './lobby.navigator';
 
 type GameNavigatorParams = AppNavigatorParams & {
   [AppRoute.HOST]: undefined;
@@ -65,15 +66,7 @@ export const Game = (props: IGameProps & IGameActions): React.ReactElement => {
       ? (
         <Stack.Screen name={AppRoute.JOIN} component={game.JoinScreen}/>
       )
-      : (
-        !props.inGame
-        ? (
-          props.editUser === false
-            ? <Stack.Screen name={AppRoute.LOBBY} component={game.LobbyScreen}/>
-            : <Stack.Screen name={AppRoute.EDIT_USER} component={game.EditUserScreen}/>
-          )
-        : <Stack.Screen name={AppRoute.INGAME} component={game.GameScreen}/>
-      )
+      : <Stack.Screen name={AppRoute.JOIN} component={LobbyNavigator}/>
     }
   </Stack.Navigator>
   )

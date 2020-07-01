@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { TabBar, Tab, Icon, IconProps, Layout } from '@ui-kitten/components'
+import { TabBar, Tab, Icon, IconProps, Layout, TabView } from '@ui-kitten/components'
 import PlayerList from '../../components/player-list.component';
 import QuestionList from '../../components/question-list.component';
 import { StyleSheet, View } from "react-native";
@@ -25,23 +25,17 @@ const GameTabs = (props: IProps) => {
 
     if (props.showTabs) {
         return (
-            <React.Fragment>
-                <TabBar {...topState} >
-                    <Tab title="Score" icon={(props) => renderIcon(props, "person-outline")}
-                    />
-                    <Tab title="Questions" icon={(props) => renderIcon(props, "question-mark-outline")}
-
-                    />
-                </TabBar>
-                <View style={styles.tabContainer}>
-                    {
-                        topState.selectedIndex === 0
-                            ? <PlayerList editPage={(id: string) => props.editPage(id)} />
-                            : <QuestionList />
-                    }
-
-                </View>
-            </React.Fragment>
+            <Layout style={styles.tabTop}>
+                <TabView {...topState} tabBarStyle={styles.tabTop} indicatorStyle={{backgroundColor: '#00b0ff'}} >
+                    <Tab title="Score" icon={(props) => renderIcon(props, "person-outline")} style={styles.tabContainer}> 
+                        <PlayerList editPage={(id: string) => props.editPage(id)} />
+                    </Tab>
+                    <Tab title="Questions" icon={(props) => renderIcon(props, "question-mark-outline")} style={styles.tabContainer}>
+                        <QuestionList />
+                    </Tab>
+                </TabView>
+  
+            </Layout>
         )
     }
 
@@ -51,8 +45,14 @@ const GameTabs = (props: IProps) => {
 }
 
 const styles = StyleSheet.create({
+    tabTop: {
+        backgroundColor: '#d14787',
+        color: '#fff',
+        borderRadius: 8
+    },
     tabContainer: {
-        flex: 1
+        flex: 1,
+        // backgroundColor: '#161f26',
     },
 });
 

@@ -21,7 +21,7 @@ import { Formik, FormikProps } from "formik";
 import { SignUpSchema, SignUpData } from "../../data/sign-up.model";
 import { FormInput } from "../../components/form-input.component";
 import { EyeIcon, EyeOffIcon } from "../../assets/icons";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import { AppRoute } from "../../navigation/app-routes";
 import { RegisterScreenProps } from "../../navigation/auth.navigator";
 import { ButtonInput } from "../../components/form-button.component";
@@ -170,7 +170,7 @@ const RegisterScreen = (props: IProps & IActions) => {
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
-      <View style={styles.formContainerReg}>
+      <ScrollView style={styles.formContainerReg}>
         <Formik
           initialValues={{ name, email, password, password_confirm: '' }}
           validationSchema={SignUpSchema}
@@ -187,7 +187,7 @@ const RegisterScreen = (props: IProps & IActions) => {
         >
           Already have an account?
         </Button>
-      </View>
+      </ScrollView>
     </Layout>
   );
 };

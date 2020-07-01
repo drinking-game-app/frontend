@@ -9,10 +9,12 @@ export default StyleSheet.create({
    */
   container: {
     flex: 1,
+    // justifyContent: 'space-between',
     paddingTop: 32,
     // paddingVertical: 16,
     // paddingHorizontal: 16,
     backgroundColor: "#161F26",
+    position: 'relative'
   },
 
   gameLoadingSpinner: {
@@ -60,6 +62,10 @@ export default StyleSheet.create({
     borderTopEndRadius: 25,
     borderRadius: 0.01,
     borderColor: "#ffffff00",
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%'
   },
 
   /**

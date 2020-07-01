@@ -112,7 +112,7 @@ const LobbyScreen = (props: IProps & IActions) => {
           onPress={startGame}
           disabled={props.isLoading || !readyToPlay || (!props.roundOver ? gameIsFinished : false)}
           loading={props.isLoading}
-          text={readyToPlay ? (props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `BUT WAIT, THERE'S MORE! (${props.numOfRounds} ROUNDS)`}\nSTART NEXT ROUND` : 'PLAY TIME!') : `WAITING FOR ${4 - props.players.length} PLAYER${4 - props.players.length > 1 ? 'S' : ''}`}
+          text={readyToPlay ? (props.roundOver ? `${gameIsFinished ? 'START NEW GAME' : `BUT WAIT, THERE'S MORE! (${props.numOfRounds} ROUNDS) \n START NEXT ROUND`}` : 'PLAY TIME!') : `WAITING FOR ${4 - props.players.length} PLAYER${4 - props.players.length > 1 ? 'S' : ''}`}
         />
       ) : (
         <ButtonInput

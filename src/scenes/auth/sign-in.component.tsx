@@ -17,7 +17,7 @@ import { View, Platform } from "react-native";
 import { connect } from "react-redux";
 import { Formik, FormikProps } from "formik";
 import { Button, Layout, Text, Icon, IconProps } from "@ui-kitten/components";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import * as actions from "../../actions/auth";
 import { FormInput } from "../../components/form-input.component";
 import { IInitialState } from "../../reducers/interfaces";
@@ -125,11 +125,11 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
 
         {error !== "" && <Text>{error}</Text>}
 
-        <View style={styles.resetPasswordContainer}>
+        {/* <View style={styles.resetPasswordContainer}>
           <Button appearance="ghost" status='danger'>
             Forgot password?
           </Button>
-        </View>
+        </View> */}
 
         <ButtonInput
           style={styles.submitButton}
@@ -153,7 +153,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         onPress={() => props.navigation.navigate(AppRoute.HOME)}
       />
 
-      <View style={styles.formContainer}>
+      <ScrollView style={styles.formContainer}>
         <Formik
           initialValues={{ email, password }}
           validationSchema={SignInSchema}
@@ -174,7 +174,7 @@ const LoginScreen = (props: ILoginProps & ILoginActions) => {
         >
           SIGN UP
         </Button>
-      </View>
+      </ScrollView>
     </Layout>
   );
 };
