@@ -69,7 +69,7 @@ class LoginWithApple extends Component <ILoginWithAppleActions, ILoginWithAppleS
             <View style={styles.thirdPartyButtonContainer}>
               <AppleAuthentication.AppleAuthenticationButton
                 buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
                 cornerRadius={5}
                 style={{ width: 200, height: 44 }}
                 onPress={this.signInWithAppleMobile}

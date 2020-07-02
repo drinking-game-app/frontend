@@ -21,8 +21,8 @@ import { IAction, IAuthState } from "./interfaces";
  */
 const initialState: IAuthState = {
   name: "",
-  email: "test@test.ie",
-  password: "testtest",
+  email: "",
+  password: "",
   confirm_password: "",
   isLoading: false,
   canSubmit: false,

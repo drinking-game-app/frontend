@@ -78,6 +78,7 @@ export const setMessages = (message: string, dispatch: Dispatch) => {
 
 export const initGameSock = () => {
   return (dispatch: Dispatch) => {
+    console.log('initlising with ', Constants.manifest.extra.SERVER_URL)
     GameSockClient.setup(Constants.manifest.extra.SERVER_URL, `${Constants.manifest.extra.SERVER_URL}/timesync`);
 
     GameSockClient.onStartGame((newGameOptions: GameSockClient.GameOptions) => {

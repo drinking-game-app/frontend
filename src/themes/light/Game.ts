@@ -57,13 +57,13 @@ export default StyleSheet.create({
    * ------LOBBY (HOST)------
    */
   submitButton: {
-    height: 150,
+    height: 120,
     alignSelf: "stretch",
     borderTopStartRadius: 25,
     borderTopEndRadius: 25,
     borderRadius: 0.01,
     borderColor: "#ffffff00",
-    position: 'absolute',
+    // position: 'absolute',
     zIndex: 10,
     bottom: 0,
     left: 0,

@@ -8,7 +8,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     textAlign: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     backgroundColor: '#D14688',
     padding: 40,
     position: 'relative'

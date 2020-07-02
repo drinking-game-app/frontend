@@ -88,7 +88,7 @@ export default StyleSheet.create({
 
   signOutAndCogContainer: {
     position: 'absolute',
-    top: 50,
+    top: '3%',
     width: '95%',
     margin: 'auto',
     display: 'flex',

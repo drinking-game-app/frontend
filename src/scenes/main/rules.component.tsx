@@ -17,7 +17,7 @@ const contentArr = [
     {
         imgSrc: require('../../../assets/Extra.png'),
         title: 'WELCOME TO SHCOOP',
-        description: 'A "not a drinking game" game where you and your mates can be put up against each other to a "Who is more likely to..." deathmatch! Fun right? So, here are the rules...'
+        description: 'A competitive party game where you and your mates can be put up against each other to a "Who is more likely to..." deathmatch! Fun right? So, here are the rules...'
     },
     {
         imgSrc: require('../../../assets/Hosting.png'),
@@ -32,7 +32,7 @@ const contentArr = [
     {
         imgSrc: require('../../../assets/Hosting1.png'),
         title: 'IN-GAME: CHOSEN',
-        description: 'So you got chosen? Poor bastard. Here is what you do: The non-chosen players will make up questions for you chosen players and once the time is up, you answer those questions by either tapping/clicking your avatar or your opponents.'
+        description: 'So you got chosen? Here is what you do: The non-chosen players will make up questions for you chosen players and once the time is up, you answer those questions by either tapping/clicking your avatar or your opponents.'
     },
     {
         imgSrc: require('../../../assets/ChosenorNotChosen.png'),
