@@ -76,6 +76,15 @@ export const setMessages = (message: string, dispatch: Dispatch) => {
   }, 8000);
 };
 
+export const hideMessage = (i: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: 'HIDE_MESSAGE_INDEX',
+      payload: i,
+    });
+  }
+}
+
 export const initGameSock = () => {
   return (dispatch: Dispatch) => {
     console.log('initlising with ', Constants.manifest.extra.SERVER_URL)

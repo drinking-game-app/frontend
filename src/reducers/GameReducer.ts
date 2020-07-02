@@ -151,6 +151,15 @@ export default (state = initialState, action: IGameAction) => {
         messages: [...allMessages]
       };
 
+    case "HIDE_MESSAGE_INDEX":
+      let existingMessages = state.messages;
+      existingMessages.splice(action.payload, 1)
+
+      return {
+        ...state,
+        messages: [...existingMessages]
+      }
+
     /**
      * Update the list of players
      */

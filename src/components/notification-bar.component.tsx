@@ -19,6 +19,8 @@ import { Text, Layout } from '@ui-kitten/components'
 import { IInitialState, IMessage, IPlayer } from "../reducers/interfaces";
 import { View } from "react-native";
 import { setTimeout } from "timers";
+import * as actions from './../actions/game'
+import { PropsService } from "@ui-kitten/components/devsupport";
 
 /**
  * Importing styles
@@ -33,13 +35,22 @@ interface IProps {
     players: IPlayer[]
 }
 
-const NotificationBar = ({messages, players}: IProps) => {
+interface IActions {
+    hideMessage: (i: number) => void;
+}
 
-    // const forceHideMessage = (message: string) => {
-    //     setTimeout(() => {
-    //         messages.findIndex(dat => dat.message)
-    //     }, 10000)
-    // }
+const NotificationBar = ({messages, players, hideMessage}: IProps & IActions) => {
+
+    const forceHideMessage = (message: string) => {
+        setTimeout(() => {
+            const messageI = messages.findIndex(dat => dat.message === message)
+            if(!messages[messageI].hide) {
+                console.log('message here for too long go away')
+                hideMessage(messageI)
+            }
+            
+        }, 10000)
+    }
     if(messages.some(dat => !dat.hide)) {
       return (
             <View style={styles.container}>
@@ -96,6 +107,6 @@ const mapStateToProps = (state: IInitialState): IProps => {
     };
 };
 
-export default connect<IProps>(mapStateToProps)(NotificationBar)
+export default connect<IProps, IActions>(mapStateToProps, actions)(NotificationBar)
 
 // export default NotificationBar
