@@ -41,6 +41,7 @@ interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
   autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
   getUser: (token: string) => void;
+  initGameSock: () => void;
 }
 
 interface IProps {
@@ -115,6 +116,7 @@ const Home = (props: IProps & IActions) => {
    */
   const hostOrLogin = () => {
     if (props.token && props.token !== '') {
+      props.initGameSock();
       props.hostGameAction({ username: props.name, token: props.token });
       props.navigation.navigate(AppRoute.AUTH);
     } else props.navigation.navigate(AppRoute.AUTH);
@@ -192,13 +194,14 @@ const mapStateToProps = (state: IInitialState): IProps => {
 };
 
 function mapDispatchToProps(dispatch: any): any {
-  const {hostGameAction, autoRejoinLobby} = actions.gameActions
+  const {hostGameAction, autoRejoinLobby, initGameSock} = actions.gameActions
   const {getUser} = actions.authActions
 
   return {
     hostGameAction: bindActionCreators(hostGameAction, dispatch),
     autoRejoinLobby: bindActionCreators(autoRejoinLobby, dispatch),
-    getUser: bindActionCreators(getUser, dispatch)
+    getUser: bindActionCreators(getUser, dispatch),
+    initGameSock: bindActionCreators(initGameSock, dispatch)
   }
 }
 
