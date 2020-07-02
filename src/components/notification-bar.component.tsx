@@ -18,7 +18,6 @@ import { connect } from "react-redux";
 import { Text, Layout } from '@ui-kitten/components'
 import { IInitialState, IMessage, IPlayer } from "../reducers/interfaces";
 import { View } from "react-native";
-import { setTimeout } from "timers";
 import * as actions from './../actions/game'
 import { PropsService } from "@ui-kitten/components/devsupport";
 
