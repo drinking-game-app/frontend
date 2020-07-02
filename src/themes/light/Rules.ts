@@ -22,7 +22,8 @@ export default StyleSheet.create({
     // alignItems: "center",
     justifyContent: "center",
     textAlign: 'center',
-    backgroundColor: '#D14688'
+    backgroundColor: '#D14688',
+    // paddingBottom: '5%'
   },
   ruleHeading: {
     textAlign: 'center'

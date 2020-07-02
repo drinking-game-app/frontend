@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { Text, Layout } from '@ui-kitten/components'
 import { IInitialState, IMessage, IPlayer } from "../reducers/interfaces";
 import { View } from "react-native";
+import { setTimeout } from "timers";
 
 /**
  * Importing styles
@@ -34,6 +35,11 @@ interface IProps {
 
 const NotificationBar = ({messages, players}: IProps) => {
 
+    // const forceHideMessage = (message: string) => {
+    //     setTimeout(() => {
+    //         messages.findIndex(dat => dat.message)
+    //     }, 10000)
+    // }
     if(messages.some(dat => !dat.hide)) {
       return (
             <View style={styles.container}>
@@ -51,6 +57,10 @@ const NotificationBar = ({messages, players}: IProps) => {
                         messageToDisplay = messageToDisplay.replace(players[playerI].id, players[playerI].name)
                         colour = players[playerI].colour ? players[playerI].colour as string : 'red'
                     }
+
+                    
+                    forceHideMessage(message.message)
+                        
                     
                     return (
                         <ButtonInput

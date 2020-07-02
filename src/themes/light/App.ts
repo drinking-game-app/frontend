@@ -27,6 +27,10 @@ export default StyleSheet.create({
     backgroundColor: '#161F26',
     position: 'relative'
   },
+  scrollContainer: {
+    marginTop: 50,
+    paddingVertical: 50
+  },
 
   title: {
     // paddingHorizontal: 16,
@@ -59,7 +63,7 @@ export default StyleSheet.create({
 
   formButton:{
     marginVertical: 10,
-    paddingHorizontal: 120,
+    // paddingHorizontal: 100,
     paddingVertical: 50,
     backgroundColor: '#AD0D4B',
     borderWidth: 0,
@@ -74,7 +78,7 @@ export default StyleSheet.create({
 
   formButtonAlternate:{
     marginVertical: 10,
-    paddingHorizontal: 120,
+    // paddingHorizontal: 100,
     paddingVertical: 50,
     borderWidth: 0,
     shadowColor: 'black',
@@ -88,7 +92,7 @@ export default StyleSheet.create({
 
   signOutAndCogContainer: {
     position: 'absolute',
-    top: '3%',
+    top: '5%',
     width: '95%',
     margin: 'auto',
     display: 'flex',

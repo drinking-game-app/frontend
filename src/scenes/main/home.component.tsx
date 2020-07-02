@@ -27,6 +27,7 @@ import { Player } from '@rossmacd/gamesock-client';
 import { bindActionCreators } from 'redux';
 
 import Constants from "expo-constants";
+import { ScrollView } from 'react-native-gesture-handler';
 
 /**
  * Importing styles
@@ -149,6 +150,7 @@ const Home = (props: IProps & IActions) => {
       //Show the rejoin button
       return (
         <Button style={styles.formButtonAlternate} onPress={() => {
+            props.initGameSock()
             props.autoRejoinLobby(rejoinInfo).then(()=>{
             //TODO make this conditional
             props.navigation.navigate(AppRoute.GAME)
@@ -168,20 +170,22 @@ const Home = (props: IProps & IActions) => {
   return (
     <Layout style={styles.container}>
       {renderSignoutAndCogContainer()}
-      <Text style={styles.title}>WHO IS</Text>
-      <Text style={styles.titleRed}>MORE LIKELY</Text>
-      <Text style={styles.title}>TO</Text>
+      <ScrollView style={styles.scrollContainer}>
+        <Text style={styles.title}>WHO IS</Text>
+        <Text style={styles.titleRed}>MORE LIKELY</Text>
+        <Text style={styles.title}>TO</Text>
 
-      <View>
-        {renderRejoin()}
-        <Button style={styles.formButton} onPress={() => hostOrLogin()}>
-          HOST
-        </Button>
+        <View>
+          {renderRejoin()}
+          <Button style={styles.formButton} onPress={() => hostOrLogin()}>
+            HOST
+          </Button>
 
-        <Button style={styles.formButton} onPress={() => props.navigation.navigate(AppRoute.GAME)}>
-          JOIN
-        </Button>
-      </View>
+          <Button style={styles.formButton} onPress={() => props.navigation.navigate(AppRoute.GAME)}>
+            JOIN
+          </Button>
+        </View>
+      </ScrollView>
     </Layout>
   );
 };

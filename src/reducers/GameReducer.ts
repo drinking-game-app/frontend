@@ -93,7 +93,17 @@ export default (state = initialState, action: IGameAction) => {
      */
     case "SET_MESSAGES":
       const messages = state.messages;
-      const message = action.payload as string
+      let message = action.payload as string
+      let activePlayers = state.players
+
+      if(message.includes('transport close')) {
+        const playerI = activePlayers.findIndex(player => message.includes(player.id))
+        if(playerI !== -1) {
+          message = message.replace(activePlayers[playerI].id, activePlayers[playerI].name)
+          console.log('modified message', message)
+          activePlayers.splice(playerI, 1)
+        }
+      }
 
       let result: IMessage = {
         hide: false,
@@ -124,17 +134,21 @@ export default (state = initialState, action: IGameAction) => {
         ...state,
         messages: [...messages],
         isLoading: isLoading,
-        error: error
+        error: error,
+        players: [...activePlayers]
       };
 
     case "HIDE_MESSAGE":
       let allMessages = state.messages;
       const i = allMessages.findIndex((dat => dat.message === action.payload))
-      allMessages[i].hide = true
+      
+      if(allMessages[i] && allMessages[i].hide) {
+        allMessages[i].hide = true
+      } else allMessages[allMessages.length - 1].hide = true
 
       return {
         ...state,
-        messages: [...allMessages],
+        messages: [...allMessages]
       };
 
     /**
