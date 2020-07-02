@@ -13,7 +13,7 @@
  */
 
 import React, { useEffect, useState, Dispatch } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Button, Layout, Text, Icon, IconProps } from '@ui-kitten/components';
 import { AppRoute } from '../../navigation/app-routes';
 import { IInitialState } from '../../reducers/interfaces';
@@ -40,7 +40,7 @@ const baseUrl = Constants.manifest.extra.SERVER_URL
 
 interface IActions extends HomeScreenProps {
   hostGameAction: (body: IHostGame) => void;
-  autoRejoinLobby:(body:IRejoinGame)=>Promise<Player[]>;
+  autoRejoinLobby: (body: IRejoinGame) => Promise<Player[]>;
   getUser: (token: string) => void;
   initGameSock: () => void;
 }
@@ -56,56 +56,53 @@ interface IProps {
  */
 const Home = (props: IProps & IActions) => {
   const [canRejoin, setCanRejoin] = useState<boolean>(false);
-  const [rejoinInfo,setRejoinInfo]=useState<IRejoinGame>({id:'',lobbyName:''})
-  
+  const [rejoinInfo, setRejoinInfo] = useState<IRejoinGame>({ id: '', lobbyName: '' })
+
   useEffect(() => {
     // Check if a previous game is in localstorage
     AsyncStorage.getItem('myId')
-    .then(unparsedID=>{
-      if (unparsedID) {
-        // Parse the object
-        const parsedOldID = JSON.parse(unparsedID)
-        if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
-          fetch(`${baseUrl}/api/gameActive`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              id: parsedOldID.id,
-              lobbyName: parsedOldID.lobby,
-            }),
-          }).then((res) => {
-            console.log('FETCH:RES', res);
-            if (res.ok) {
-              res.json().then((data) => {
+      .then(unparsedID => {
+        if (unparsedID) {
+          // Parse the object
+          const parsedOldID = JSON.parse(unparsedID)
+          if (parsedOldID && parsedOldID.expiry && parsedOldID.expiry > Date.now()) {
+            fetch(`${baseUrl}/api/gameActive`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: JSON.stringify({
+                id: parsedOldID.id,
+                lobbyName: parsedOldID.lobby,
+              }),
+            })
+              .then(response => response.json())
+              .then((data) => {
                 if (data && data.active) {
                   console.log('Shes sound let her go', data.active);
-                  setRejoinInfo({id:parsedOldID,lobbyName:parsedOldID.lobby})
+                  setRejoinInfo({ id: parsedOldID, lobbyName: parsedOldID.lobby })
                   setCanRejoin(true);
                 }
               });
-            }
-          });
+          }
         }
-      }
-    }).catch(err => {
-      console.log('async storage error!', err)
-    })
+      }).catch(err => {
+        console.log('async storage error!', err)
+      })
 
     AsyncStorage.getItem('seenRules')
-    .then(bool => {
-      if(!bool || bool !== 'true') {
-        AsyncStorage.setItem('seenRules', 'true')
-        .catch(err => console.log('error setting seen rules', err))
-        props.navigation.navigate(AppRoute.RULES)
-      }
-    }).catch(err => console.log('error checking rules', err))
+      .then(bool => {
+        if (!bool || bool !== 'true') {
+          AsyncStorage.setItem('seenRules', 'true')
+            .catch(err => console.log('error setting seen rules', err))
+          props.navigation.navigate(AppRoute.RULES)
+        }
+      }).catch(err => console.log('error checking rules', err))
 
     AsyncStorage.getItem('token')
       .then(token => {
-        if(token && token !== "") {
+        if (token && token !== "") {
           props.getUser(token)
         }
       }).catch(err => console.log('error getting token', err))
@@ -150,16 +147,16 @@ const Home = (props: IProps & IActions) => {
       //Show the rejoin button
       return (
         <Button style={styles.formButtonAlternate} onPress={() => {
-            props.initGameSock()
-            props.autoRejoinLobby(rejoinInfo).then(()=>{
+          props.initGameSock()
+          props.autoRejoinLobby(rejoinInfo).then(() => {
             //TODO make this conditional
             props.navigation.navigate(AppRoute.GAME)
-          }).catch(e=>{
+          }).catch(e => {
             console.log(e)
             setCanRejoin(false)
           })
         }}>
-          {'REJOIN GAME '+rejoinInfo.lobbyName}
+          {'REJOIN GAME ' + rejoinInfo.lobbyName}
         </Button>
       );
     }
@@ -169,8 +166,8 @@ const Home = (props: IProps & IActions) => {
 
   return (
     <Layout style={styles.container}>
-      {renderSignoutAndCogContainer()}
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollChildContainer}>
+        {renderSignoutAndCogContainer()}
         <Text style={styles.title}>WHO IS</Text>
         <Text style={styles.titleRed}>MORE LIKELY</Text>
         <Text style={styles.title}>TO</Text>
@@ -198,8 +195,8 @@ const mapStateToProps = (state: IInitialState): IProps => {
 };
 
 function mapDispatchToProps(dispatch: any): any {
-  const {hostGameAction, autoRejoinLobby, initGameSock} = actions.gameActions
-  const {getUser} = actions.authActions
+  const { hostGameAction, autoRejoinLobby, initGameSock } = actions.gameActions
+  const { getUser } = actions.authActions
 
   return {
     hostGameAction: bindActionCreators(hostGameAction, dispatch),

@@ -93,7 +93,7 @@ export const ModalHeaderLobby = ({
         {...ButtonProps}
         accessoryRight={buttonIcon}
         style={styles.button}
-        size="tiny"
+        size="small"
       >
         {buttonText}
       </Button>

@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native';
  */
 export default StyleSheet.create({
   container: {
-    paddingVertical: 32,
+    paddingTop: 16,
     paddingBottom: 16,
     // paddingHorizontal: 16,
     flexDirection: "column",
@@ -35,14 +35,8 @@ export default StyleSheet.create({
   },
 
   button: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    // alignItems: "flex-end",
-    // marginLeft: 'auto'
-    // maxWidth: '30%',
-    alignSelf: 'flex-start',
-    justifyContent: 'flex-start',
-    // border: 0,
-    // marginLeft: 50,
+    marginHorizontal: 10,
+    alignSelf: 'flex-end',
+    justifyContent: 'flex-start'
   }
 });

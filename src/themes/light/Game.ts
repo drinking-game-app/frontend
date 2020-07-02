@@ -9,8 +9,8 @@ export default StyleSheet.create({
    */
   container: {
     flex: 1,
-    // justifyContent: 'space-between',
-    paddingTop: 32,
+    justifyContent: 'space-between',
+    paddingTop: 16,
     // paddingVertical: 16,
     // paddingHorizontal: 16,
     backgroundColor: "#161F26",
@@ -32,6 +32,7 @@ export default StyleSheet.create({
    */
   listContainer: {
     paddingHorizontal: 16,
+    paddingVertical: 50,
     backgroundColor: "#161F26",
     zIndex: 0
   },
@@ -239,7 +240,7 @@ export default StyleSheet.create({
    */
   pickedPlayerContainer: {
     position: 'relative',
-    display: "flex",
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 0.01,
@@ -247,11 +248,12 @@ export default StyleSheet.create({
 
   pickedPlayer: {
     width: "48%",
+    // maxHeight: '40%'
   },
 
   pickedPlayerCard: {
-    height: 250,
-    display: "flex",
+    // maxHeight: 250,
+    flexGrow: 1,
     justifyContent: "center",
     // transition: '.4s ease'
   },

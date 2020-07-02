@@ -25,14 +25,20 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: '#161F26',
-    position: 'relative'
+    // position: 'relative'
   },
   scrollContainer: {
-    marginTop: 50,
-    paddingVertical: 50
+    paddingVertical: 50,
+    width: '100%'
+  },
+  scrollChildContainer: {
+    flexGrow: 1, 
+    justifyContent: 'center',
+    paddingBottom: 50
   },
 
   title: {
+    zIndex: 20,
     // paddingHorizontal: 16,
     // paddingTop: '37%',
     // paddingBottom: 82,
@@ -43,6 +49,7 @@ export default StyleSheet.create({
   },
 
   titleRed: {
+    zIndex: 20,
     // paddingHorizontal: 16,
     paddingBottom: 8,
     color: '#AD0D4B',
@@ -92,8 +99,8 @@ export default StyleSheet.create({
 
   signOutAndCogContainer: {
     position: 'absolute',
-    top: '5%',
-    width: '95%',
+    top: '-1%',
+    width: '100%',
     margin: 'auto',
     display: 'flex',
     flexDirection: 'row',

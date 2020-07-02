@@ -121,6 +121,11 @@ export default (state = initialState, action: IGameAction) => {
       let isLoading = state.isLoading
       let error = state.error
       
+      if(message.includes('Could not start game')) {
+        isLoading = false
+        error="Could not start game"  
+      }
+
       /**
        * If the message is a lobby does not exist error
        * add the error too
@@ -262,11 +267,13 @@ export default (state = initialState, action: IGameAction) => {
       return {
         ...state,
         lobbyName: "",
+        roundOver: false,
         inGame: false,
         inLobby: false,
         isHost: false,
         isLoading: false,
         questions: [],
+        messages: [],
         error: ''
       };
     case "START_GAME":
