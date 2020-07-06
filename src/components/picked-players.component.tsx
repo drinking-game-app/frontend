@@ -57,6 +57,7 @@ const PickedPlayers = (props: IProps & IActions) => {
    * @param {number} i
    */
   const onSelectPlayer = (i: number) => {
+    console.log('select player!!', i)
     if (canSelectAnswer && props.canAnswer && props.answerQuestion) {
       props.answerQuestion(props.questionIndex!, i);
     }
@@ -99,30 +100,60 @@ const PickedPlayers = (props: IProps & IActions) => {
   };
 
   return (
-    <Layout style={styles.container}>
+    <Layout style={styles.pickedPlayerContainer}>
       {renderTextTitle()}
+      {/* <View style={styles.pickedPlayerContainer}> */}
 
-      <View style={styles.pickedPlayerContainer}>
-        {props.players?.map((player, i) => {
-          const isPlayer = player.id === props.user.id;
+        <View style={styles.pickedPlayerRowContainer}>
+          {props.players?.map((player, i) => {
+            const isPlayer = player.id === props.user.id;
 
-          if (canSelectAnswer)
+            if (canSelectAnswer)
+              return (
+                <View style={styles.pickedPlayer} key={i}>
+
+                  <Button
+                    style={[
+                      props.canAnswer ? styles.pickedPlayerCard : styles.pickedPlayerCardDisabled,
+                      i === 0 
+                        ? (!props.displayAnswer ? styles.cardPink : styles.cardPinkAnswer) 
+                        : (!props.displayAnswer ? styles.cardPurple : styles.cardPurpleAnswer),
+                    ]}
+                    size="giant"
+                    status={!props.canAnswer ? 'ghost' : 'danger'}
+                    onPress={() => {
+                      if(props.canAnswer) onSelectPlayer(i)
+                    }}
+                  >
+                    {player.name}
+                  </Button>
+
+                  <Text
+                    style={[
+                      styles.belowCardText,
+                      i === 0 ? styles.alignLeft : styles.alignRight,
+                    ]}
+                    appearance="p1"
+                  >
+                    {player.name} {isPlayer ? "(You)" : ""}
+                  </Text>
+                </View>
+              );
+
             return (
               <View style={styles.pickedPlayer} key={i}>
 
-                <Button
-                  disabled={!props.canAnswer}
+                <Card
                   style={[
                     styles.pickedPlayerCard,
                     i === 0 
-                      ? (!props.displayAnswer ? styles.cardPink : styles.cardPinkAnswer) 
-                      : (!props.displayAnswer ? styles.cardPurple : styles.cardPurpleAnswer),
+                    ? (!props.displayAnswer ? styles.cardPink : styles.cardPinkAnswer) 
+                    : (!props.displayAnswer ? styles.cardPurple : styles.cardPurpleAnswer),
                   ]}
-                  size="giant"
                   onPress={() => onSelectPlayer(i)}
                 >
-                  {player.name}
-                </Button>
+                  <Text style={styles.title}>{player.name}</Text>
+                </Card>
 
                 <Text
                   style={[
@@ -135,36 +166,10 @@ const PickedPlayers = (props: IProps & IActions) => {
                 </Text>
               </View>
             );
-
-          return (
-            <View style={styles.pickedPlayer} key={i}>
-
-              <Card
-                style={[
-                  styles.pickedPlayerCard,
-                  i === 0 
-                  ? (!props.displayAnswer ? styles.cardPink : styles.cardPinkAnswer) 
-                  : (!props.displayAnswer ? styles.cardPurple : styles.cardPurpleAnswer),
-                ]}
-                onPress={() => onSelectPlayer(i)}
-              >
-                <Text style={styles.title}>{player.name}</Text>
-              </Card>
-
-              <Text
-                style={[
-                  styles.belowCardText,
-                  i === 0 ? styles.alignLeft : styles.alignRight,
-                ]}
-                appearance="hint"
-              >
-                {player.name} {isPlayer ? "(You)" : ""}
-              </Text>
-            </View>
-          );
-        })}
-        {displayQuestionAnswer()}
-      </View>
+          })}
+          {displayQuestionAnswer()}
+        </View>
+      {/* </View> */}
     </Layout>
   );
 };

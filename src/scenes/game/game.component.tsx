@@ -121,12 +121,12 @@ const GameScreen = (props: IProps & IActions) => {
       case "Question Gathering":
         return (
           <React.Fragment>
-          <ScrollView style={{flex: 1}}>
-            <PickedPlayers
-              user={props.user}
-              players={props.roundOptions?.hotseatPlayers}
-            />
-          </ScrollView>
+            <ScrollView contentContainerStyle={{flex: 1}}>
+                <PickedPlayers
+                  user={props.user}
+                  players={props.roundOptions?.hotseatPlayers}
+                />
+            </ScrollView>
             {notEnoughQuestions ? (
               <Text style={styles.title}>
                 Can't think of questions? That's okay, we'll help you out!
@@ -149,15 +149,17 @@ const GameScreen = (props: IProps & IActions) => {
       case "Display Answer":
       case "Hotseat":
         return (
-          <PickedPlayers
-            user={props.user}
-            players={props.roundOptions?.hotseatPlayers}
-            question={props.questions[props.currentQuestionId]}
-            questionIndex={props.currentQuestionId}
-            answerQuestion={answerQuestion}
-            canAnswer={props.canAnswer}
-            displayAnswer={props.phase === "Display Answer"}
-          />
+          <ScrollView contentContainerStyle={{flex: 1}}>
+            <PickedPlayers
+              user={props.user}
+              players={props.roundOptions?.hotseatPlayers}
+              question={props.questions[props.currentQuestionId]}
+              questionIndex={props.currentQuestionId}
+              answerQuestion={answerQuestion}
+              canAnswer={props.canAnswer}
+              displayAnswer={props.phase === "Display Answer"}
+            />
+          </ScrollView>
         );
 
       case "Disconnected":

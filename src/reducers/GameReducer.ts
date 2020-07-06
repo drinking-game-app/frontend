@@ -149,7 +149,8 @@ export default (state = initialState, action: IGameAction) => {
       
       if(allMessages[i] && allMessages[i].hide) {
         allMessages[i].hide = true
-      } else allMessages[allMessages.length - 1].hide = true
+      } 
+      //else allMessages[allMessages.length - 1].hide = true
 
       return {
         ...state,

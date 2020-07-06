@@ -45,6 +45,7 @@ import rg4js from 'raygun4js';
  * Custom UI Component theming
  */
 import { default as theme } from './src/assets/custom-theme.json';
+import AsyncStorage from "@react-native-community/async-storage";
 
 
 /**
@@ -62,22 +63,6 @@ const store = createStore(
 /**
  * Entry point for the application
  */
-// export default function App() {
-//   useEffect(() => {
-   
-//   }, [])
-//   return (
-//     <Provider store={store}>
-//       <IconRegistry icons={EvaIconsPack} />
-//       <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
-//           <SafeAreaProvider>
-//             <NavigationContainer>
-//               <AppNavigator />
-//             </NavigationContainer>
-//           </SafeAreaProvider>
-//       </ApplicationProvider>
-//     </Provider>
-//   );
 export default class App extends React.Component {
   state = {
     showApp: false
@@ -95,6 +80,13 @@ export default class App extends React.Component {
     // rg4js('boot'); // This call must be made last to start the provider for mobile?
     
     SplashScreen.preventAutoHideAsync();
+
+    AsyncStorage.getItem('token')
+      .then(token => {
+        if (token && token !== "") {
+          props.getUser(token)
+        }
+      }).catch(err => console.log('error getting token', err))
   }
 
   render() {

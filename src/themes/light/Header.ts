@@ -35,7 +35,7 @@ export default StyleSheet.create({
   },
 
   button: {
-    marginHorizontal: 10,
+    margin: 10,
     alignSelf: 'flex-end',
     justifyContent: 'flex-start'
   }

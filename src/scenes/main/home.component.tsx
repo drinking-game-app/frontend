@@ -12,8 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
-import React, { useEffect, useState, Dispatch } from 'react';
-import { View, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { Button, Layout, Text, Icon, IconProps } from '@ui-kitten/components';
 import { AppRoute } from '../../navigation/app-routes';
 import { IInitialState } from '../../reducers/interfaces';
@@ -57,6 +57,7 @@ interface IProps {
 const Home = (props: IProps & IActions) => {
   const [canRejoin, setCanRejoin] = useState<boolean>(false);
   const [rejoinInfo, setRejoinInfo] = useState<IRejoinGame>({ id: '', lobbyName: '' })
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
     // Check if a previous game is in localstorage
@@ -104,8 +105,13 @@ const Home = (props: IProps & IActions) => {
       .then(token => {
         if (token && token !== "") {
           props.getUser(token)
+          
         }
-      }).catch(err => console.log('error getting token', err))
+      }).catch(err => {
+        
+        console.log('error getting token', err)
+        setIsReady(true)
+      })
   }, []);
   /**
    * If the user is logged in, start a new game as a host
@@ -174,11 +180,15 @@ const Home = (props: IProps & IActions) => {
 
         <View>
           {renderRejoin()}
-          <Button style={styles.formButton} onPress={() => hostOrLogin()}>
+          <Button 
+            disabled={!isReady && props.token === ""} 
+            style={styles.formButton} 
+            onPress={() => hostOrLogin()}
+          >
             HOST
           </Button>
 
-          <Button style={styles.formButton} onPress={() => props.navigation.navigate(AppRoute.GAME)}>
+          <Button disabled={!isReady && props.token === ""} style={styles.formButton} onPress={() => props.navigation.navigate(AppRoute.GAME)}>
             JOIN
           </Button>
         </View>

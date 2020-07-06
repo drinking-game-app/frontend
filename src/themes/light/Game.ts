@@ -157,7 +157,7 @@ export default StyleSheet.create({
 
     position: 'absolute',
     right: 0,
-    bottom: '20%',
+    top: '40%',
     
     alignItems: "flex-end",
     justifyContent: "flex-end",
@@ -243,7 +243,13 @@ export default StyleSheet.create({
    * ------IN-GAME (CHOSEN)------
    */
   pickedPlayerContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+    // alignItems: "stretch",
     position: 'relative',
+      
+  },
+  pickedPlayerRowContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -256,10 +262,17 @@ export default StyleSheet.create({
   },
 
   pickedPlayerCard: {
-    // maxHeight: 250,
-    flexGrow: 1,
+    alignItems: "center",
+    minHeight: 250,
     justifyContent: "center",
     // transition: '.4s ease'
+  },
+
+  pickedPlayerCardDisabled: {
+    color: '#ffffff80',
+    alignItems: "center",
+    minHeight: 250,
+    justifyContent: "center"
   },
 
   cardPink: {
