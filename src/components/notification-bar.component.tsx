@@ -40,16 +40,15 @@ interface IActions {
 
 const NotificationBar = ({messages, players, hideMessage}: IProps & IActions) => {
 
-    // const forceHideMessage = (message: string) => {
-    //     setTimeout(() => {
-    //         const messageI = messages.findIndex(dat => dat.message === message)
-    //         if(messages[messageI] && messages[messageI].hide === false ) {
-    //             console.log('message here for too long go away')
-    //             hideMessage(messageI)
-    //         }
-            
-    //     }, 10000)
-    // }
+    const forceHideMessage = (message: string) => {
+        setTimeout(() => {
+            const messageI = messages.findIndex(dat => dat.message === message)
+            if(messages[messageI] && messages[messageI].hide === false ) {
+                console.log('message here for too long go away')
+                hideMessage(messageI)
+            }
+        }, 10000)
+    }
     if(messages.some(dat => !dat.hide)) {
       return (
             <View style={styles.container}>
@@ -68,10 +67,8 @@ const NotificationBar = ({messages, players, hideMessage}: IProps & IActions) =>
                         colour = players[playerI].colour ? players[playerI].colour as string : 'red'
                     }
 
-                    
-                    // forceHideMessage(message.message)
+                    forceHideMessage(message.message)
                         
-                    
                     return (
                         <ButtonInput
                             key={i}

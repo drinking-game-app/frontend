@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Text, IconProps, DrawerGroup, DrawerItem, Drawer } from '@ui-kitten/components'
+import { Icon, Text, IconProps, DrawerGroup, DrawerItem, Drawer, Layout } from '@ui-kitten/components'
 import { View } from 'react-native'
 import { IPlayer, IInitialState } from '../reducers/interfaces'
 import { connect } from 'react-redux'
@@ -53,7 +53,7 @@ const QuestionList = (props: IProps) => {
 
   if (props.questions.length > 0) {
     return (
-      <ScrollView>
+      <Layout>
         <Drawer
           selectedIndex={selectedIndex}
           onSelect={index => setSelectedIndex(index)}
@@ -61,7 +61,7 @@ const QuestionList = (props: IProps) => {
         >
           {props.questions.map((item, i) => {
             const player = props.players.find(player => player.id === item.playerId)
-            const pointsToPlayers = item.answers?.length === 2 && (item.answers[0] === item.answers[1])
+            const pointsToPlayers = item.answers?.length === 2 && (item.answers[0] === item.answers[1]) && (item.answers[1] !== null)
 
             return (
               <DrawerGroup
@@ -99,7 +99,7 @@ const QuestionList = (props: IProps) => {
           })}
 
         </Drawer>
-      </ScrollView>
+      </Layout>
     )
   }
 

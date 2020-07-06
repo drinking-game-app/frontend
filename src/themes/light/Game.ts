@@ -9,7 +9,7 @@ export default StyleSheet.create({
    */
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     paddingTop: 16,
     // paddingVertical: 16,
     // paddingHorizontal: 16,
@@ -125,7 +125,6 @@ export default StyleSheet.create({
 
   answerLeft: {
     // transition: '.2s ease',
-
     position: 'absolute',
     left: 0,
     top: '20%',
