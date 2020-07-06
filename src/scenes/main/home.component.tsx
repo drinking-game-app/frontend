@@ -105,8 +105,8 @@ const Home = (props: IProps & IActions) => {
       .then(token => {
         if (token && token !== "") {
           props.getUser(token)
-          
-        }
+
+        } else setIsReady(true)
       }).catch(err => {
         
         console.log('error getting token', err)
