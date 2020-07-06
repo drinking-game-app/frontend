@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     tabContainer: {
-        flex: 1,
+        // flex: 1,
         // backgroundColor: '#161f26',
     },
 });

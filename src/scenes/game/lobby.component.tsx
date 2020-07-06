@@ -26,7 +26,7 @@ import NotificationBar from '../../components/notification-bar.component';
 import { Layout } from '@ui-kitten/components';
 import GameTabs from './game-tabs.component';
 import {useKeepAwake} from 'expo-keep-awake';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 
 /**
@@ -108,7 +108,9 @@ const LobbyScreen = (props: IProps & IActions) => {
     <Layout style={styles.container}>
       <ModalHeaderLobby text={renderModalTitle()} lobbyCode={renderModalCode()} buttonText={props.isHost ? 'End Game' : 'Leave Lobby'} loading={false} disabled={props.isLoading} isLeaderboard={props.roundOver} icon="close-outline" status="info" onPress={() => endGame()} />
       
-      <GameTabs editPage={(id: string) => showEditPage(id)} showTabs={props.roundOver} />
+      <View style={styles.gameTabContainer}>
+        <GameTabs editPage={(id: string) => showEditPage(id)} showTabs={props.roundOver} />
+      </View>
 
       {props.isHost ? (
         <ButtonInput

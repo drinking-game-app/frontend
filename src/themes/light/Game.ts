@@ -9,14 +9,17 @@ export default StyleSheet.create({
    */
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     paddingTop: 16,
     // paddingVertical: 16,
     // paddingHorizontal: 16,
     backgroundColor: "#161F26",
     position: 'relative'
   },
-
+  gameTabContainer: {
+    flexGrow: 1,
+    alignItems: 'stretch'
+  },
   gameLoadingSpinner: {
     flex: 1,
     justifyContent: "center",
@@ -32,9 +35,11 @@ export default StyleSheet.create({
    */
   listContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 50,
+    flex: 1,
+    // paddingVertical: 50,
     backgroundColor: "#161F26",
-    zIndex: 0
+    zIndex: 0,
+    // height: '100%'
   },
 
   listItem: {

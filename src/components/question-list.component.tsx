@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Text, IconProps, DrawerGroup, DrawerItem, Drawer, Layout } from '@ui-kitten/components'
+import { Icon, Text, IconProps, DrawerGroup, DrawerItem, Drawer, Layout, List } from '@ui-kitten/components'
 import { View } from 'react-native'
 import { IPlayer, IInitialState } from '../reducers/interfaces'
 import { connect } from 'react-redux'
@@ -51,59 +51,61 @@ const QuestionList = (props: IProps) => {
     return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
   }
 
-  if (props.questions.length > 0) {
+  const renderListItem = ({ item }: any) => {
+    const player = props.players.find(player => player.id === item.playerId)
+    const pointsToPlayers = item.answers?.length === 2 && (item.answers[0] === item.answers[1]) && (item.answers[1] !== null)
+
     return (
-      <Layout>
-        <Drawer
-          selectedIndex={selectedIndex}
-          onSelect={index => setSelectedIndex(index)}
-          style={styles.listContainer}
+      <Drawer
+        selectedIndex={selectedIndex}
+        onSelect={index => setSelectedIndex(index)}
+        style={styles.listContainer}
+      >
+        <DrawerGroup
+          title={item.question}
+          style={styles.listItem}
+          accessoryLeft={(props) => renderItemIcon(props, player)}
         >
-          {props.questions.map((item, i) => {
-            const player = props.players.find(player => player.id === item.playerId)
-            const pointsToPlayers = item.answers?.length === 2 && (item.answers[0] === item.answers[1]) && (item.answers[1] !== null)
+          <DrawerItem onPress={() => { }} title={player ? `Asked by: ${player.name}` : 'Shuffled Question'} accessoryLeft={(props) => renderIcon(props, 'question-mark-outline')} />
+          {
+            props.roundOptions?.hotseatPlayers.map((hotseatPlayer, i) => {
+              const answer = item.answers![i]
+              const questionAnswer = `${answer ? `answered ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}` : 'Didn\'t answer'}`
 
-            return (
-              <DrawerGroup
-                title={item.question}
-                style={[styles.listItem]}
-                key={i}
-                accessoryLeft={(props) => renderItemIcon(props, player)}
-              >
+              return (
+                <DrawerItem key={hotseatPlayer.name} onPress={() => { }} title={`${hotseatPlayer.name} ${questionAnswer}`} accessoryLeft={(props) => renderIcon(props, 'edit-2-outline')} />
+              )
+            })
+          }
 
+          <DrawerItem
+            onPress={() => { }}
+            title={pointsToPlayers
+              ? 'Both players got points!'
+              : `${player
+                ? `${player.name} got points!`
+                : 'Nobody got points!'}`}
+            accessoryLeft={(props) => renderIcon(props, 'star-outline')}
+          />
 
-                <DrawerItem onPress={() => { }} title={player ? `Asked by: ${player.name}` : 'Shuffled Question'} accessoryLeft={(props) => renderIcon(props, 'question-mark-outline')} />
-                {
-                  props.roundOptions?.hotseatPlayers.map((hotseatPlayer, i) => {
-                    const answer = item.answers![i]
-                    const questionAnswer = `${answer ? `answered ${answer === i ? 'themself' : props.roundOptions?.hotseatPlayers[i === 0 ? 1 : 0].name}` : 'Didn\'t answer'}`
+        </DrawerGroup>
+      </Drawer>
 
-                    return (
-                      <DrawerItem key={hotseatPlayer.name} onPress={() => { }} title={`${hotseatPlayer.name} ${questionAnswer}`} accessoryLeft={(props) => renderIcon(props, 'edit-2-outline')} />
-                    )
-                  })
-                }
-
-                <DrawerItem
-                  onPress={() => { }}
-                  title={pointsToPlayers
-                    ? 'Both players got points!'
-                    : `${player
-                      ? `${player.name} got points!`
-                      : 'Nobody got points!'}`}
-                  accessoryLeft={(props) => renderIcon(props, 'star-outline')}
-                />
-
-              </DrawerGroup>
-            )
-          })}
-
-        </Drawer>
-      </Layout>
     )
   }
 
-  return <Text>No Questions Found</Text>
+  return (
+    <Layout>
+      {
+        props.questions.length > 0
+        ? <List
+            data={props.questions}
+            renderItem={renderListItem}
+          />
+        : <Text>No Questions Found</Text>
+      }
+    </Layout>
+  )
 }
 
 /**
