@@ -133,7 +133,7 @@ const PickedPlayers = (props: IProps & IActions) => {
                       styles.belowCardText,
                       i === 0 ? styles.alignLeft : styles.alignRight,
                     ]}
-                    appearance="p1"
+                    appearance="hint"
                   >
                     {player.name} {isPlayer ? "(You)" : ""}
                   </Text>
