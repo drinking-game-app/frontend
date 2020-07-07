@@ -12,8 +12,8 @@
  * Copyright 2020 - WebSpace
  */
 
-import React from "react";
-import { Image, View, Platform } from 'react-native';
+import React, { useRef } from "react";
+import { Image, View, Text, SafeAreaView, Animated } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { Asset } from 'expo-asset';
 
@@ -45,8 +45,6 @@ import rg4js from 'raygun4js';
  * Custom UI Component theming
  */
 import { default as theme } from './src/assets/custom-theme.json';
-import AsyncStorage from "@react-native-community/async-storage";
-
 
 /**
  * Initialise redux store
@@ -59,6 +57,33 @@ const store = createStore(
     applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
   )
 );
+
+const FadeInView = (props: any) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+
+  React.useEffect(() => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: props.duration,
+        delay: props.delay
+      }
+    ).start();
+  }, [])
+
+  return (
+    <Animated.View                 // Special animatable View
+      style={{
+        ...props.style,
+        opacity: fadeAnim,         // Bind opacity to animated value
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+}
+
 
 /**
  * Entry point for the application
@@ -80,25 +105,28 @@ export default class App extends React.Component {
     // rg4js('boot'); // This call must be made last to start the provider for mobile?
     
     SplashScreen.preventAutoHideAsync();
-
-    AsyncStorage.getItem('token')
-      .then(token => {
-        if (token && token !== "") {
-          props.getUser(token)
-        }
-      }).catch(err => console.log('error getting token', err))
   }
 
   render() {
     if(!this.state.showApp) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Image 
-            style={{ width: '100%', height: '40%', maxHeight: 400, maxWidth: 400}}
-            source={require('./assets/splash.gif')} 
-            onLoad={this._cacheResourcesAsync}
-          />
-        </View>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{marginTop: 50}}>
+              <FadeInView delay={500} duration={500} style={{width: '100%', height: 60, alignItems: 'center'}}>
+                <Text style={{color: '#EA3462', fontSize: 50, fontWeight: "bold"}}>Shcoop App.</Text>
+              </FadeInView>
+              <FadeInView delay={800} duration={500} style={{width: '100%', height: 60, alignItems: 'center'}}>
+                <Text style={{fontWeight: "500", textAlign: 'center'}}>Competative party game.</Text>
+              </FadeInView>
+            </View>
+            <FadeInView delay={200} duration={500} style={{width: '100%', height: 400, alignItems: 'center'}}>
+              <Image 
+                style={{ width: '100%', height: '100%', maxHeight: 400, maxWidth: 400}}
+                source={require('./assets/splash.gif')} 
+                onLoad={this._cacheResourcesAsync}
+              />
+            </FadeInView>
+        </SafeAreaView>
       );
     }
     
