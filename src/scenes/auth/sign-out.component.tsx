@@ -13,7 +13,7 @@
  */
 
 import React from "react";
-import { Text, SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { logout, setLoading } from "../../actions/auth";
 import LogoutWithGoogle from "./platformSpecific/LogoutWithGoogle";
@@ -40,6 +40,10 @@ type IProps = {
   isHost: boolean;
 };
 
+interface IPropActions extends IProps {
+  onSignOut: () => void;
+}
+
 /**
  * Interface actions
  * for the component
@@ -49,7 +53,7 @@ interface IActions extends SignoutScreenScreenProps {
   setLoading: () => void;
 }
 
-const SignoutScreen = (props: IProps & IActions) => {
+const SignoutScreen = (props: IPropActions & IActions) => {
   /**
    * Logs out the user from their current
    * session
@@ -59,10 +63,11 @@ const SignoutScreen = (props: IProps & IActions) => {
     const { token } = props;
 
     props.logout({ token });
+    props.onSignOut();
   };
 
   const { authedWithGoogle, isLoading } = props;
-  
+
   return (
     <SafeAreaView>
       {authedWithGoogle ? (
@@ -88,14 +93,14 @@ const SignoutScreen = (props: IProps & IActions) => {
  */
 const mapStateToProps = (state: IInitialState): IProps => {
   const { name, token, authedWithGoogle, isLoading } = state.auth;
-  const {isHost} = state.game
+  const { isHost } = state.game;
 
   return {
     name,
     token,
     authedWithGoogle,
     isLoading,
-    isHost
+    isHost,
   };
 };
 

@@ -2,20 +2,14 @@
   "expo": {
     "name": "Shcoop",
     "slug": "shcoop",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "1.0.41",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.42",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "ie.wspace.drinking-app",
       "supportsTablet": true,
