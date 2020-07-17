@@ -3,7 +3,7 @@
     "name": "Shcoop",
     "slug": "shcoop",
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.42",
+    "version": "1.0.43",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -11,7 +11,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "ie.wspace.drinking-app",
+      "bundleIdentifier": "ie.wspace.shcoop-app",
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "config": {
